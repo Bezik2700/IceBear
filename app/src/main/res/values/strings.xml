@@ -1,3 +1,59 @@
 <resources>
     <string name="app_name">Space App</string>
+
+    // block names
+    <string name="bronze">BRONZE</string>
+    <string name="silver">SILVER</string>
+    <string name="gold">GOLD</string>
+    <string name="diamond">DIAMOND</string>
+    <string name="platinum">PLATINUM</string>
+    <string name="epic">EPIC</string>
+
+    // card names
+    <string name="bronze1">bronze 1</string>
+    <string name="bronze2">bronze 2</string>
+    <string name="bronze3">bronze 3</string>
+    <string name="bronze4">bronze 4</string>
+    <string name="bronze5">bronze 5</string>
+    <string name="bronze6">bronze 6</string>
+    <string name="bronze7">bronze 7</string>
+    <string name="bronze8">bronze 8</string>
+
+    <string name="silver1">silver 1</string>
+    <string name="silver2">silver 2</string>
+    <string name="silver3">silver 3</string>
+    <string name="silver4">silver 4</string>
+    <string name="silver5">silver 5</string>
+    <string name="silver6">silver 6</string>
+    <string name="silver7">silver 7</string>
+    <string name="silver8">silver 8</string>
+
+    <string name="gold1">gold 1</string>
+    <string name="gold2">gold 2</string>
+    <string name="gold3">gold 3</string>
+    <string name="gold4">gold 4</string>
+    <string name="gold5">gold 5</string>
+    <string name="gold6">gold 6</string>
+    <string name="gold7">gold 7</string>
+    <string name="gold8">gold 8</string>
+
+    <string name="diamond1">diamond 1</string>
+    <string name="diamond2">diamond 2</string>
+    <string name="diamond3">diamond 3</string>
+    <string name="diamond4">diamond 4</string>
+    <string name="diamond5">diamond 5</string>
+    <string name="diamond6">diamond 6</string>
+    <string name="diamond7">diamond 7</string>
+    <string name="diamond8">diamond 8</string>
+
+    <string name="platinum1">platinum 1</string>
+    <string name="platinum2">platinum 2</string>
+    <string name="platinum3">platinum 3</string>
+    <string name="platinum4">platinum 4</string>
+
+    <string name="epic1">epic 1</string>
+    <string name="epic2">epic 2</string>
+    <string name="epic3">epic 3</string>
+    <string name="epic4">epic 4</string>
+
 </resources>

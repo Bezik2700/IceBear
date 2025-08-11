@@ -1,5 +1,6 @@
 package igor.second.spaceapp.collection
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,98 +12,137 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import igor.second.spaceapp.R
 
 @Composable
-fun CollectionChapter(manyCard: Int){
-
+fun CollectionChapter(
+    modifier: Modifier = Modifier,
+    cardImage1: Int,
+    cardImage2: Int,
+    cardImage3: Int,
+    cardImage4: Int,
+    cardImage5: Int,
+    cardImage6: Int,
+    cardImage7: Int,
+    cardImage8: Int,
+    cardName1: Int,
+    cardName2: Int,
+    cardName3: Int,
+    cardName4: Int,
+    cardName5: Int,
+    cardName6: Int,
+    cardName7: Int,
+    cardName8: Int,
+    cardScore1: Int,
+    cardScore2: Int,
+    cardScore3: Int,
+    cardScore4: Int,
+    cardScore5: Int,
+    cardScore6: Int,
+    cardScore7: Int,
+    cardScore8: Int,
+    collectionQuantity: Int,
+    @StringRes collectionName: Int,
+){
     Column (
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(top = 16.dp)
     ) {
-        Card (
-            modifier = Modifier
+        Card (modifier = modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp)
         ) {
             Text(
-                "card name",
-                modifier = Modifier
+                stringResource(collectionName),
+                modifier = modifier
                     .align(alignment = Alignment.CenterHorizontally))
         }
 
-        // status bronze
-        if (manyCard == 0){
+        if (collectionQuantity == 1){
             Row (
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceAround,
-                modifier = Modifier.fillMaxWidth()
+                modifier = modifier.fillMaxWidth()
             ) {
                 CollectionSmallCard(
-                    cardImage = R.drawable.ic_launcher_background,
-                    cardName = R.string.app_name
+                    cardImage = cardImage1,
+                    cardName = cardName1,
+                    cardScore = cardScore1
                 )
                 CollectionSmallCard(
-                    cardImage = R.drawable.ic_launcher_background,
-                    cardName = R.string.app_name
+                    cardImage = cardImage2,
+                    cardName = cardName2,
+                    cardScore = cardScore2
                 )
                 CollectionSmallCard(
-                    cardImage = R.drawable.ic_launcher_background,
-                    cardName = R.string.app_name
+                    cardImage = cardImage3,
+                    cardName = cardName3,
+                    cardScore = cardScore3
                 )
                 CollectionSmallCard(
-                    cardImage = R.drawable.ic_launcher_background,
-                    cardName = R.string.app_name
+                    cardImage = cardImage4,
+                    cardName = cardName4,
+                    cardScore = cardScore4
                 )
             }
-        // status silver
-        } else if (manyCard == 1) {
             Row (
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceAround,
-                modifier = Modifier.fillMaxWidth()
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp)
             ) {
-
+                CollectionSmallCard(
+                    cardImage = cardImage5,
+                    cardName = cardName5,
+                    cardScore = cardScore5
+                )
+                CollectionSmallCard(
+                    cardImage = cardImage6,
+                    cardName = cardName6,
+                    cardScore = cardScore6
+                )
+                CollectionSmallCard(
+                    cardImage = cardImage7,
+                    cardName = cardName7,
+                    cardScore = cardScore7
+                )
+                CollectionSmallCard(
+                    cardImage = cardImage8,
+                    cardName = cardName8,
+                    cardScore = cardScore8
+                )
             }
-        // status gold
-        } else if (manyCard == 2) {
-            Row (
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceAround,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-
-            }
-        // status diamond
-        } else if (manyCard == 3) {
-            Row (
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceAround,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-
-            }
-        // status platinum
-        } else if (manyCard == 4) {
-            Row (
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceAround,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-
-            }
-        // status epic
         } else {
-            Row (
+            Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceAround,
-                modifier = Modifier.fillMaxWidth()
+                modifier = modifier.fillMaxWidth()
             ) {
-
+                CollectionSmallCard(
+                    cardImage = cardImage1,
+                    cardName = cardName1,
+                    cardScore = cardScore1
+                )
+                CollectionSmallCard(
+                    cardImage = cardImage2,
+                    cardName = cardName2,
+                    cardScore = cardScore1
+                )
+                CollectionSmallCard(
+                    cardImage = cardImage3,
+                    cardName = cardName3,
+                    cardScore = cardScore1
+                )
+                CollectionSmallCard(
+                    cardImage = cardImage4,
+                    cardName = cardName4,
+                    cardScore = cardScore1
+                )
             }
         }
     }

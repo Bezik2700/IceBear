@@ -38,6 +38,7 @@ import java.io.FileOutputStream
 @Composable
 fun CollectionSmallCard(
     modifier: Modifier = Modifier,
+    cardScore: Int,
     @DrawableRes cardImage: Int,
     @StringRes cardName: Int
 ){
@@ -82,6 +83,7 @@ fun CollectionSmallCard(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Text(cardScore.toString())
             Card (
                 modifier = Modifier
                     .size(width = 64.dp, height = 128.dp)
