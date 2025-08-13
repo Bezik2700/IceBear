@@ -1,4 +1,4 @@
-package igor.second.spaceapp.collection
+package igor.second.spaceapp.appwindows.collection
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
@@ -55,6 +55,7 @@ fun MainCollection(
     epicValue3: MutableState<Int>,
     epicValue4: MutableState<Int>
 ){
+
     LazyColumn (
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,

@@ -2,40 +2,39 @@ package igor.second.spaceapp.settings
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.AccountCircle
 import androidx.compose.material.icons.twotone.Favorite
 import androidx.compose.material.icons.twotone.Home
+import androidx.compose.material.icons.twotone.Share
 import androidx.compose.material.icons.twotone.ShoppingCart
 import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import igor.second.spaceapp.camera.MainCamera
-import igor.second.spaceapp.collection.MainCollection
-import igor.second.spaceapp.generation.MainGeneration
-import igor.second.spaceapp.shop.MainShop
+import igor.second.spaceapp.appwindows.find.MainFind
+import igor.second.spaceapp.appwindows.collection.MainCollection
+import igor.second.spaceapp.appwindows.connection.MainConnection
+import igor.second.spaceapp.appwindows.generation.MainGeneration
+import igor.second.spaceapp.appwindows.shop.MainShop
 
 sealed class Screens(val route: String){
     data object MainGeneration: Screens("MainGeneration")
     data object MainCollection: Screens("MainCollection")
     data object MainShop: Screens("MainShop")
     data object MainCamera: Screens("MainCamera")
+    data object MainConnection: Screens("MainConnection")
 }
 
 @Composable
@@ -84,8 +83,7 @@ fun NavigationActivity(
     epicValue4: MutableState<Int>,
     navController: NavHostController,
     timerValue: MutableState<String>,
-    timerRunning: MutableState<Boolean>,
-    cardValue: MutableState<Float>
+    timerRunning: MutableState<Boolean>
 ){
     Scaffold(
         bottomBar = {
@@ -106,11 +104,14 @@ fun NavigationActivity(
                     IconButton(onClick = {navController.navigate(Screens.MainGeneration.route)}) {
                         Icon(Icons.TwoTone.Home, contentDescription = "home")
                     }
+                    IconButton(onClick = {navController.navigate(Screens.MainCollection.route)}) {
+                        Icon(Icons.TwoTone.Favorite, contentDescription = "collection")
+                    }
                     IconButton(onClick = {navController.navigate(Screens.MainShop.route)}) {
                         Icon(Icons.TwoTone.ShoppingCart, contentDescription = "shop")
                     }
-                    IconButton(onClick = {navController.navigate(Screens.MainCollection.route)}) {
-                        Icon(Icons.TwoTone.Favorite, contentDescription = "collection")
+                    IconButton(onClick = {navController.navigate(Screens.MainConnection.route)}) {
+                        Icon(Icons.TwoTone.Share, contentDescription = "connection")
                     }
                 }
             }
@@ -125,10 +126,8 @@ fun NavigationActivity(
         ) {
             composable (route = Screens.MainGeneration.route) {
                 MainGeneration(
-                    navController = navController,
                     timerValue = timerValue,
                     timerRunning = timerRunning,
-                    cardValue = cardValue,
                     dataStoreManager = dataStoreManager,
                     userMoneyValue = userMoneyValue,
                     bronzeValue1 = bronzeValue1,
@@ -217,11 +216,14 @@ fun NavigationActivity(
                     epicValue4 = epicValue4
                 )
             }
+            composable (route = Screens.MainConnection.route) {
+                MainConnection()
+            }
             composable (route = Screens.MainShop.route) {
                 MainShop()
             }
             composable (route = Screens.MainCamera.route) {
-                MainCamera()
+                MainFind()
             }
         }
     }

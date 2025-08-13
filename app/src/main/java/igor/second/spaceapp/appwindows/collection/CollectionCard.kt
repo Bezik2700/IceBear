@@ -1,4 +1,4 @@
-package igor.second.spaceapp.collection
+package igor.second.spaceapp.appwindows.collection
 
 import android.app.Activity
 import android.content.Context
@@ -44,7 +44,6 @@ fun CollectionSmallCard(
 ){
 
     var enabled by remember { mutableStateOf(false) }
-    val context = LocalContext.current
 
     if (enabled){
         Dialog(
@@ -59,9 +58,6 @@ fun CollectionSmallCard(
                     Button(onClick = {enabled = !enabled}) {
                         Text("exit")
                     }
-                    Button(
-                        onClick = { captureScreenshot(context) }
-                    ) { Text("screen") }
                 }
                 Card (
                     modifier = Modifier
@@ -99,42 +95,4 @@ fun CollectionSmallCard(
             Text(stringResource(cardName))
         }
     }
-}
-
-private fun captureScreenshot(context: Context) {
-    val bitmap = getScreenBitmap(context) ?: return
-    try {
-        val storageDir = Environment.getExternalStoragePublicDirectory(
-            Environment.DIRECTORY_PICTURES
-        )
-        val file = File.createTempFile(
-            "timer_screenshot_${System.currentTimeMillis()}",
-            ".png", storageDir
-        )
-        FileOutputStream(file).use { fos ->
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)
-            fos.flush()
-        }
-        val uri = Uri.fromFile(file)
-        context.sendBroadcast(
-            Intent(
-                Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
-                uri
-            )
-        )
-        Toast.makeText(context, "Screenshot saved to Pictures!",
-            Toast.LENGTH_SHORT).show()
-    } catch (e: Exception) {
-        Toast.makeText(context, "Failed to save screenshot: ${e.message}",
-            Toast.LENGTH_LONG).show()
-    }
-}
-
-private fun getScreenBitmap(context: Context): Bitmap? {
-    val rootView = (context as? Activity)?.window?.decorView?.rootView
-    rootView?.isDrawingCacheEnabled = true
-    rootView?.buildDrawingCache()
-    val bitmap = rootView?.drawingCache?.let { Bitmap.createBitmap(it) }
-    rootView?.isDrawingCacheEnabled = false
-    return bitmap
 }

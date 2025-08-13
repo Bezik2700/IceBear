@@ -1,4 +1,4 @@
-package igor.second.spaceapp.collection
+package igor.second.spaceapp.appwindows.collection
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
@@ -131,17 +131,17 @@ fun CollectionChapter(
                 CollectionSmallCard(
                     cardImage = cardImage2,
                     cardName = cardName2,
-                    cardScore = cardScore1
+                    cardScore = cardScore2
                 )
                 CollectionSmallCard(
                     cardImage = cardImage3,
                     cardName = cardName3,
-                    cardScore = cardScore1
+                    cardScore = cardScore3
                 )
                 CollectionSmallCard(
                     cardImage = cardImage4,
                     cardName = cardName4,
-                    cardScore = cardScore1
+                    cardScore = cardScore4
                 )
             }
         }

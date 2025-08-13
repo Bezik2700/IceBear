@@ -12,8 +12,8 @@ android {
         applicationId = "igor.second.spaceapp"
         minSdk = 24
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "2.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -41,13 +41,18 @@ android {
 
 dependencies {
 
+    // billing
+    implementation (libs.billing)
+    implementation (libs.billing.ktx)
+    implementation (libs.guava)
+    implementation (libs.guava.v3201android)
     // DB
     implementation (libs.androidx.datastore.preferences)
     // navigation
     implementation(libs.androidx.navigation.compose)
-    // Location Services
-    implementation ("com.google.android.gms:play-services-location:21.0.1")
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
+    // location Services
+    implementation (libs.play.services.location)
+    implementation (libs.kotlinx.coroutines.play.services)
     // camera impl
     implementation (libs.androidx.camera.core)
     implementation (libs.androidx.camera.camera2)

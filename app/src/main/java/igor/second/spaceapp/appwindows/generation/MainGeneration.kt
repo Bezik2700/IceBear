@@ -1,4 +1,4 @@
-package igor.second.spaceapp.generation
+package igor.second.spaceapp.appwindows.generation
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Card
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,13 +18,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import igor.second.spaceapp.generation.cards.MiniGeneration
+import igor.second.spaceapp.appwindows.generation.cards.AutoGenerationCard
+import igor.second.spaceapp.appwindows.generation.cards.MiniGeneration
 import igor.second.spaceapp.settings.DataStoreManager
 
 @Composable
 fun MainGeneration(
-    navController: NavController,
     dataStoreManager: DataStoreManager,
     userMoneyValue: MutableState<Double>,
     bronzeValue1: MutableState<Int>,
@@ -69,7 +67,6 @@ fun MainGeneration(
     epicValue3: MutableState<Int>,
     epicValue4: MutableState<Int>,
     modifier: Modifier = Modifier,
-    cardValue: MutableState<Float>,
     timerValue: MutableState<String>,
     timerRunning: MutableState<Boolean>
 ){
@@ -83,23 +80,15 @@ fun MainGeneration(
             .fillMaxSize()
             .padding(bottom = 32.dp)
     ) {
-        Row (
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.End,
-            modifier = modifier.fillMaxWidth()
-        ) {
-            Card {
-                Text("score: ${userMoneyValue.value}")
-            }
-        }
         FinishCard()
         Row (
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.End,
+            horizontalArrangement = Arrangement.SpaceAround,
             modifier = modifier
                 .fillMaxWidth()
-                .padding(top = 16.dp, bottom = 16.dp, end = 8.dp)
+                .padding(8.dp)
         ) {
+            Text("money: ${userMoneyValue.value}")
             Switch(
                 checked = autoGenerationEnabler,
                 onCheckedChange = {
@@ -113,9 +102,7 @@ fun MainGeneration(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
             ) {
-                AutoGenerationCard(
-                    cardValue = cardValue
-                )
+                AutoGenerationCard()
             }
         } else {
             Column (
@@ -123,14 +110,53 @@ fun MainGeneration(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
             ) {
-                TimerFromLevels(
-                    timerRunning = timerRunning
-                )
-                Text(cardValue.value.toString())
+                TimerFromLevels(timerRunning = timerRunning)
+
                 MiniGeneration(
                     timerValue = timerValue,
                     timerRunning = timerRunning,
-                    cardValue = cardValue
+                    bronzeValue1 = bronzeValue1,
+                    bronzeValue2 = bronzeValue2,
+                    bronzeValue3 = bronzeValue3,
+                    bronzeValue4 = bronzeValue4,
+                    bronzeValue5 = bronzeValue5,
+                    bronzeValue6 = bronzeValue6,
+                    bronzeValue7 = bronzeValue7,
+                    bronzeValue8 = bronzeValue8,
+                    silverValue1 = silverValue1,
+                    silverValue2 = silverValue2,
+                    silverValue3 = silverValue3,
+                    silverValue4 = silverValue4,
+                    silverValue5 = silverValue5,
+                    silverValue6 = silverValue6,
+                    silverValue7 = silverValue7,
+                    silverValue8 = silverValue8,
+                    goldValue1 = goldValue1,
+                    goldValue2 = goldValue2,
+                    goldValue3 = goldValue3,
+                    goldValue4 = goldValue4,
+                    goldValue5 = goldValue5,
+                    goldValue6 = goldValue6,
+                    goldValue7 = goldValue7,
+                    goldValue8 = goldValue8,
+                    diamondValue1 = diamondValue1,
+                    diamondValue2 = diamondValue2,
+                    diamondValue3 = diamondValue3,
+                    diamondValue4 = diamondValue4,
+                    diamondValue5 = diamondValue5,
+                    diamondValue6 = diamondValue6,
+                    diamondValue7 = diamondValue7,
+                    diamondValue8 = diamondValue8,
+                    platinumValue1 = platinumValue1,
+                    platinumValue2 = platinumValue2,
+                    platinumValue3 = platinumValue3,
+                    platinumValue4 = platinumValue4,
+                    epicValue1 = epicValue1,
+                    epicValue2 = epicValue2,
+                    epicValue3 = epicValue3,
+                    epicValue4 = epicValue4,
+                    userMoneyValue = userMoneyValue,
+                    dataStoreManager = dataStoreManager
                 )
             }
         }

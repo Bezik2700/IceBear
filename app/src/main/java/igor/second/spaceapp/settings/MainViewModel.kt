@@ -11,6 +11,9 @@ class MainViewModel: ViewModel() {
     private val _timer = MutableStateFlow(10)
     val timer: StateFlow<Int> = _timer
 
+    private val _cardValue = MutableStateFlow(0)
+    val cardValue: StateFlow<Int> = _cardValue
+
     fun timerLoad(){
         viewModelScope.launch {
             _timer.value -= 1
@@ -20,6 +23,24 @@ class MainViewModel: ViewModel() {
     fun timerRestart(){
         viewModelScope.launch {
             _timer.value = 10
+        }
+    }
+
+    fun cardValuePlus(){
+        viewModelScope.launch {
+            _cardValue.value += 1
+        }
+    }
+
+    fun cardValueMinus(){
+        viewModelScope.launch {
+            _cardValue.value -= 1
+        }
+    }
+
+    fun cardValueZero(){
+        viewModelScope.launch {
+            _cardValue.value = 0
         }
     }
 }
