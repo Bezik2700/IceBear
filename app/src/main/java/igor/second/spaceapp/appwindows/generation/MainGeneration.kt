@@ -25,7 +25,8 @@ import igor.second.spaceapp.settings.DataStoreManager
 @Composable
 fun MainGeneration(
     dataStoreManager: DataStoreManager,
-    userMoneyValue: MutableState<Double>,
+    userGenerationLevel: MutableState<Int>,
+    userMoneyValue: MutableState<Int>,
     bronzeValue1: MutableState<Int>,
     bronzeValue2: MutableState<Int>,
     bronzeValue3: MutableState<Int>,
@@ -156,7 +157,8 @@ fun MainGeneration(
                     epicValue3 = epicValue3,
                     epicValue4 = epicValue4,
                     userMoneyValue = userMoneyValue,
-                    dataStoreManager = dataStoreManager
+                    dataStoreManager = dataStoreManager,
+                    userGenerationLevel = userGenerationLevel
                 )
             }
         }

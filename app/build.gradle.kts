@@ -12,8 +12,8 @@ android {
         applicationId = "igor.second.spaceapp"
         minSdk = 24
         targetSdk = 35
-        versionCode = 2
-        versionName = "2.0"
+        versionCode = 3
+        versionName = "3.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -42,10 +42,8 @@ android {
 dependencies {
 
     // billing
-    implementation (libs.billing)
-    implementation (libs.billing.ktx)
-    implementation (libs.guava)
-    implementation (libs.guava.v3201android)
+    implementation ("com.android.billingclient:billing:6.2.1")
+    implementation ("com.android.billingclient:billing-ktx:6.2.1")
     // DB
     implementation (libs.androidx.datastore.preferences)
     // navigation

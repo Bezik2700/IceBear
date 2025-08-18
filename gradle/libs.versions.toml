@@ -1,9 +1,7 @@
 [versions]
 agp = "8.10.1"
-billingKtx = "7.0.0"
 cameraLifecycle = "1.4.2"
 datastorePreferences = "1.1.7"
-guava = "32.0.1-jre"
 guavaVersion = "32.0.1-android"
 kotlin = "2.0.21"
 coreKtx = "1.16.0"
@@ -26,10 +24,6 @@ androidx-camera-view = { module = "androidx.camera:camera-view", version.ref = "
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
-billing = { module = "com.android.billingclient:billing", version.ref = "billingKtx" }
-billing-ktx = { module = "com.android.billingclient:billing-ktx", version.ref = "billingKtx" }
-guava = { module = "com.google.guava:guava", version.ref = "guava" }
-guava-v3201android = { module = "com.google.guava:guava", version.ref = "guavaVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

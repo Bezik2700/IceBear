@@ -1,83 +1,125 @@
 package igor.second.spaceapp.appwindows.shop
 
-import android.app.Activity
+import android.content.Context
+import android.widget.Toast
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import igor.second.spaceapp.settings.DataStoreManager
+
+class PurchaseViewModelFactory(
+    private val context: Context,
+    private val dataStoreManager: DataStoreManager
+) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(PurchaseViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return PurchaseViewModel(context, dataStoreManager) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}
 
 @Composable
-fun MainShop() {
-
+fun MainShop(
+    dataStoreManager: DataStoreManager,
+    userGenerationLevel: MutableState<Int>,
+    userMoneyValue: MutableState<Int>,
+    viewModel: PurchaseViewModel = viewModel(factory = PurchaseViewModelFactory(LocalContext.current, dataStoreManager))
+) {
     val context = LocalContext.current
-    val activity: Activity? = LocalActivity.current
-    val viewModel: PurchaseViewModel = viewModel { PurchaseViewModel(context) }
+    val activity = LocalActivity.current
     val products by viewModel.products.collectAsState()
-    val selectedProducts by viewModel.selectedProducts.collectAsState()
-    val status by viewModel.status.collectAsState()
+    val purchases by viewModel.purchases.collectAsState()
+    val refundNotification by viewModel.showRefundNotification.collectAsState()
+
+    refundNotification?.let { message ->
+        LaunchedEffect(message) {
+            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+            viewModel.clearRefundNotification()
+        }
+    }
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
+        modifier = Modifier.fillMaxSize().padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text(
-            text = "In-App Purchases",
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text(status, style = MaterialTheme.typography.bodySmall)
-
-        Spacer(modifier = Modifier.height(24.dp))
-
+        Text("userMoneyValue ${userMoneyValue.value.toString()}")
+        Text("userGenerationLevel ${userGenerationLevel.value.toString()}")
         if (activity == null) {
-            Text("Activity not available")
+            CircularProgressIndicator()
         } else {
-            // Кнопка для покупки выбранных товаров
-            if (selectedProducts.isNotEmpty()) {
-                Button(
-                    onClick = { viewModel.makePurchase(activity, selectedProducts) },
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text("Buy ${selectedProducts.size} selected items")
-                }
-                Spacer(modifier = Modifier.height(16.dp))
-            }
-
-            LazyColumn(
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+            LazyRow (
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxWidth()
             ) {
-                items(products) { product ->
+                items(products.filter { it.productId.startsWith("add_") }) { product ->
                     ProductCard(
                         product = product,
-                        isSelected = selectedProducts.contains(product),
-                        onSelect = { viewModel.toggleProductSelection(product) },
-                        viewModel = viewModel,
-                        activity = activity
+                        isPurchased = purchases.any { it.products.contains(product.productId) },
+                        onPurchaseClick = { viewModel.makePurchase(activity, product) },
+                        onRefundClick = {
+                            purchases.firstOrNull { it.products.contains(product.productId) }?.let {
+                                viewModel.handleRefund(it)
+                            }
+                        }
+                    )
+                }
+            }
+            LazyRow (
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                items(products.filter { it.productId.startsWith("upgrade_") }) { product ->
+                    ProductCard(
+                        product = product,
+                        isPurchased = purchases.any { it.products.contains(product.productId) },
+                        onPurchaseClick = { viewModel.makePurchase(activity, product) },
+                        onRefundClick = {
+                            purchases.firstOrNull { it.products.contains(product.productId) }?.let {
+                                viewModel.handleRefund(it)
+                            }
+                        }
+                    )
+                }
+            }
+            LazyRow (
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                items(products.filter { it.productId.startsWith("plus_") }) { product ->
+                    ProductCard(
+                        product = product,
+                        isPurchased = purchases.any { it.products.contains(product.productId) },
+                        onPurchaseClick = { viewModel.makePurchase(activity, product) },
+                        onRefundClick = {
+                            purchases.firstOrNull { it.products.contains(product.productId) }?.let {
+                                viewModel.handleRefund(it)
+                            }
+                        }
                     )
                 }
             }

@@ -18,7 +18,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,7 +42,9 @@ class MainActivity : ComponentActivity() {
             SpaceAppTheme {
 
                 // data values
-                var userMoneyValue = remember { mutableDoubleStateOf(0.0) }
+                var userGenerationLevel = remember { mutableIntStateOf(1) }
+                var userMoneyValue = remember { mutableIntStateOf(0) }
+
                 var bronzeValue1 = remember { mutableIntStateOf(0) }
                 var bronzeValue2 = remember { mutableIntStateOf(0) }
                 var bronzeValue3 = remember { mutableIntStateOf(0) }
@@ -52,6 +53,7 @@ class MainActivity : ComponentActivity() {
                 var bronzeValue6 = remember { mutableIntStateOf(0) }
                 var bronzeValue7 = remember { mutableIntStateOf(0) }
                 var bronzeValue8 = remember { mutableIntStateOf(0) }
+
                 var silverValue1 = remember { mutableIntStateOf(0) }
                 var silverValue2 = remember { mutableIntStateOf(0) }
                 var silverValue3 = remember { mutableIntStateOf(0) }
@@ -60,6 +62,7 @@ class MainActivity : ComponentActivity() {
                 var silverValue6 = remember { mutableIntStateOf(0) }
                 var silverValue7 = remember { mutableIntStateOf(0) }
                 var silverValue8 = remember { mutableIntStateOf(0) }
+
                 var goldValue1 = remember { mutableIntStateOf(0) }
                 var goldValue2 = remember { mutableIntStateOf(0) }
                 var goldValue3 = remember { mutableIntStateOf(0) }
@@ -68,6 +71,7 @@ class MainActivity : ComponentActivity() {
                 var goldValue6 = remember { mutableIntStateOf(0) }
                 var goldValue7 = remember { mutableIntStateOf(0) }
                 var goldValue8 = remember { mutableIntStateOf(0) }
+
                 var diamondValue1 = remember { mutableIntStateOf(0) }
                 var diamondValue2 = remember { mutableIntStateOf(0) }
                 var diamondValue3 = remember { mutableIntStateOf(0) }
@@ -76,10 +80,12 @@ class MainActivity : ComponentActivity() {
                 var diamondValue6 = remember { mutableIntStateOf(0) }
                 var diamondValue7 = remember { mutableIntStateOf(0) }
                 var diamondValue8 = remember { mutableIntStateOf(0) }
+
                 var platinumValue1 = remember { mutableIntStateOf(0) }
                 var platinumValue2 = remember { mutableIntStateOf(0) }
                 var platinumValue3 = remember { mutableIntStateOf(0) }
                 var platinumValue4 = remember { mutableIntStateOf(0) }
+
                 var epicValue1 = remember { mutableIntStateOf(0) }
                 var epicValue2 = remember { mutableIntStateOf(0) }
                 var epicValue3 = remember { mutableIntStateOf(0) }
@@ -87,7 +93,8 @@ class MainActivity : ComponentActivity() {
 
                 LaunchedEffect(true) {
                     dataStoreManager.getSettings().collect { settings ->
-                        userMoneyValue.doubleValue = settings.userMoneyValue
+                        userGenerationLevel.intValue = settings.userGenerationLevel
+                        userMoneyValue.intValue = settings.userMoneyValue
                         bronzeValue1.intValue = settings.bronzeValue1
                         bronzeValue2.intValue = settings.bronzeValue2
                         bronzeValue3.intValue = settings.bronzeValue3
@@ -175,7 +182,8 @@ class MainActivity : ComponentActivity() {
                     epicValue4 = epicValue4,
                     navController = rememberNavController(),
                     timerValue = timerValue,
-                    timerRunning = timerRunning
+                    timerRunning = timerRunning,
+                    userGenerationLevel = userGenerationLevel
                 )
             }
         }

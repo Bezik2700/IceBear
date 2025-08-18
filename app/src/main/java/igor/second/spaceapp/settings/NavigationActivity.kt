@@ -23,9 +23,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import igor.second.spaceapp.appwindows.find.MainFind
 import igor.second.spaceapp.appwindows.collection.MainCollection
 import igor.second.spaceapp.appwindows.connection.MainConnection
+import igor.second.spaceapp.appwindows.find.MainFind
 import igor.second.spaceapp.appwindows.generation.MainGeneration
 import igor.second.spaceapp.appwindows.shop.MainShop
 
@@ -40,7 +40,8 @@ sealed class Screens(val route: String){
 @Composable
 fun NavigationActivity(
     dataStoreManager: DataStoreManager,
-    userMoneyValue: MutableState<Double>,
+    userGenerationLevel: MutableState<Int>,
+    userMoneyValue: MutableState<Int>,
     bronzeValue1: MutableState<Int>,
     bronzeValue2: MutableState<Int>,
     bronzeValue3: MutableState<Int>,
@@ -170,6 +171,7 @@ fun NavigationActivity(
                     epicValue2 = epicValue2,
                     epicValue3 = epicValue3,
                     epicValue4 = epicValue4,
+                    userGenerationLevel = userGenerationLevel
                 )
             }
             composable (route = Screens.MainCollection.route) {
@@ -220,7 +222,11 @@ fun NavigationActivity(
                 MainConnection()
             }
             composable (route = Screens.MainShop.route) {
-                MainShop()
+                MainShop(
+                    dataStoreManager = dataStoreManager,
+                    userMoneyValue = userMoneyValue,
+                    userGenerationLevel = userGenerationLevel
+                )
             }
             composable (route = Screens.MainCamera.route) {
                 MainFind()

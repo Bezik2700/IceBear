@@ -25,6 +25,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun MiniGeneration(
+    userGenerationLevel: MutableState<Int>,
     timerRunning: MutableState<Boolean>,
     timerValue: MutableState<String>,
     dataStoreManager: DataStoreManager,
@@ -68,7 +69,7 @@ fun MiniGeneration(
     epicValue2: MutableState<Int>,
     epicValue3: MutableState<Int>,
     epicValue4: MutableState<Int>,
-    userMoneyValue: MutableState<Double>
+    userMoneyValue: MutableState<Int>
 ){
 
     var cardValue by remember { mutableIntStateOf(0) }
@@ -170,7 +171,8 @@ fun MiniGeneration(
                     epicValue4 = epicValue4,
                     userMoneyValue = userMoneyValue,
                     dataStoreManager = dataStoreManager,
-                    cardValue = cardValue
+                    cardValue = cardValue,
+                    userGenerationLevel = userGenerationLevel
                 )
                 scope.launch {
                     cardValue = 0

@@ -49,7 +49,8 @@ fun addCardValue(
     epicValue2: MutableState<Int>,
     epicValue3: MutableState<Int>,
     epicValue4: MutableState<Int>,
-    userMoneyValue: MutableState<Double>
+    userGenerationLevel: MutableState<Int>,
+    userMoneyValue: MutableState<Int>
 ) = runBlocking {
     launch {
         when (cardValue){
@@ -138,7 +139,8 @@ fun addCardValue(
                 epicValue2 = epicValue2.value,
                 epicValue3 = epicValue3.value,
                 epicValue4 = epicValue4.value,
-                userMoneyValue = userMoneyValue.value
+                userMoneyValue = userMoneyValue.value,
+                userGenerationLevel = userGenerationLevel.value
             )
         )
     }

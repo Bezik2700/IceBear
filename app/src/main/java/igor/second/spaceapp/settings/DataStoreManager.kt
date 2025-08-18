@@ -3,20 +3,94 @@ package igor.second.spaceapp.settings
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.doublePreferencesKey
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.map
+import kotlin.math.max
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("data_store")
 
 class DataStoreManager(private val context: Context) {
 
+    companion object {
+        val USER_GENERATION_LEVEL = intPreferencesKey("userGenerationLevel")
+        val USER_MONEY_VALUE = intPreferencesKey("userMoneyValue")
+        val USER_PLATINUM_VALUE1 = intPreferencesKey("platinumValue1")
+        val USER_PLATINUM_VALUE2 = intPreferencesKey("platinumValue2")
+        val USER_EPIC_VALUE1 = intPreferencesKey("epicValue1")
+        val USER_EPIC_VALUE2 = intPreferencesKey("epicValue2")
+    }
+
+    suspend fun plusCardValue(amount: Int){
+        context.dataStore.edit { pref ->
+            if (amount == 1){
+                val current = pref[USER_PLATINUM_VALUE1] ?: 0
+                pref[USER_PLATINUM_VALUE1] = current + 1
+            } else if(amount == 2){
+                val current = pref[USER_PLATINUM_VALUE2] ?: 0
+                pref[USER_PLATINUM_VALUE2] = current + 1
+            } else if(amount == 3){
+                val current = pref[USER_EPIC_VALUE1] ?: 0
+                pref[USER_EPIC_VALUE1] = current + 1
+            } else {
+                val current = pref[USER_EPIC_VALUE2] ?: 0
+                pref[USER_EPIC_VALUE2] = current + 1
+            }
+        }
+    }
+
+    suspend fun removeCardValue(amount: Int){
+        context.dataStore.edit { pref ->
+            if (amount == 1){
+                val current = pref[USER_PLATINUM_VALUE1] ?: 0
+                pref[USER_PLATINUM_VALUE1] = max(0, current - 1)
+            } else if(amount == 2){
+                val current = pref[USER_PLATINUM_VALUE2] ?: 0
+                pref[USER_PLATINUM_VALUE2] = max(0, current - 1)
+            } else if(amount == 3){
+                val current = pref[USER_EPIC_VALUE1] ?: 0
+                pref[USER_EPIC_VALUE1] = max(0, current - 1)
+            } else {
+                val current = pref[USER_EPIC_VALUE2] ?: 0
+                pref[USER_EPIC_VALUE2] = max(0, current - 1)
+            }
+        }
+    }
+
+    suspend fun upGenerationLevel(points: Int) {
+        context.dataStore.edit { pref ->
+            val current = pref[USER_GENERATION_LEVEL] ?: 0
+            pref[USER_GENERATION_LEVEL] = current + points
+        }
+    }
+
+    suspend fun removeGenerationLevel(points: Int) {
+        context.dataStore.edit { pref ->
+            val current = pref[USER_GENERATION_LEVEL] ?: 0
+            pref[USER_GENERATION_LEVEL] = max(0, current - points)
+        }
+    }
+
+    suspend fun upMoneyValue(points: Int) {
+        context.dataStore.edit { preferences ->
+            val current = preferences[USER_MONEY_VALUE] ?: 0
+            preferences[USER_MONEY_VALUE] = current + points
+        }
+    }
+
+    suspend fun removeMoneyValue(points: Int) {
+        context.dataStore.edit { preferences ->
+            val current = preferences[USER_MONEY_VALUE] ?: 0
+            preferences[USER_MONEY_VALUE] = max(0, current - points)
+        }
+    }
+
     suspend fun saveSettings(settingData: SettingData) {
         context.dataStore.edit { pref ->
-            pref[doublePreferencesKey("userMoneyValue")] = settingData.userMoneyValue
+            pref[intPreferencesKey("userGenerationLevel")] = settingData.userGenerationLevel
+            pref[intPreferencesKey("userMoneyValue")] = settingData.userMoneyValue
+
             pref[intPreferencesKey("bronzeValue1")] = settingData.bronzeValue1
             pref[intPreferencesKey("bronzeValue2")] = settingData.bronzeValue2
             pref[intPreferencesKey("bronzeValue3")] = settingData.bronzeValue3
@@ -25,6 +99,7 @@ class DataStoreManager(private val context: Context) {
             pref[intPreferencesKey("bronzeValue6")] = settingData.bronzeValue6
             pref[intPreferencesKey("bronzeValue7")] = settingData.bronzeValue7
             pref[intPreferencesKey("bronzeValue8")] = settingData.bronzeValue8
+
             pref[intPreferencesKey("silverValue1")] = settingData.silverValue1
             pref[intPreferencesKey("silverValue2")] = settingData.silverValue2
             pref[intPreferencesKey("silverValue3")] = settingData.silverValue3
@@ -33,6 +108,7 @@ class DataStoreManager(private val context: Context) {
             pref[intPreferencesKey("silverValue6")] = settingData.silverValue6
             pref[intPreferencesKey("silverValue7")] = settingData.silverValue7
             pref[intPreferencesKey("silverValue8")] = settingData.silverValue8
+
             pref[intPreferencesKey("goldValue1")] = settingData.goldValue1
             pref[intPreferencesKey("goldValue2")] = settingData.goldValue2
             pref[intPreferencesKey("goldValue3")] = settingData.goldValue3
@@ -41,6 +117,7 @@ class DataStoreManager(private val context: Context) {
             pref[intPreferencesKey("goldValue6")] = settingData.goldValue6
             pref[intPreferencesKey("goldValue7")] = settingData.goldValue7
             pref[intPreferencesKey("goldValue8")] = settingData.goldValue8
+
             pref[intPreferencesKey("diamondValue1")] = settingData.diamondValue1
             pref[intPreferencesKey("diamondValue2")] = settingData.diamondValue2
             pref[intPreferencesKey("diamondValue3")] = settingData.diamondValue3
@@ -49,10 +126,12 @@ class DataStoreManager(private val context: Context) {
             pref[intPreferencesKey("diamondValue6")] = settingData.diamondValue6
             pref[intPreferencesKey("diamondValue7")] = settingData.diamondValue7
             pref[intPreferencesKey("diamondValue8")] = settingData.diamondValue8
+
             pref[intPreferencesKey("platinumValue1")] = settingData.platinumValue1
             pref[intPreferencesKey("platinumValue2")] = settingData.platinumValue2
             pref[intPreferencesKey("platinumValue3")] = settingData.platinumValue3
             pref[intPreferencesKey("platinumValue4")] = settingData.platinumValue4
+
             pref[intPreferencesKey("epicValue1")] = settingData.epicValue1
             pref[intPreferencesKey("epicValue2")] = settingData.epicValue2
             pref[intPreferencesKey("epicValue3")] = settingData.epicValue3
@@ -62,7 +141,9 @@ class DataStoreManager(private val context: Context) {
 
     fun getSettings() = context.dataStore.data.map { pref ->
         return@map SettingData(
-            pref[doublePreferencesKey("userMoneyValue")] ?: 0.0,
+            pref[intPreferencesKey("userGenerationLevel")] ?: 1,
+            pref[intPreferencesKey("userMoneyValue")] ?: 50,
+
             pref[intPreferencesKey("bronzeValue1")] ?: 0,
             pref[intPreferencesKey("bronzeValue2")] ?: 0,
             pref[intPreferencesKey("bronzeValue3")] ?: 0,
@@ -71,6 +152,7 @@ class DataStoreManager(private val context: Context) {
             pref[intPreferencesKey("bronzeValue6")] ?: 0,
             pref[intPreferencesKey("bronzeValue7")] ?: 0,
             pref[intPreferencesKey("bronzeValue8")] ?: 0,
+
             pref[intPreferencesKey("silverValue1")] ?: 0,
             pref[intPreferencesKey("silverValue2")] ?: 0,
             pref[intPreferencesKey("silverValue3")] ?: 0,
@@ -79,6 +161,7 @@ class DataStoreManager(private val context: Context) {
             pref[intPreferencesKey("silverValue6")] ?: 0,
             pref[intPreferencesKey("silverValue7")] ?: 0,
             pref[intPreferencesKey("silverValue8")] ?: 0,
+
             pref[intPreferencesKey("goldValue1")] ?: 0,
             pref[intPreferencesKey("goldValue2")] ?: 0,
             pref[intPreferencesKey("goldValue3")] ?: 0,
@@ -87,6 +170,7 @@ class DataStoreManager(private val context: Context) {
             pref[intPreferencesKey("goldValue6")] ?: 0,
             pref[intPreferencesKey("goldValue7")] ?: 0,
             pref[intPreferencesKey("goldValue8")] ?: 0,
+
             pref[intPreferencesKey("diamondValue1")] ?: 0,
             pref[intPreferencesKey("diamondValue2")] ?: 0,
             pref[intPreferencesKey("diamondValue3")] ?: 0,
@@ -95,10 +179,12 @@ class DataStoreManager(private val context: Context) {
             pref[intPreferencesKey("diamondValue6")] ?: 0,
             pref[intPreferencesKey("diamondValue7")] ?: 0,
             pref[intPreferencesKey("diamondValue8")] ?: 0,
+
             pref[intPreferencesKey("platinumValue1")] ?: 0,
             pref[intPreferencesKey("platinumValue2")] ?: 0,
             pref[intPreferencesKey("platinumValue3")] ?: 0,
             pref[intPreferencesKey("platinumValue4")] ?: 0,
+
             pref[intPreferencesKey("epicValue1")] ?: 0,
             pref[intPreferencesKey("epicValue2")] ?: 0,
             pref[intPreferencesKey("epicValue3")] ?: 0,
@@ -108,7 +194,9 @@ class DataStoreManager(private val context: Context) {
 }
 
 data class SettingData(
-    val userMoneyValue: Double,
+    val userGenerationLevel: Int,
+    val userMoneyValue: Int,
+
     val bronzeValue1: Int,
     val bronzeValue2: Int,
     val bronzeValue3: Int,
