@@ -19,12 +19,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import igor.second.spaceapp.appwindows.generation.cards.AutoGenerationCard
 import igor.second.spaceapp.appwindows.generation.cards.MiniGeneration
 import igor.second.spaceapp.settings.DataStoreManager
 
 @Composable
 fun MainGeneration(
+    navController: NavController,
     dataStoreManager: DataStoreManager,
     userGenerationLevel: MutableState<Int>,
     userMoneyValue: MutableState<Int>,

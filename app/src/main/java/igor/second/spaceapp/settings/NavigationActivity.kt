@@ -1,20 +1,19 @@
 package igor.second.spaceapp.settings
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.AccountCircle
 import androidx.compose.material.icons.twotone.Favorite
 import androidx.compose.material.icons.twotone.Home
+import androidx.compose.material.icons.twotone.Info
 import androidx.compose.material.icons.twotone.Share
 import androidx.compose.material.icons.twotone.ShoppingCart
-import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
@@ -23,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import igor.second.spaceapp.appwindows.InfoAboutGame
 import igor.second.spaceapp.appwindows.collection.MainCollection
 import igor.second.spaceapp.appwindows.connection.MainConnection
 import igor.second.spaceapp.appwindows.find.MainFind
@@ -35,6 +35,7 @@ sealed class Screens(val route: String){
     data object MainShop: Screens("MainShop")
     data object MainCamera: Screens("MainCamera")
     data object MainConnection: Screens("MainConnection")
+    data object InfoAboutGame: Screens("InfoAboutGame")
 }
 
 @Composable
@@ -86,44 +87,12 @@ fun NavigationActivity(
     timerValue: MutableState<String>,
     timerRunning: MutableState<Boolean>
 ){
-    Scaffold(
-        bottomBar = {
-            BottomAppBar(
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                contentColor = MaterialTheme.colorScheme.primary,
-            ) {
-                Row (
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 16.dp, end = 16.dp)
-                ) {
-                    IconButton(onClick = {navController.navigate(Screens.MainCamera.route)}) {
-                        Icon(Icons.TwoTone.AccountCircle, contentDescription = "camera")
-                    }
-                    IconButton(onClick = {navController.navigate(Screens.MainGeneration.route)}) {
-                        Icon(Icons.TwoTone.Home, contentDescription = "home")
-                    }
-                    IconButton(onClick = {navController.navigate(Screens.MainCollection.route)}) {
-                        Icon(Icons.TwoTone.Favorite, contentDescription = "collection")
-                    }
-                    IconButton(onClick = {navController.navigate(Screens.MainShop.route)}) {
-                        Icon(Icons.TwoTone.ShoppingCart, contentDescription = "shop")
-                    }
-                    IconButton(onClick = {navController.navigate(Screens.MainConnection.route)}) {
-                        Icon(Icons.TwoTone.Share, contentDescription = "connection")
-                    }
-                }
-            }
-        }
-    ) { innerPadding ->
+    Box(modifier = Modifier){
         NavHost(
             navController = navController,
             startDestination = Screens.MainGeneration.route,
             modifier = Modifier
-                .padding(top = 32.dp, start = 8.dp, end = 8.dp)
-                .padding(innerPadding)
+                .padding(top = 64.dp, start = 8.dp, end = 8.dp, bottom = 64.dp)
         ) {
             composable (route = Screens.MainGeneration.route) {
                 MainGeneration(
@@ -171,7 +140,8 @@ fun NavigationActivity(
                     epicValue2 = epicValue2,
                     epicValue3 = epicValue3,
                     epicValue4 = epicValue4,
-                    userGenerationLevel = userGenerationLevel
+                    userGenerationLevel = userGenerationLevel,
+                    navController = navController
                 )
             }
             composable (route = Screens.MainCollection.route) {
@@ -230,6 +200,33 @@ fun NavigationActivity(
             }
             composable (route = Screens.MainCamera.route) {
                 MainFind()
+            }
+            composable (route = Screens.InfoAboutGame.route) {
+                InfoAboutGame()
+            }
+        }
+        Row (
+            verticalAlignment = Alignment.Bottom,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxSize().padding(bottom = 32.dp, start = 16.dp, end = 16.dp)
+        ) {
+            IconButton(onClick = {navController.navigate(Screens.MainCamera.route)}) {
+                Icon(Icons.TwoTone.AccountCircle, contentDescription = "camera")
+            }
+            IconButton(onClick = {navController.navigate(Screens.MainGeneration.route)}) {
+                Icon(Icons.TwoTone.Home, contentDescription = "home")
+            }
+            IconButton(onClick = {navController.navigate(Screens.MainCollection.route)}) {
+                Icon(Icons.TwoTone.Favorite, contentDescription = "collection")
+            }
+            IconButton(onClick = {navController.navigate(Screens.MainShop.route)}) {
+                Icon(Icons.TwoTone.ShoppingCart, contentDescription = "shop")
+            }
+            IconButton(onClick = {navController.navigate(Screens.MainConnection.route)}) {
+                Icon(Icons.TwoTone.Share, contentDescription = "connection")
+            }
+            IconButton(onClick = {navController.navigate(Screens.InfoAboutGame.route)}) {
+                Icon(Icons.TwoTone.Info, contentDescription = "info")
             }
         }
     }

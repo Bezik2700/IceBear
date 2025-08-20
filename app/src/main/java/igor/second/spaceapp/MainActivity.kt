@@ -29,6 +29,7 @@ import java.io.File
 import java.io.FileOutputStream
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

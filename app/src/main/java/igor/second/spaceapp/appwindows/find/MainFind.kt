@@ -173,7 +173,7 @@ fun MainFind() {
                         horizontalArrangement = Arrangement.End,
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Button(onClick = {findEnabled = true}) {
+                        Button(onClick = {findEnabled = false}) {
                             Text("End find")
                         }
                     }
