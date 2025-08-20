@@ -1,14 +1,12 @@
 package igor.second.spaceapp.appwindows.find
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
 import androidx.core.graphics.createBitmap
 
-// Создает Bitmap стрелки направления
-internal fun createDirectionArrowBitmap(context: Context): Bitmap {
+internal fun createDirectionArrowBitmap(): Bitmap {
     val size = 200
     val bitmap = createBitmap(size, size)
     val canvas = Canvas(bitmap)

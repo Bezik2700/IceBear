@@ -11,8 +11,7 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.Priority
 
-// Запускает обновления локации
-internal fun startLocationUpdates(
+internal fun locationUpdate(
     locationClient: FusedLocationProviderClient,
     onLocationUpdate: (Location) -> Unit,
     context: Context

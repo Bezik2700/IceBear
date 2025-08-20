@@ -17,6 +17,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -49,174 +50,183 @@ import com.google.android.gms.location.LocationServices
 @Composable
 fun MainFind() {
 
+    var findEnabled by remember { mutableStateOf(false) }
+
     val context = LocalContext.current
     val locationClient = remember { LocationServices.getFusedLocationProviderClient(context) }
 
-    // Состояния
     var hasLocationPermission by remember { mutableStateOf(false) }
+
     var userLocation by remember { mutableStateOf<Location?>(null) }
     var targetLocation by remember { mutableStateOf<Location?>(null) }
-    var distanceToTarget by remember { mutableDoubleStateOf(0.0) }
-    var bearingToTarget by remember { mutableFloatStateOf(0f) } // Азимут к цели
-    var compassDirection by remember { mutableFloatStateOf(0f) } // Направление компаса
     var isTargetReached by remember { mutableStateOf(false) }
 
-    // Bitmap для стрелки направления
+    var distanceToTarget by remember { mutableDoubleStateOf(0.0) }
+    var bearingToTarget by remember { mutableFloatStateOf(0f) }
+    var compassDirection by remember { mutableFloatStateOf(0f) }
+
+
     var arrowBitmap by remember { mutableStateOf<Bitmap?>(null) }
 
-    // Инициализация стрелки
     LaunchedEffect(Unit) {
-        arrowBitmap = createDirectionArrowBitmap(context)
+        arrowBitmap = createDirectionArrowBitmap()
     }
 
-    // Запрос разрешения на геолокацию
     val permissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
         hasLocationPermission = isGranted
     }
 
-    // Запуск при старте
-    LaunchedEffect(Unit) {
-        permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-    }
-
-    // Обновление локации
-    LaunchedEffect(hasLocationPermission) {
-        if (hasLocationPermission) {
-            startLocationUpdates(
-                locationClient = locationClient,
-                onLocationUpdate = { location ->
-                    userLocation = location
-                    targetLocation?.let { target ->
-                        // Расчет расстояния и направления
-                        distanceToTarget = location.distanceTo(target).toDouble()
-                        bearingToTarget = location.bearingTo(target)
-                        isTargetReached = distanceToTarget < 10
-                    }
-                },
-                context = context
-            )
-        }
-    }
-
-    // Создание цели при первом получении локации
-    LaunchedEffect(userLocation) {
-        userLocation?.let { location ->
-            if (targetLocation == null) {
-                targetLocation = createTargetLocation(location, 100.0)
-            }
-        }
-    }
-
-    // Датчик компаса
-    DisposableEffect(Unit) {
-        val sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        val rotationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR)
-        val sensorListener = object : SensorEventListener {
-            override fun onSensorChanged(event: SensorEvent) {
-                if (event.sensor.type == Sensor.TYPE_ROTATION_VECTOR) {
-                    val rotationMatrix = FloatArray(9)
-                    SensorManager.getRotationMatrixFromVector(rotationMatrix, event.values)
-                    val orientation = FloatArray(3)
-                    SensorManager.getOrientation(rotationMatrix, orientation)
-                    compassDirection = Math.toDegrees(orientation[0].toDouble()).toFloat()
-                }
-            }
-            override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {}
+    if (findEnabled){
+        LaunchedEffect(Unit) {
+            permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         }
 
-        if (rotationSensor != null) {
-            sensorManager.registerListener(
-                sensorListener,
-                rotationSensor,
-                SensorManager.SENSOR_DELAY_GAME
-            )
-        }
-
-        onDispose {
-            sensorManager.unregisterListener(sensorListener)
-        }
-    }
-
-    // Интерфейс
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        when {
-            !hasLocationPermission -> {
-                Text("Требуется разрешение на доступ к геолокации")
-                Button(onClick = { permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION) }) {
-                    Text("Запросить разрешение")
-                }
-            }
-            userLocation == null -> {
-                CircularProgressIndicator()
-                Text("Определяем ваше местоположение...")
-            }
-            isTargetReached -> {
-                Text("Поздравляем!", style = MaterialTheme.typography.headlineMedium)
-                Text("Вы достигли цели!")
-            }
-            else -> {
-                // Относительное направление к цели с учетом компаса
-                val relativeBearing = (bearingToTarget - compassDirection + 360) % 360
-                val arrowRotation by animateFloatAsState(
-                    targetValue = relativeBearing,
-                    animationSpec = tween(durationMillis = 200)
+        LaunchedEffect(hasLocationPermission) {
+            if (hasLocationPermission) {
+                locationUpdate(
+                    locationClient = locationClient,
+                    onLocationUpdate = { location ->
+                        userLocation = location
+                        targetLocation?.let { target ->
+                            distanceToTarget = location.distanceTo(target).toDouble()
+                            bearingToTarget = location.bearingTo(target)
+                            isTargetReached = distanceToTarget < 1
+                        }
+                    },
+                    context = context
                 )
+            }
+        }
 
-                // Компас с направлением
-                Box(
-                    modifier = Modifier.size(200.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    // Фон компаса
-                    Canvas(modifier = Modifier.fillMaxSize()) {
-                        drawCircle(
-                            color = Color.Black.copy(alpha = 0.2f),
-                            radius = size.minDimension / 2
-                        )
+        // Создание цели при первом получении локации
+        LaunchedEffect(userLocation) {
+            userLocation?.let { location ->
+                if (targetLocation == null) {
+                    targetLocation = createTargetLocation(location, 100.0)
+                }
+            }
+        }
+
+        // Датчик компаса
+        DisposableEffect(Unit) {
+            val sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+            val rotationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR)
+            val sensorListener = object : SensorEventListener {
+                override fun onSensorChanged(event: SensorEvent) {
+                    if (event.sensor.type == Sensor.TYPE_ROTATION_VECTOR) {
+                        val rotationMatrix = FloatArray(9)
+                        SensorManager.getRotationMatrixFromVector(rotationMatrix, event.values)
+                        val orientation = FloatArray(3)
+                        SensorManager.getOrientation(rotationMatrix, orientation)
+                        compassDirection = Math.toDegrees(orientation[0].toDouble()).toFloat()
                     }
+                }
+                override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {}
+            }
 
-                    // Стрелка направления
-                    arrowBitmap?.let {
-                        Image(
-                            bitmap = it.asImageBitmap(),
-                            contentDescription = "Direction arrow",
-                            modifier = Modifier
-                                .size(150.dp)
-                                .rotate(arrowRotation)
-                        )
+            if (rotationSensor != null) {
+                sensorManager.registerListener(
+                    sensorListener,
+                    rotationSensor,
+                    SensorManager.SENSOR_DELAY_GAME
+                )
+            }
+
+            onDispose {
+                sensorManager.unregisterListener(sensorListener)
+            }
+        }
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            when {
+                !hasLocationPermission -> {
+                    Text("Требуется разрешение на доступ к геолокации")
+                    Button(onClick = { permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION) }) {
+                        Text("Запросить разрешение")
                     }
                 }
 
-                Spacer(modifier = Modifier.height(24.dp))
+                userLocation == null -> {
+                    CircularProgressIndicator()
+                    Text("Определяем ваше местоположение...")
+                }
 
-                // Информация
-                Text("Дистанция до цели:", style = MaterialTheme.typography.titleLarge)
-                Text(
-                    text = "${"%.1f".format(distanceToTarget)} метров",
-                    style = MaterialTheme.typography.displayMedium
-                )
+                isTargetReached -> {
+                    Text("Поздравляем!", style = MaterialTheme.typography.headlineMedium)
+                    Text("Вы достигли цели!")
+                }
 
-                Spacer(modifier = Modifier.height(8.dp))
+                else -> {
+                    val relativeBearing = (bearingToTarget - compassDirection + 360) % 360
+                    val arrowRotation by animateFloatAsState(targetValue = relativeBearing,
+                        animationSpec = tween(durationMillis = 200))
+                    Row (
+                        verticalAlignment = Alignment.Top,
+                        horizontalArrangement = Arrangement.End,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Button(onClick = {findEnabled = true}) {
+                            Text("End find")
+                        }
+                    }
+                    Box(
+                        modifier = Modifier.size(200.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Canvas(modifier = Modifier.fillMaxSize()) {
+                            drawCircle(
+                                color = Color.Black.copy(alpha = 0.2f),
+                                radius = size.minDimension / 2
+                            )
+                        }
 
-                Text(
-                    text = "Направление: ${"%.0f".format(relativeBearing)}°",
-                    style = MaterialTheme.typography.titleMedium
-                )
+                        arrowBitmap?.let {
+                            Image(
+                                bitmap = it.asImageBitmap(),
+                                contentDescription = "Direction arrow",
+                                modifier = Modifier
+                                    .size(150.dp)
+                                    .rotate(arrowRotation)
+                            )
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(24.dp))
+                    Text("Дистанция до цели:", style = MaterialTheme.typography.titleLarge)
+                    Text(
+                        text = "${"%.1f".format(distanceToTarget)} метров",
+                        style = MaterialTheme.typography.displayMedium
+                    )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
 
-                LinearProgressIndicator(
-                    progress = (1 - (distanceToTarget / 100)).toFloat(),
-                    modifier = Modifier.fillMaxWidth()
-                )
+                    Text(
+                        text = "Направление: ${"%.0f".format(relativeBearing)}°",
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    LinearProgressIndicator(
+                        progress = (1 - (distanceToTarget / 30)).toFloat(),
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            }
+        }
+    } else {
+        Column (
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Button(onClick = {findEnabled = true}) {
+                Text("Start find")
             }
         }
     }

@@ -7,7 +7,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 fun addCardValue(
-    cardValue: Int,
     dataStoreManager: DataStoreManager,
     bronzeValue1: MutableState<Int>,
     bronzeValue2: MutableState<Int>,
@@ -53,7 +52,7 @@ fun addCardValue(
     userMoneyValue: MutableState<Int>
 ) = runBlocking {
     launch {
-        when (cardValue){
+        when (userGenerationLevel.value){
             in 1..10 -> bronzeValue1.value += 1
             in 11..20 -> bronzeValue2.value += 1
             in 21..30 -> bronzeValue3.value += 1

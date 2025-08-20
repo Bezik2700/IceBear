@@ -1,30 +1,18 @@
 package igor.second.spaceapp.appwindows.generation.cards
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
+import androidx.compose.runtime.rememberCoroutineScope
 import igor.second.spaceapp.settings.DataStoreManager
+import igor.second.spaceapp.settings.SettingData
+import kotlinx.coroutines.launch
 
 @Composable
-fun MiniGeneration(
+fun InCollectionButton(
     userGenerationLevel: MutableState<Int>,
     userMoneyValue: MutableState<Int>,
-    timerRunning: MutableState<Boolean>,
-    timerValue: MutableState<String>,
     dataStoreManager: DataStoreManager,
     bronzeValue1: MutableState<Int>,
     bronzeValue2: MutableState<Int>,
@@ -68,72 +56,11 @@ fun MiniGeneration(
     epicValue4: MutableState<Int>
 ){
 
-    LaunchedEffect(key1 = null) {
-        if (timerRunning.value){
-            timerRunning.value = false
-        }
-    }
+    var scope = rememberCoroutineScope()
 
-    if (timerRunning.value){
-        Box(modifier = Modifier){
-            Column (
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxWidth()
-            ){
-                CircularProgressIndicator(
-                    modifier = Modifier.size(160.dp),
-                    color = when (userGenerationLevel.value){
-                        in 0..80 -> Color(0xFFE7931D)
-                        in 81..160 -> Color(0xFFD3CDCA)
-                        in 161..240 -> Color(0xFFFFE300)
-                        in 241..320 -> Color(0xFF0091FF)
-                        in 321..360 -> Color(0xFFFF0000)
-                        else -> Color(0xFF00FF0D)},
-                    trackColor = Color.Blue,
-                    progress = { userGenerationLevel.value / 400.toFloat() }
-                )
-            }
-            Column (
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 32.dp)
-            ){
-                Row (
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Button(
-                        onClick = { userGenerationLevel.value += 2 }) {
-                        Text("+ 1")
-                    }
-                    Button(
-                        onClick = { userGenerationLevel.value *= 2 }) {
-                        Text("- 1")
-                    }
-                }
-                Row (
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Button(
-                        onClick = { userGenerationLevel.value /= 2 }) {
-                        Text("+ 1")
-                    }
-                    Button(
-                        onClick = { userGenerationLevel.value -= 1 }) {
-                        Text("- 1")
-                    }
-                }
-            }
-        }
-    } else {
-        if (userGenerationLevel.value != 0){
-            InCollectionButton(
+    Button(onClick = {
+        scope.launch {
+            addCardValue(
                 bronzeValue1 = bronzeValue1,
                 bronzeValue2 = bronzeValue2,
                 bronzeValue3 = bronzeValue3,
@@ -178,14 +105,57 @@ fun MiniGeneration(
                 dataStoreManager = dataStoreManager,
                 userGenerationLevel = userGenerationLevel
             )
-        } else {
-            Button(onClick = {
-                userMoneyValue.value -= 1
-                timerValue.value = "10"
-                timerRunning.value = true
-            }) {
-                Text("Start")
-            }
         }
+        scope.launch {
+            userGenerationLevel.value = 0
+            dataStoreManager.saveSettings(
+                SettingData(
+                    bronzeValue1 = bronzeValue1.value,
+                    bronzeValue2 = bronzeValue2.value,
+                    bronzeValue3 = bronzeValue3.value,
+                    bronzeValue4 = bronzeValue4.value,
+                    bronzeValue5 = bronzeValue5.value,
+                    bronzeValue6 = bronzeValue6.value,
+                    bronzeValue7 = bronzeValue7.value,
+                    bronzeValue8 = bronzeValue8.value,
+                    silverValue1 = silverValue1.value,
+                    silverValue2 = silverValue2.value,
+                    silverValue3 = silverValue3.value,
+                    silverValue4 = silverValue4.value,
+                    silverValue5 = silverValue5.value,
+                    silverValue6 = silverValue6.value,
+                    silverValue7 = silverValue7.value,
+                    silverValue8 = silverValue8.value,
+                    goldValue1 = goldValue1.value,
+                    goldValue2 = goldValue2.value,
+                    goldValue3 = goldValue3.value,
+                    goldValue4 = goldValue4.value,
+                    goldValue5 = goldValue5.value,
+                    goldValue6 = goldValue6.value,
+                    goldValue7 = goldValue7.value,
+                    goldValue8 = goldValue8.value,
+                    diamondValue1 = diamondValue1.value,
+                    diamondValue2 = diamondValue2.value,
+                    diamondValue3 = diamondValue3.value,
+                    diamondValue4 = diamondValue4.value,
+                    diamondValue5 = diamondValue5.value,
+                    diamondValue6 = diamondValue6.value,
+                    diamondValue7 = diamondValue7.value,
+                    diamondValue8 = diamondValue8.value,
+                    platinumValue1 = platinumValue1.value,
+                    platinumValue2 = platinumValue2.value,
+                    platinumValue3 = platinumValue3.value,
+                    platinumValue4 = platinumValue4.value,
+                    epicValue1 = epicValue1.value,
+                    epicValue2 = epicValue2.value,
+                    epicValue3 = epicValue3.value,
+                    epicValue4 = epicValue4.value,
+                    userMoneyValue = userMoneyValue.value,
+                    userGenerationLevel = userGenerationLevel.value
+                )
+            )
+        }
+    }) {
+        Text("In collection")
     }
 }

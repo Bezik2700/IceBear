@@ -88,6 +88,7 @@ class DataStoreManager(private val context: Context) {
 
     suspend fun saveSettings(settingData: SettingData) {
         context.dataStore.edit { pref ->
+
             pref[intPreferencesKey("userGenerationLevel")] = settingData.userGenerationLevel
             pref[intPreferencesKey("userMoneyValue")] = settingData.userMoneyValue
 
