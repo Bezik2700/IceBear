@@ -42,8 +42,8 @@ android {
 dependencies {
 
     // billing
-    implementation ("com.android.billingclient:billing:6.2.1")
-    implementation ("com.android.billingclient:billing-ktx:6.2.1")
+    implementation (libs.billing)
+    implementation (libs.billing.ktx)
     // DB
     implementation (libs.androidx.datastore.preferences)
     // navigation
@@ -51,13 +51,15 @@ dependencies {
     // location Services
     implementation (libs.play.services.location)
     implementation (libs.kotlinx.coroutines.play.services)
-    // camera impl
-    implementation (libs.androidx.camera.core)
-    implementation (libs.androidx.camera.camera2)
-    implementation (libs.androidx.camera.lifecycle)
-    implementation (libs.androidx.camera.view)
-    implementation (libs.material3)
+    // Retrofit
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation ("com.google.code.gson:gson:2.10.1")
+    // OkHttp
+    implementation ("com.squareup.okhttp3:okhttp:4.11.0")
+    implementation ("com.squareup.okhttp3:logging-interceptor:4.11.0")
 
+    implementation (libs.material3)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

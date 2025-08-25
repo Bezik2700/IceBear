@@ -1,19 +1,6 @@
 package igor.second.spaceapp
 
-import android.app.Activity
-import android.content.Context
-import android.content.Context.VIBRATOR_MANAGER_SERVICE
-import android.content.Context.VIBRATOR_SERVICE
-import android.content.Intent
-import android.graphics.Bitmap
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.os.Environment
-import android.os.VibrationEffect
-import android.os.Vibrator
-import android.os.VibratorManager
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -25,8 +12,6 @@ import androidx.navigation.compose.rememberNavController
 import igor.second.spaceapp.settings.DataStoreManager
 import igor.second.spaceapp.settings.NavigationActivity
 import igor.second.spaceapp.ui.theme.SpaceAppTheme
-import java.io.File
-import java.io.FileOutputStream
 
 class MainActivity : ComponentActivity() {
 
@@ -191,65 +176,5 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-private fun vibrate(context: Context) {
-    val vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-        val vibratorManager = context.getSystemService(VIBRATOR_MANAGER_SERVICE) as VibratorManager
-        vibratorManager.defaultVibrator
-    } else {
-        @Suppress("DEPRECATION")
-        context.getSystemService(VIBRATOR_SERVICE) as Vibrator
-    }
 
-    if (vibrator.hasVibrator()) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            vibrator.vibrate(
-                VibrationEffect.createOneShot(
-                    1000,
-                    VibrationEffect.DEFAULT_AMPLITUDE
-                )
-            )
-        } else {
-            @Suppress("DEPRECATION")
-            vibrator.vibrate(1000)
-        }
-    }
-}
-
-private fun captureScreenshot(context: Context) {
-    val bitmap = getScreenBitmap(context) ?: return
-    try {
-        val storageDir = Environment.getExternalStoragePublicDirectory(
-            Environment.DIRECTORY_PICTURES
-        )
-        val file = File.createTempFile(
-            "timer_screenshot_${System.currentTimeMillis()}",
-            ".png", storageDir
-        )
-        FileOutputStream(file).use { fos ->
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)
-            fos.flush()
-        }
-        val uri = Uri.fromFile(file)
-        context.sendBroadcast(
-            Intent(
-                Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
-                uri
-            )
-        )
-        Toast.makeText(context, "Screenshot saved to Pictures!",
-            Toast.LENGTH_SHORT).show()
-    } catch (e: Exception) {
-        Toast.makeText(context, "Failed to save screenshot: ${e.message}",
-            Toast.LENGTH_LONG).show()
-    }
-}
-
-private fun getScreenBitmap(context: Context): Bitmap? {
-    val rootView = (context as? Activity)?.window?.decorView?.rootView
-    rootView?.isDrawingCacheEnabled = true
-    rootView?.buildDrawingCache()
-    val bitmap = rootView?.drawingCache?.let { Bitmap.createBitmap(it) }
-    rootView?.isDrawingCacheEnabled = false
-    return bitmap
-}
 

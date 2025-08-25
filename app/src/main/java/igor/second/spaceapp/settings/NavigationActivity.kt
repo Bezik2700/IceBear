@@ -14,6 +14,7 @@ import androidx.compose.material.icons.twotone.Share
 import androidx.compose.material.icons.twotone.ShoppingCart
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
@@ -88,11 +89,18 @@ fun NavigationActivity(
     timerRunning: MutableState<Boolean>
 ){
     Box(modifier = Modifier){
+        Row (
+            verticalAlignment = Alignment.Top,
+            horizontalArrangement = Arrangement.End,
+            modifier = Modifier.fillMaxSize().padding(top = 48.dp, end = 16.dp)
+        ) {
+            Text("money: ${userMoneyValue.value}")
+        }
         NavHost(
             navController = navController,
             startDestination = Screens.MainGeneration.route,
             modifier = Modifier
-                .padding(top = 64.dp, start = 8.dp, end = 8.dp, bottom = 64.dp)
+                .padding(top = 80.dp, start = 8.dp, end = 8.dp, bottom = 64.dp)
         ) {
             composable (route = Screens.MainGeneration.route) {
                 MainGeneration(
@@ -193,9 +201,7 @@ fun NavigationActivity(
             }
             composable (route = Screens.MainShop.route) {
                 MainShop(
-                    dataStoreManager = dataStoreManager,
-                    userMoneyValue = userMoneyValue,
-                    userGenerationLevel = userGenerationLevel
+                    dataStoreManager = dataStoreManager
                 )
             }
             composable (route = Screens.MainCamera.route) {

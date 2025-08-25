@@ -5,16 +5,14 @@ import android.widget.Toast
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -42,9 +40,8 @@ class PurchaseViewModelFactory(
 @Composable
 fun MainShop(
     dataStoreManager: DataStoreManager,
-    userGenerationLevel: MutableState<Int>,
-    userMoneyValue: MutableState<Int>,
-    viewModel: PurchaseViewModel = viewModel(factory = PurchaseViewModelFactory(LocalContext.current, dataStoreManager))
+    viewModel: PurchaseViewModel = viewModel(factory =
+        PurchaseViewModelFactory(LocalContext.current, dataStoreManager))
 ) {
     val context = LocalContext.current
     val activity = LocalActivity.current
@@ -59,20 +56,18 @@ fun MainShop(
         }
     }
 
-    Column(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
+    Column(modifier = Modifier.fillMaxSize()
+            .padding(bottom = 32.dp, top = 16.dp, start = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text("userMoneyValue ${userMoneyValue.value.toString()}")
-        Text("userGenerationLevel ${userGenerationLevel.value.toString()}")
         if (activity == null) {
             CircularProgressIndicator()
         } else {
             LazyRow (
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxHeight(0.33f)
             ) {
                 items(products.filter { it.productId.startsWith("add_") }) { product ->
                     ProductCard(
@@ -90,7 +85,7 @@ fun MainShop(
             LazyRow (
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxHeight(0.5f)
             ) {
                 items(products.filter { it.productId.startsWith("upgrade_") }) { product ->
                     ProductCard(
@@ -108,7 +103,7 @@ fun MainShop(
             LazyRow (
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxHeight()
             ) {
                 items(products.filter { it.productId.startsWith("plus_") }) { product ->
                     ProductCard(
@@ -126,3 +121,4 @@ fun MainShop(
         }
     }
 }
+
