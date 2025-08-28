@@ -6,11 +6,10 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.navigation.compose.rememberNavController
-import igor.second.spaceapp.settings.DataStoreManager
-import igor.second.spaceapp.settings.NavigationActivity
+import igor.second.spaceapp.appsettings.DataStoreManager
+import igor.second.spaceapp.appsettings.NavigationActivity
 import igor.second.spaceapp.ui.theme.SpaceAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -20,9 +19,6 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         val dataStoreManager = DataStoreManager(this)
-
-        val timerValue = mutableStateOf("10")
-        val timerRunning = mutableStateOf(false)
 
         setContent {
             SpaceAppTheme {
@@ -71,11 +67,19 @@ class MainActivity : ComponentActivity() {
                 var platinumValue2 = remember { mutableIntStateOf(0) }
                 var platinumValue3 = remember { mutableIntStateOf(0) }
                 var platinumValue4 = remember { mutableIntStateOf(0) }
+                var platinumValue5 = remember { mutableIntStateOf(0) }
+                var platinumValue6 = remember { mutableIntStateOf(0) }
+                var platinumValue7 = remember { mutableIntStateOf(0) }
+                var platinumValue8 = remember { mutableIntStateOf(0) }
 
                 var epicValue1 = remember { mutableIntStateOf(0) }
                 var epicValue2 = remember { mutableIntStateOf(0) }
                 var epicValue3 = remember { mutableIntStateOf(0) }
                 var epicValue4 = remember { mutableIntStateOf(0) }
+                var epicValue5 = remember { mutableIntStateOf(0) }
+                var epicValue6 = remember { mutableIntStateOf(0) }
+                var epicValue7 = remember { mutableIntStateOf(0) }
+                var epicValue8 = remember { mutableIntStateOf(0) }
 
                 LaunchedEffect(true) {
                     dataStoreManager.getSettings().collect { settings ->
@@ -117,10 +121,18 @@ class MainActivity : ComponentActivity() {
                         platinumValue2.intValue = settings.platinumValue2
                         platinumValue3.intValue = settings.platinumValue3
                         platinumValue4.intValue = settings.platinumValue4
+                        platinumValue5.intValue = settings.platinumValue5
+                        platinumValue6.intValue = settings.platinumValue6
+                        platinumValue7.intValue = settings.platinumValue7
+                        platinumValue8.intValue = settings.platinumValue8
                         epicValue1.intValue = settings.epicValue1
                         epicValue2.intValue = settings.epicValue2
                         epicValue3.intValue = settings.epicValue3
                         epicValue4.intValue = settings.epicValue4
+                        epicValue5.intValue = settings.epicValue5
+                        epicValue6.intValue = settings.epicValue6
+                        epicValue7.intValue = settings.epicValue7
+                        epicValue8.intValue = settings.epicValue8
                     }
                 }
                 NavigationActivity(
@@ -162,13 +174,19 @@ class MainActivity : ComponentActivity() {
                     platinumValue2 = platinumValue2,
                     platinumValue3 = platinumValue3,
                     platinumValue4 = platinumValue4,
+                    platinumValue5 = platinumValue5,
+                    platinumValue6 = platinumValue6,
+                    platinumValue7 = platinumValue7,
+                    platinumValue8 = platinumValue8,
                     epicValue1 = epicValue1,
                     epicValue2 = epicValue2,
                     epicValue3 = epicValue3,
                     epicValue4 = epicValue4,
+                    epicValue5 = epicValue5,
+                    epicValue6 = epicValue6,
+                    epicValue7 = epicValue7,
+                    epicValue8 = epicValue8,
                     navController = rememberNavController(),
-                    timerValue = timerValue,
-                    timerRunning = timerRunning,
                     userGenerationLevel = userGenerationLevel
                 )
             }

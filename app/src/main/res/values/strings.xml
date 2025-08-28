@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">Ice bear</string>
 
+    // shopping names
+    <string name="generation_screen">Generation screen</string>
+    <string name="shopping_screen">Shopping screen</string>
+    <string name="find_screen">Find screen</string>
+    <string name="change_screen">Change screen</string>
+
     // block names
     <string name="bronze">BRONZE</string>
     <string name="silver">SILVER</string>
@@ -50,10 +56,18 @@
     <string name="platinum2">platinum 2</string>
     <string name="platinum3">platinum 3</string>
     <string name="platinum4">platinum 4</string>
+    <string name="platinum5">platinum 5</string>
+    <string name="platinum6">platinum 6</string>
+    <string name="platinum7">platinum 7</string>
+    <string name="platinum8">platinum 8</string>
 
     <string name="epic1">epic 1</string>
     <string name="epic2">epic 2</string>
     <string name="epic3">epic 3</string>
     <string name="epic4">epic 4</string>
+    <string name="epic5">epic 5</string>
+    <string name="epic6">epic 6</string>
+    <string name="epic7">epic 7</string>
+    <string name="epic8">epic 8</string>
 
 </resources>
