@@ -1,0 +1,60 @@
+package igor.second.spaceapp.appwindows.cardGeneration.content
+
+import androidx.compose.runtime.MutableState
+import igor.second.spaceapp.R
+
+fun finishCardValue(userGenerationLevel: MutableState<Int>): Int{
+
+    val image = when (userGenerationLevel.value) {
+        in 1..10 -> (R.drawable.bronze_1)
+        in 11..20 -> (R.drawable.bronze_2)
+        in 21..30 -> (R.drawable.bronze_3)
+        in 31..40 -> (R.drawable.bronze_4)
+        in 41..50 -> (R.drawable.bronze_5)
+        in 51..60 -> (R.drawable.bronze_6)
+        in 61..70 -> (R.drawable.bronze_7)
+        in 71..80 -> (R.drawable.bronze_8)
+        in 81..90 -> (R.drawable.silver_1)
+        in 91..100 -> (R.drawable.silver_2)
+        in 101..110 -> (R.drawable.silver_3)
+        in 111..120 -> (R.drawable.silver_4)
+        in 121..130 -> (R.drawable.silver_5)
+        in 131..140 -> (R.drawable.silver_6)
+        in 141..150 -> (R.drawable.silver_7)
+        in 151..160 -> (R.drawable.silver_8)
+        in 161..170 -> (R.drawable.gold_1)
+        in 171..180 -> (R.drawable.gold_2)
+        in 181..190 -> (R.drawable.gold_3)
+        in 191..200 -> (R.drawable.gold_4)
+        in 201..210 -> (R.drawable.gold_5)
+        in 211..220 -> (R.drawable.gold_6)
+        in 221..230 -> (R.drawable.gold_7)
+        in 231..240 -> (R.drawable.gold_8)
+        in 241..250 -> (R.drawable.diamond_1)
+        in 251..260 -> (R.drawable.diamond_2)
+        in 261..270 -> (R.drawable.diamond_3)
+        in 271..280 -> (R.drawable.diamond_4)
+        in 281..290 -> (R.drawable.diamond_5)
+        in 291..300 -> (R.drawable.diamond_6)
+        in 301..310 -> (R.drawable.diamond_7)
+        in 311..320 -> (R.drawable.diamond_8)
+        in 321..330 -> (R.drawable.platinum_1)
+        in 331..340 -> (R.drawable.platinum_2)
+        in 341..350 -> (R.drawable.platinum_3)
+        in 351..360 -> (R.drawable.platinum_4)
+        in 361..370 -> (R.drawable.platinum_5)
+        in 371..380 -> (R.drawable.platinum_6)
+        in 381..390 -> (R.drawable.platinum_7)
+        in 391..400 -> (R.drawable.platinum_8)
+        in 401..410 -> (R.drawable.epic_1)
+        in 411..420 -> (R.drawable.epic_2)
+        in 421..430 -> (R.drawable.epic_3)
+        in 431..440 -> (R.drawable.epic_4)
+        in 441..450 -> (R.drawable.epic_5)
+        in 451..460 -> (R.drawable.epic_6)
+        in 461..470 -> (R.drawable.epic_7)
+        in 471..480 -> (R.drawable.epic_8)
+        else -> (R.drawable.ic_launcher_background)
+    }
+    return image
+}

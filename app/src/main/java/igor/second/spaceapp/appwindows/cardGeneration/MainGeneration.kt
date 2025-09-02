@@ -13,10 +13,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import igor.second.spaceapp.R
 import igor.second.spaceapp.appsettings.DataStoreManager
 import igor.second.spaceapp.appwindows.cardGeneration.content.FinishCard
 import igor.second.spaceapp.appwindows.cardGeneration.content.TimerFromLevels
+import igor.second.spaceapp.appwindows.cardGeneration.content.finishCardValue
 import igor.second.spaceapp.appwindows.cardGeneration.generator.autoGeneration.AutoGenerationCard
 import igor.second.spaceapp.appwindows.cardGeneration.generator.userGeneration.MiniGeneration
 
@@ -92,13 +92,16 @@ fun MainGeneration(
             .fillMaxSize()
             .padding(bottom = 32.dp, top = 80.dp)
     ) {
-        FinishCard(image = R.drawable.ic_launcher_background)
+        FinishCard(
+            image = finishCardValue(userGenerationLevel = userGenerationLevel)
+        )
         if (autoGenerationEnabler.value){
             Column (
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = modifier.padding(top = 16.dp)
             ) {
+                TimerFromLevels()
                 AutoGenerationCard(
                     bronzeValue1 = bronzeValue1,
                     bronzeValue2 = bronzeValue2,
@@ -158,7 +161,7 @@ fun MainGeneration(
             Column (
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
+                modifier = modifier.padding(top = 16.dp)
             ) {
                 TimerFromLevels()
                 MiniGeneration(
