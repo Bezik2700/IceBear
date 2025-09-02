@@ -1,4 +1,4 @@
-package igor.second.spaceapp.appwindows.cardGeneration
+package igor.second.spaceapp.appwindows.cardGeneration.content
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,7 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import igor.second.spaceapp.appsettings.TimerViewModel
+import igor.second.spaceapp.appsettings.MainViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -32,7 +32,7 @@ suspend fun loadProgress(
 
 @Composable
 fun TimerFromLevels(
-    viewModel: TimerViewModel = viewModel()
+    viewModel: MainViewModel = viewModel()
 ){
 
     val timer by viewModel.timer.collectAsState()

@@ -6,8 +6,9 @@ import android.graphics.Paint
 import android.graphics.Path
 import androidx.core.graphics.createBitmap
 
-internal fun createDirectionArrowBitmap(): Bitmap {
-    val size = 200
+fun createDirectionArrowBitmap(): Bitmap {
+
+    val size = 160
     val bitmap = createBitmap(size, size)
     val canvas = Canvas(bitmap)
 

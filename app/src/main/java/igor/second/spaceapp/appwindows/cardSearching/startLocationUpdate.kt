@@ -11,15 +11,12 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.Priority
 
-internal fun locationUpdate(
+fun locationUpdate(
     locationClient: FusedLocationProviderClient,
     onLocationUpdate: (Location) -> Unit,
     context: Context
 ) {
-    val locationRequest = LocationRequest.Builder(
-        Priority.PRIORITY_HIGH_ACCURACY,
-        1000
-    ).apply {
+    val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 1000).apply {
         setMinUpdateIntervalMillis(500)
     }.build()
 

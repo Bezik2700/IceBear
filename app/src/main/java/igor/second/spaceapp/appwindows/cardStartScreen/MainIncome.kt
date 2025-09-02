@@ -68,7 +68,7 @@ fun MainIncome(
             }
             Row {
                 IncomeCardValue(
-                    onClick = {navController.navigate(Screens.MainCamera.route)},
+                    onClick = {navController.navigate(Screens.MainSearching.route)},
                     name = R.string.find_screen,
                     image = R.drawable.ic_launcher_background,
                     cardWidth = 0.5f

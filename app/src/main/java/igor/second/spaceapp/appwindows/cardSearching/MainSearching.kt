@@ -17,14 +17,14 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -43,14 +43,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.android.gms.location.LocationServices
-import igor.second.spaceapp.appsettings.Screens
+import igor.second.spaceapp.R
 
 @Composable
-fun MainSearching(navController: NavController) {
+fun MainSearching(
+    navController: NavController,
+    modifier: Modifier = Modifier
+) {
 
     val context = LocalContext.current
     val locationClient = remember { LocationServices.getFusedLocationProviderClient(context) }
@@ -62,8 +67,6 @@ fun MainSearching(navController: NavController) {
     var distanceToTarget by remember { mutableDoubleStateOf(0.0) }
     var bearingToTarget by remember { mutableFloatStateOf(0f) }
     var compassDirection by remember { mutableFloatStateOf(0f) }
-
-
     var arrowBitmap by remember { mutableStateOf<Bitmap?>(null) }
 
     LaunchedEffect(Unit) {
@@ -72,9 +75,7 @@ fun MainSearching(navController: NavController) {
 
     val permissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
-    ) { isGranted ->
-        hasLocationPermission = isGranted
-    }
+    ) { isGranted -> hasLocationPermission = isGranted }
 
     LaunchedEffect(Unit) {
         permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
@@ -97,7 +98,6 @@ fun MainSearching(navController: NavController) {
         }
     }
 
-    // Создание цели при первом получении локации
     LaunchedEffect(userLocation) {
         userLocation?.let { location ->
             if (targetLocation == null) {
@@ -106,7 +106,7 @@ fun MainSearching(navController: NavController) {
         }
     }
 
-    // Датчик компаса
+    // compass
     DisposableEffect(Unit) {
         val sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
         val rotationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR)
@@ -146,7 +146,11 @@ fun MainSearching(navController: NavController) {
         when {
             !hasLocationPermission -> {
                 Text("Требуется разрешение на доступ к геолокации")
-                Button(onClick = { permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION) }) {
+                Button(
+                    onClick = {
+                        permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+                    }
+                ) {
                     Text("Запросить разрешение")
                 }
             }
@@ -157,73 +161,73 @@ fun MainSearching(navController: NavController) {
             }
 
             isTargetReached -> {
-                Text("Поздравляем!", style = MaterialTheme.typography.headlineMedium)
+                Text("Поздравляем!")
                 Text("Вы достигли цели!")
             }
 
             else -> {
+
                 val relativeBearing = (bearingToTarget - compassDirection + 360) % 360
-                val arrowRotation by animateFloatAsState(
-                    targetValue = relativeBearing,
-                    animationSpec = tween(durationMillis = 200)
-                )
+                val arrowRotation by animateFloatAsState(targetValue = relativeBearing, animationSpec = tween(durationMillis = 200))
 
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontal,
-                    
+                Card (
+                    modifier = modifier
+                        .fillMaxSize()
+                        .padding(top = 32.dp, bottom = 64.dp)
                 ) {
-
-                }
-
-                Row (
-                    verticalAlignment = Alignment.Top,
-                    horizontalArrangement = Arrangement.End,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Button(onClick = {navController.navigate(Screens.MainIncome.route)}) {
-                        Text("End find")
-                    }
-                }
-                Box(
-                    modifier = Modifier.size(200.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Canvas(modifier = Modifier.fillMaxSize()) {
-                        drawCircle(
-                            color = Color.Black.copy(alpha = 0.2f),
-                            radius = size.minDimension / 2
-                        )
-                    }
-
-                    arrowBitmap?.let {
+                    Box(modifier = modifier.fillMaxSize()){
                         Image(
-                            bitmap = it.asImageBitmap(),
-                            contentDescription = "Direction arrow",
+                            painterResource(R.drawable.ic_launcher_background),
+                            contentDescription = "map",
+                            modifier = modifier.fillMaxSize(),
+                            contentScale = ContentScale.FillBounds
+                        )
+                        Column (
+                            verticalArrangement = Arrangement.Bottom,
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = modifier.fillMaxSize().padding(bottom = 16.dp)
+                        ) {
+                            Box(
+                                modifier = Modifier.size(96.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Canvas(modifier = Modifier.fillMaxSize()) {
+                                    drawCircle(
+                                        color = Color.Black.copy(alpha = 0.2f),
+                                        radius = size.minDimension / 2
+                                    )
+                                }
+                                arrowBitmap?.let {
+                                    Image(
+                                        bitmap = it.asImageBitmap(),
+                                        contentDescription = null,
+                                        modifier = Modifier
+                                            .size(80.dp)
+                                            .rotate(arrowRotation)
+                                    )
+                                }
+                            }
+                            Text("Дистанция до цели:")
+                            Text(
+                                text = "${"%.1f".format(distanceToTarget)} метров",
+                                style = MaterialTheme.typography.displayMedium
+                            )
+                            Text(
+                                text = "Направление: ${"%.0f".format(relativeBearing)}°",
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                        }
+                        LinearProgressIndicator(
+                            progress = { (1 - (distanceToTarget / 30)).toFloat() },
                             modifier = Modifier
-                                .size(150.dp)
-                                .rotate(arrowRotation)
+                                .width(320.dp)
+                                .height(4.dp)
+                                .rotate(90f)
+                                .align(Alignment.CenterEnd)
+                                .offset(y = (-120).dp)
                         )
                     }
                 }
-                Spacer(modifier = Modifier.height(24.dp))
-                Text("Дистанция до цели:", style = MaterialTheme.typography.titleLarge)
-                Text(
-                    text = "${"%.1f".format(distanceToTarget)} метров",
-                    style = MaterialTheme.typography.displayMedium
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Text(
-                    text = "Направление: ${"%.0f".format(relativeBearing)}°",
-                    style = MaterialTheme.typography.titleMedium
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                LinearProgressIndicator(
-                    progress = (1 - (distanceToTarget / 30)).toFloat(),
-                    modifier = Modifier.fillMaxWidth()
-                )
             }
         }
     }

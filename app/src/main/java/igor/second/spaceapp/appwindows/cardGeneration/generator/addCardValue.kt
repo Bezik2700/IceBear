@@ -1,4 +1,4 @@
-package igor.second.spaceapp.appwindows.cardGeneration.cards
+package igor.second.spaceapp.appwindows.cardGeneration.generator
 
 import androidx.compose.runtime.MutableState
 import igor.second.spaceapp.appsettings.DataStoreManager
@@ -108,7 +108,7 @@ fun addCardValue(
             in 441..450 -> epicValue5.value += 1
             in 451..460 -> epicValue6.value += 1
             in 461..470 -> epicValue7.value += 1
-            in 391..10000 -> epicValue8.value += 1
+            in 471..480 -> epicValue8.value += 1
         }
     }
     launch {

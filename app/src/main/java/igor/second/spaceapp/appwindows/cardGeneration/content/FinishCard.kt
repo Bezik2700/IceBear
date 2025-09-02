@@ -1,5 +1,6 @@
-package igor.second.spaceapp.appwindows.cardGeneration
+package igor.second.spaceapp.appwindows.cardGeneration.content
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -10,10 +11,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import igor.second.spaceapp.R
 
 @Composable
-fun FinishCard(){
+fun FinishCard(
+    @DrawableRes image: Int
+){
     Card (
         modifier = Modifier
             .fillMaxHeight(0.6f)
@@ -21,7 +23,7 @@ fun FinishCard(){
             .clickable(onClick = {})
     ) {
         Image(
-            painterResource(R.drawable.ic_launcher_background),
+            painterResource(image),
             contentDescription = "finish card",
             contentScale = ContentScale.FillBounds,
             modifier = Modifier.fillMaxSize()

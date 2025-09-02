@@ -1,4 +1,4 @@
-package igor.second.spaceapp.appwindows.cardShopping
+package igor.second.spaceapp.appwindows.cardShopping.viewModel
 
 import android.app.Activity
 import android.content.Context
@@ -291,4 +291,3 @@ class PurchaseViewModel(
         _showRefundNotification.value = null
     }
 }
-

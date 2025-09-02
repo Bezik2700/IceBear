@@ -1,14 +1,17 @@
-package igor.second.spaceapp.appwindows.cardGeneration.cards
+package igor.second.spaceapp.appwindows.cardGeneration.generator.userGeneration
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -17,14 +20,18 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import igor.second.spaceapp.R
 import igor.second.spaceapp.appsettings.DataStoreManager
-import igor.second.spaceapp.appsettings.TimerViewModel
+import igor.second.spaceapp.appsettings.MainViewModel
+import igor.second.spaceapp.appwindows.cardGeneration.content.InCollectionButton
 
 @Composable
 fun MiniGeneration(
+    modifier: Modifier = Modifier,
     userGenerationLevel: MutableState<Int>,
     userMoneyValue: MutableState<Int>,
     dataStoreManager: DataStoreManager,
@@ -76,73 +83,64 @@ fun MiniGeneration(
     epicValue6: MutableState<Int>,
     epicValue7: MutableState<Int>,
     epicValue8: MutableState<Int>,
-    viewModel: TimerViewModel = viewModel()
+    autoGenerationEnabler: MutableState<Boolean>,
+    viewModel: MainViewModel = viewModel()
 ){
 
     val timerEnabled by viewModel.timerEnabled.collectAsState()
 
     LaunchedEffect(key1 = null) {
-        if (timerEnabled){
-            viewModel.timerEnabledChange()
-        }
+        if (timerEnabled){ viewModel.timerEnabledChange() }
     }
 
     if (timerEnabled){
-        Box(modifier = Modifier){
+        Text(userGenerationLevel.value.toString())
+        Row (
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+            modifier = modifier.fillMaxWidth()
+        ) {
+            GenerationButton(
+                modifier = modifier.padding(end = 16.dp),
+                userGenerationLevel = userGenerationLevel,
+                icon = R.drawable.ic_launcher_background
+            )
             Column (
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxWidth()
-            ){
-                CircularProgressIndicator(
-                    modifier = Modifier.size(160.dp),
-                    color = when (userGenerationLevel.value){
-                        in 0..80 -> Color(0xFFE7931D)
-                        in 81..160 -> Color(0xFFD3CDCA)
-                        in 161..240 -> Color(0xFFFFE300)
-                        in 241..320 -> Color(0xFF0091FF)
-                        in 321..400 -> Color(0xFFFF0000)
-                        else -> Color(0xFF00FF0D)},
-                    trackColor = Color.Blue,
-                    progress = { userGenerationLevel.value / 500.toFloat() }
+                modifier = modifier
+            ) {
+                GenerationButton(
+                    modifier = modifier.padding(bottom = 16.dp, end = 16.dp),
+                    userGenerationLevel = userGenerationLevel,
+                    icon = R.drawable.ic_launcher_background
+                )
+                GenerationButton(
+                    modifier = modifier.padding(end = 16.dp),
+                    userGenerationLevel = userGenerationLevel,
+                    icon = R.drawable.ic_launcher_background
                 )
             }
             Column (
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 32.dp)
-            ){
-                Row (
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Button(
-                        onClick = { userGenerationLevel.value += 2 }) {
-                        Text("+ 1")
-                    }
-                    Button(
-                        onClick = { userGenerationLevel.value *= 2 }) {
-                        Text("- 1")
-                    }
-                }
-                Row (
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Button(
-                        onClick = { userGenerationLevel.value /= 2 }) {
-                        Text("+ 1")
-                    }
-                    Button(
-                        onClick = { userGenerationLevel.value -= 2 }) {
-                        Text("- 1")
-                    }
-                }
+                modifier = modifier
+            ) {
+                GenerationButton(
+                    modifier = modifier.padding(bottom = 16.dp),
+                    userGenerationLevel = userGenerationLevel,
+                    icon = R.drawable.ic_launcher_background
+                )
+                GenerationButton(
+                    userGenerationLevel = userGenerationLevel,
+                    icon = R.drawable.ic_launcher_background
+                )
             }
+            GenerationButton(
+                modifier = modifier.padding(start = 16.dp),
+                userGenerationLevel = userGenerationLevel,
+                icon = R.drawable.ic_launcher_background
+            )
         }
     } else {
         if (userGenerationLevel.value != 0){
@@ -200,12 +198,37 @@ fun MiniGeneration(
                 userGenerationLevel = userGenerationLevel
             )
         } else {
-            Button(onClick = {
-                userMoneyValue.value -= 1
-                viewModel.timerRestart()
-                viewModel.timerEnabledChange()
-            }) {
-                Text("Start")
+            Column (
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            ) {
+                Card (modifier = Modifier
+                    .size(160.dp)
+                    .clip(CircleShape)) {
+                    Column (
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(color = Color.Red)
+                            .clickable(onClick = {
+                                userMoneyValue.value -= 1
+                                viewModel.timerRestart()
+                                viewModel.timerEnabledChange()
+                            }
+                            )) {
+                        Text(text = "Start")
+                    }
+                }
+                Switch(
+                    checked = autoGenerationEnabler.value,
+                    onCheckedChange = {
+                        autoGenerationEnabler.value = it
+                    }
+                )
             }
         }
     }
