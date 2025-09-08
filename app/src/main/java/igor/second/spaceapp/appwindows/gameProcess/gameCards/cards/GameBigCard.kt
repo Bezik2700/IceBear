@@ -1,5 +1,6 @@
 package igor.second.spaceapp.appwindows.gameProcess.gameCards.cards
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,7 +16,10 @@ import androidx.compose.ui.unit.dp
 import igor.second.spaceapp.R
 
 @Composable
-fun GameBigCard(){
+fun GameBigCard(
+    @DrawableRes image: Int
+){
+
     Box(modifier = Modifier.padding(bottom = 16.dp)){
         Card (
             modifier = Modifier
@@ -58,8 +62,8 @@ fun GameBigCard(){
                 .size(width = 160.dp, height = 320.dp)
         ) {
             Image(
-                painterResource(R.drawable.ic_launcher_background),
-                contentDescription = "box card",
+                painterResource(image),
+                contentDescription = "box card top",
                 contentScale = ContentScale.FillBounds,
                 modifier = Modifier.fillMaxSize()
             )

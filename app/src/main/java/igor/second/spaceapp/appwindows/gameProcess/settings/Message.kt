@@ -4,5 +4,6 @@ data class Message(
     val id: Int? = null,
     val content: String,
     val sender_name: String,
-    val created_at: String? = null
+    val created_at: String? = null,
+    val card_value: Int
 )

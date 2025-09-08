@@ -56,4 +56,24 @@ class Repository {
             }
         })
     }
+
+    fun deleteAllMessages(onSuccess: () -> Unit, onError: (String) -> Unit) {
+        Log.d(tag, "Deleting all messages from server via REST...")
+
+        // Пробуем основной метод
+        apiService.deleteAllMessages().enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.isSuccessful) {
+                    Log.d(tag, "All messages deleted successfully via REST")
+                    onSuccess()
+                } else {
+                    Log.w(tag, "Primary delete failed (${response.code()}) ...")
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.w(tag, "Primary delete network error ...")
+            }
+        })
+    }
 }
