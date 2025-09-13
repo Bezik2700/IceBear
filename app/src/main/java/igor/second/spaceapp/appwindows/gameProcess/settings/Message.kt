@@ -7,3 +7,4 @@ data class Message(
     val created_at: String? = null,
     val card_value: Int
 )
+

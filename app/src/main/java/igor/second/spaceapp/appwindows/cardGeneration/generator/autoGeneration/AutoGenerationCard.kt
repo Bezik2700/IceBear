@@ -27,6 +27,7 @@ import igor.second.spaceapp.appwindows.cardGeneration.content.InCollectionButton
 fun AutoGenerationCard(
     userGenerationLevel: MutableState<Int>,
     userMoneyValue: MutableState<Int>,
+    userName: MutableState<String>,
     dataStoreManager: DataStoreManager,
     bronzeValue1: MutableState<Int>,
     bronzeValue2: MutableState<Int>,
@@ -168,7 +169,8 @@ fun AutoGenerationCard(
             epicValue8 = epicValue8,
             userMoneyValue = userMoneyValue,
             dataStoreManager = dataStoreManager,
-            userGenerationLevel = userGenerationLevel
+            userGenerationLevel = userGenerationLevel,
+            userName = userName
         )
     }
 }

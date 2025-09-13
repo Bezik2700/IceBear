@@ -5,7 +5,10 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlin.math.max
 
@@ -14,6 +17,9 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("d
 class DataStoreManager(private val context: Context) {
 
     companion object {
+
+        val LAST_UPDATE_KEY = longPreferencesKey("last_update_timestamp")
+
         val USER_GENERATION_LEVEL = intPreferencesKey("userGenerationLevel")
         val USER_MONEY_VALUE = intPreferencesKey("userMoneyValue")
         val USER_PLATINUM_VALUE1 = intPreferencesKey("platinumValue1")
@@ -24,6 +30,28 @@ class DataStoreManager(private val context: Context) {
         val USER_EPIC_VALUE2 = intPreferencesKey("epicValue2")
         val USER_EPIC_VALUE3 = intPreferencesKey("epicValue3")
         val USER_EPIC_VALUE4 = intPreferencesKey("epicValue4")
+
+    }
+
+    // Получить текущее значение счетчика
+    val userMoneyValue: Flow<Int> = context.dataStore.data
+        .map { preferences ->
+            preferences[USER_MONEY_VALUE] ?: 0
+        }
+
+    // Получить время последнего обновления
+    val lastUpdate: Flow<Long> = context.dataStore.data
+        .map { preferences ->
+            preferences[LAST_UPDATE_KEY] ?: 0L
+        }
+
+    // добавить userMoneyValue
+    suspend fun incrementCounter() {
+        context.dataStore.edit { preferences ->
+            val userMoneyValue = preferences[USER_MONEY_VALUE] ?: 0
+            preferences[USER_MONEY_VALUE] = userMoneyValue + 10
+            preferences[LAST_UPDATE_KEY] = System.currentTimeMillis()
+        }
     }
 
     suspend fun plusCardValue(amount: Int){
@@ -119,6 +147,7 @@ class DataStoreManager(private val context: Context) {
 
             pref[intPreferencesKey("userGenerationLevel")] = settingData.userGenerationLevel
             pref[intPreferencesKey("userMoneyValue")] = settingData.userMoneyValue
+            pref[stringPreferencesKey("userName")] = settingData.userName
 
             pref[intPreferencesKey("bronzeValue1")] = settingData.bronzeValue1
             pref[intPreferencesKey("bronzeValue2")] = settingData.bronzeValue2
@@ -178,6 +207,8 @@ class DataStoreManager(private val context: Context) {
 
     fun getSettings() = context.dataStore.data.map { pref ->
         return@map SettingData(
+
+            pref[stringPreferencesKey("userName")] ?: "",
             pref[intPreferencesKey("userGenerationLevel")] ?: 1,
             pref[intPreferencesKey("userMoneyValue")] ?: 50,
 
@@ -239,6 +270,8 @@ class DataStoreManager(private val context: Context) {
 }
 
 data class SettingData(
+
+    val userName: String,
     val userGenerationLevel: Int,
     val userMoneyValue: Int,
 

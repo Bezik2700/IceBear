@@ -1,5 +1,6 @@
 package igor.second.spaceapp.appwindows.cardCollection
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -9,7 +10,9 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import igor.second.spaceapp.R
+import igor.second.spaceapp.appwindows.Screens
 
 @Composable
 fun MainCollection(
@@ -62,6 +65,7 @@ fun MainCollection(
     epicValue6: MutableState<Int>,
     epicValue7: MutableState<Int>,
     epicValue8: MutableState<Int>,
+    navController: NavController
 ){
 
     LazyColumn (
@@ -241,5 +245,8 @@ fun MainCollection(
                 collectionName = R.string.epic
             )
         }
+    }
+    BackHandler {
+        navController.navigate(Screens.MainIncome.route)
     }
 }

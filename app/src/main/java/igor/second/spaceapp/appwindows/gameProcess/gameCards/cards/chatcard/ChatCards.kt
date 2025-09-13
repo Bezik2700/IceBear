@@ -1,4 +1,4 @@
-package igor.second.spaceapp.appwindows.gameProcess.gameCards.cards
+package igor.second.spaceapp.appwindows.gameProcess.gameCards.cards.chatcard
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

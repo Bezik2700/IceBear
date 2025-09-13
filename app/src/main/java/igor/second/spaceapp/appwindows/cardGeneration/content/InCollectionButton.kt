@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun InCollectionButton(
     userGenerationLevel: MutableState<Int>,
+    userName: MutableState<String>,
     userMoneyValue: MutableState<Int>,
     dataStoreManager: DataStoreManager,
     bronzeValue1: MutableState<Int>,
@@ -120,7 +121,8 @@ fun InCollectionButton(
                 epicValue8 = epicValue8,
                 userMoneyValue = userMoneyValue,
                 dataStoreManager = dataStoreManager,
-                userGenerationLevel = userGenerationLevel
+                userGenerationLevel = userGenerationLevel,
+                userName = userName
             )
         }
         scope.launch {
@@ -176,7 +178,8 @@ fun InCollectionButton(
                     epicValue7 = epicValue7.value,
                     epicValue8 = epicValue8.value,
                     userMoneyValue = userMoneyValue.value,
-                    userGenerationLevel = userGenerationLevel.value
+                    userGenerationLevel = userGenerationLevel.value,
+                    userName = userName.value
                 )
             )
         }

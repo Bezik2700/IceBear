@@ -1,4 +1,4 @@
-package igor.second.spaceapp.appsettings
+package igor.second.spaceapp.appsettings.network
 
 import android.content.Context
 import android.net.ConnectivityManager

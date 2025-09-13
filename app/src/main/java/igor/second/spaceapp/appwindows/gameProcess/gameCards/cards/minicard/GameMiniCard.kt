@@ -1,4 +1,4 @@
-package igor.second.spaceapp.appwindows.gameProcess.gameCards.cards
+package igor.second.spaceapp.appwindows.gameProcess.gameCards.cards.minicard
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image

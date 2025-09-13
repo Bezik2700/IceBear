@@ -1,29 +1,26 @@
 package igor.second.spaceapp.appwindows.cardShopping
 
-import android.content.Intent
-import android.provider.Settings
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import igor.second.spaceapp.appsettings.DataStoreManager
 import igor.second.spaceapp.appsettings.MainViewModel
-import igor.second.spaceapp.appsettings.NetworkUtils
+import igor.second.spaceapp.appsettings.network.IsNotOnlineDialog
+import igor.second.spaceapp.appsettings.network.NetworkUtils
+import igor.second.spaceapp.appwindows.Screens
 import igor.second.spaceapp.appwindows.cardShopping.offline.OfflinePurchase
 import igor.second.spaceapp.appwindows.cardShopping.online.OnlinePurchase
 import igor.second.spaceapp.appwindows.cardShopping.viewModel.PurchaseViewModel
@@ -34,9 +31,9 @@ import kotlinx.coroutines.delay
 fun MainShop(
     dataStoreManager: DataStoreManager,
     viewModel: PurchaseViewModel = viewModel(factory =
-        PurchaseViewModelFactory(LocalContext.current, dataStoreManager)
-    ),
-    mainViewModel: MainViewModel = viewModel()
+        PurchaseViewModelFactory(LocalContext.current, dataStoreManager)),
+    mainViewModel: MainViewModel = viewModel(),
+    navController: NavController
 ) {
 
     val context = LocalContext.current
@@ -69,29 +66,14 @@ fun MainShop(
         item {
             OfflinePurchase()
             if (!isOnline){
-                Column (
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    CircularProgressIndicator()
-                    Text(
-                        text = "Отсутствует интернет-соединение",
-                        color = Color.Red,
-                        modifier = Modifier.padding(8.dp)
-                    )
-                    Button(onClick = {
-                        val intent = Intent(Settings.ACTION_WIRELESS_SETTINGS)
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                        context.startActivity(intent)
-                    }) {
-                        Text("Нажмите чтобы включить")
-                    }
-                }
+                IsNotOnlineDialog(context = context)
             } else {
                 OnlinePurchase(dataStoreManager = dataStoreManager, viewModel = viewModel())
             }
         }
+    }
+    BackHandler {
+        navController.navigate(Screens.MainIncome.route)
     }
 }
 

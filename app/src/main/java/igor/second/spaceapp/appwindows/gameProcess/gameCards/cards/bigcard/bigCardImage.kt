@@ -1,4 +1,4 @@
-package igor.second.spaceapp.appwindows.gameProcess.gameCards.logic
+package igor.second.spaceapp.appwindows.gameProcess.gameCards.cards.bigcard
 
 import igor.second.spaceapp.R
 
@@ -52,7 +52,8 @@ fun bigCardImage(lastCardValue: Any): Int {
         450 -> R.drawable.epic_5
         460 -> R.drawable.epic_6
         470 -> R.drawable.epic_7
-        else -> R.drawable.epic_8
+        480 -> R.drawable.epic_8
+        else -> R.drawable.ic_launcher_background
     }
 
     return image

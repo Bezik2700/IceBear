@@ -49,15 +49,18 @@ dependencies {
     // navigation
     implementation(libs.androidx.navigation.compose)
     // location Services
+    implementation (libs.accompanist.permissions)
     implementation (libs.play.services.location)
     implementation (libs.kotlinx.coroutines.play.services)
     // Retrofit
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation ("com.google.code.gson:gson:2.10.1")
+    implementation (libs.retrofit2.retrofit)
+    implementation (libs.converter.gson)
+    implementation (libs.gson)
     // OkHttp
-    implementation ("com.squareup.okhttp3:okhttp:4.11.0")
-    implementation ("com.squareup.okhttp3:logging-interceptor:4.11.0")
+    implementation (libs.okhttp)
+    implementation (libs.logging.interceptor)
+    // WorkManager
+    implementation (libs.androidx.work.runtime.ktx)
 
     implementation (libs.material3)
     implementation(libs.androidx.core.ktx)

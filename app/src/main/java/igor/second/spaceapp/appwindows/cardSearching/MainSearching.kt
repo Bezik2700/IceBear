@@ -2,32 +2,25 @@ package igor.second.spaceapp.appwindows.cardSearching
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.location.Location
+import android.net.Uri
+import android.provider.Settings
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -40,21 +33,31 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.core.app.ActivityCompat
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
-import igor.second.spaceapp.R
+import com.google.android.gms.location.Priority
+import igor.second.spaceapp.appwindows.Screens
+import igor.second.spaceapp.appwindows.cardSearching.locationCard.SearchingScreen
+import igor.second.spaceapp.appwindows.cardSearching.locationSetting.createDirectionArrowBitmap
+import kotlinx.coroutines.launch
+import kotlin.math.cos
+import kotlin.math.sin
 
 @Composable
 fun MainSearching(
     navController: NavController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    locationViewModel: LocationViewModel = viewModel()
 ) {
 
     val context = LocalContext.current
@@ -68,10 +71,9 @@ fun MainSearching(
     var bearingToTarget by remember { mutableFloatStateOf(0f) }
     var compassDirection by remember { mutableFloatStateOf(0f) }
     var arrowBitmap by remember { mutableStateOf<Bitmap?>(null) }
+    var distanceMeters by remember { mutableDoubleStateOf(((10..150).random()).toDouble()) }
 
-    LaunchedEffect(Unit) {
-        arrowBitmap = createDirectionArrowBitmap()
-    }
+    LaunchedEffect(Unit) { arrowBitmap = createDirectionArrowBitmap() }
 
     val permissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -81,16 +83,17 @@ fun MainSearching(
         permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
     }
 
+    // Запускаем обновление локации при получении разрешения
     LaunchedEffect(hasLocationPermission) {
         if (hasLocationPermission) {
-            locationUpdate(
+            locationViewModel.startLocationUpdates(
                 locationClient = locationClient,
                 onLocationUpdate = { location ->
                     userLocation = location
                     targetLocation?.let { target ->
                         distanceToTarget = location.distanceTo(target).toDouble()
                         bearingToTarget = location.bearingTo(target)
-                        isTargetReached = distanceToTarget < 1
+                        isTargetReached = distanceToTarget < 2
                     }
                 },
                 context = context
@@ -98,15 +101,22 @@ fun MainSearching(
         }
     }
 
+    // Создаем целевую локацию при получении пользовательской локации
     LaunchedEffect(userLocation) {
         userLocation?.let { location ->
             if (targetLocation == null) {
-                targetLocation = createTargetLocation(location, 100.0)
+                targetLocation = locationViewModel.createTargetLocation(location, distanceMeters)
             }
         }
     }
 
-    // compass
+    // Останавливаем обновления при достижении цели
+    LaunchedEffect(isTargetReached) {
+        if (isTargetReached) {
+            locationViewModel.stopLocationUpdates(locationClient)
+        }
+    }
+
     DisposableEffect(Unit) {
         val sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
         val rotationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR)
@@ -137,18 +147,18 @@ fun MainSearching(
     }
 
     Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+            .padding(top = 64.dp, bottom = 8.dp, start = 16.dp, end = 16.dp)
     ) {
         when {
             !hasLocationPermission -> {
                 Text("Требуется разрешение на доступ к геолокации")
                 Button(
                     onClick = {
-                        permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+                        locationViewModel.openAppSettings(context = context)
                     }
                 ) {
                     Text("Запросить разрешение")
@@ -166,69 +176,87 @@ fun MainSearching(
             }
 
             else -> {
-
-                val relativeBearing = (bearingToTarget - compassDirection + 360) % 360
-                val arrowRotation by animateFloatAsState(targetValue = relativeBearing, animationSpec = tween(durationMillis = 200))
-
-                Card (
-                    modifier = modifier
-                        .fillMaxSize()
-                        .padding(top = 32.dp, bottom = 64.dp)
-                ) {
-                    Box(modifier = modifier.fillMaxSize()){
-                        Image(
-                            painterResource(R.drawable.ic_launcher_background),
-                            contentDescription = "map",
-                            modifier = modifier.fillMaxSize(),
-                            contentScale = ContentScale.FillBounds
-                        )
-                        Column (
-                            verticalArrangement = Arrangement.Bottom,
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            modifier = modifier.fillMaxSize().padding(bottom = 16.dp)
-                        ) {
-                            Box(
-                                modifier = Modifier.size(96.dp),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Canvas(modifier = Modifier.fillMaxSize()) {
-                                    drawCircle(
-                                        color = Color.Black.copy(alpha = 0.2f),
-                                        radius = size.minDimension / 2
-                                    )
-                                }
-                                arrowBitmap?.let {
-                                    Image(
-                                        bitmap = it.asImageBitmap(),
-                                        contentDescription = null,
-                                        modifier = Modifier
-                                            .size(80.dp)
-                                            .rotate(arrowRotation)
-                                    )
-                                }
-                            }
-                            Text("Дистанция до цели:")
-                            Text(
-                                text = "${"%.1f".format(distanceToTarget)} метров",
-                                style = MaterialTheme.typography.displayMedium
-                            )
-                            Text(
-                                text = "Направление: ${"%.0f".format(relativeBearing)}°",
-                                style = MaterialTheme.typography.titleMedium
-                            )
-                        }
-                        LinearProgressIndicator(
-                            progress = { (1 - (distanceToTarget / 30)).toFloat() },
-                            modifier = Modifier
-                                .width(320.dp)
-                                .height(4.dp)
-                                .rotate(90f)
-                                .align(Alignment.CenterEnd)
-                                .offset(y = (-120).dp)
-                        )
-                    }
-                }
+                SearchingScreen(
+                    distanceMeters = distanceMeters,
+                    distanceToTarget = distanceMeters,
+                    arrowBitmap = arrowBitmap,
+                    bearingToTarget = bearingToTarget,
+                    compassDirection = compassDirection,
+                )
             }
         }
+    }
+    BackHandler {
+        locationViewModel.stopLocationUpdates(locationClient)
+        navController.navigate(Screens.MainIncome.route)
+    }
+}
+
+class LocationViewModel : ViewModel() {
+
+    private var locationCallback: LocationCallback? = null
+
+    fun openAppSettings(context: Context) {
+        viewModelScope.launch {
+            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                data = Uri.fromParts("package", context.packageName, null)
+            }
+            context.startActivity(intent)
+        }
+    }
+
+    fun createTargetLocation(baseLocation: Location, distanceMeters: Double): Location {
+        return Location("target").apply {
+            // Более точное создание целевой точки
+            val bearing = Math.random() * 360.0
+            val distanceInDegrees = distanceMeters / 112800.0 // 1 градус ≈ 111 км
+
+            latitude = baseLocation.latitude + (distanceInDegrees * cos(Math.toRadians(bearing)))
+            longitude = baseLocation.longitude + (distanceInDegrees * sin(Math.toRadians(bearing)))
+        }
+    }
+
+    fun startLocationUpdates(
+        locationClient: FusedLocationProviderClient,
+        onLocationUpdate: (Location) -> Unit,
+        context: Context
+    ) {
+        // Сначала останавливаем предыдущие обновления
+        stopLocationUpdates(locationClient)
+
+        val locationRequest = LocationRequest.Builder(
+            Priority.PRIORITY_HIGH_ACCURACY, 1000
+        ).apply { setMinUpdateIntervalMillis(500) }
+            .build()
+
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(result: LocationResult) {
+                result.locations.lastOrNull()?.let(onLocationUpdate)
+            }
+        }
+
+        if (ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            locationClient.requestLocationUpdates(
+                locationRequest,
+                locationCallback!!,
+                null
+            )
+        }
+    }
+
+    fun stopLocationUpdates(locationClient: FusedLocationProviderClient) {
+        locationCallback?.let {
+            locationClient.removeLocationUpdates(it)
+            locationCallback = null
+        }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        locationCallback = null
     }
 }

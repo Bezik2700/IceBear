@@ -1,4 +1,4 @@
-package igor.second.spaceapp.appwindows.cardGeneration.content
+package igor.second.spaceapp.appsettings
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import igor.second.spaceapp.appsettings.MainViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -61,6 +60,7 @@ fun TimerFromLevels(
             }
         }
     }
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,

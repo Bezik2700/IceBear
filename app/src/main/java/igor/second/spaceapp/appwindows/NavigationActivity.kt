@@ -1,4 +1,4 @@
-package igor.second.spaceapp.appsettings
+package igor.second.spaceapp.appwindows
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -7,14 +7,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.twotone.Favorite
-import androidx.compose.material.icons.twotone.Home
-import androidx.compose.material.icons.twotone.Share
+import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -24,10 +24,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import igor.second.spaceapp.R
-import igor.second.spaceapp.appwindows.MainChange
+import igor.second.spaceapp.appsettings.DataStoreManager
+import igor.second.spaceapp.appsettings.UserInfoDialog
 import igor.second.spaceapp.appwindows.cardCollection.MainCollection
 import igor.second.spaceapp.appwindows.cardGeneration.MainGeneration
-import igor.second.spaceapp.appwindows.cardInformation.MainInformation
 import igor.second.spaceapp.appwindows.cardSearching.MainSearching
 import igor.second.spaceapp.appwindows.cardShopping.MainShop
 import igor.second.spaceapp.appwindows.cardStartScreen.MainIncome
@@ -39,9 +39,7 @@ sealed class Screens(val route: String){
     data object MainSearching: Screens("MainSearching")
     data object MainCollection: Screens("MainCollection")
     data object MainConnection: Screens("MainConnection")
-    data object MainInformation: Screens("MainInformation")
     data object MainIncome: Screens("MainIncome")
-    data object MainChange: Screens("MainChange")
 }
 
 @Composable
@@ -97,9 +95,70 @@ fun NavigationActivity(
     epicValue6: MutableState<Int>,
     epicValue7: MutableState<Int>,
     epicValue8: MutableState<Int>,
-    navController: NavHostController
+    navController: NavHostController,
+    userName: MutableState<String>
 ){
     Box(modifier = Modifier){
+
+        var dialogShowValue = remember { mutableStateOf(false) }
+
+        if (dialogShowValue.value){
+            UserInfoDialog(
+                dialogShowValue = dialogShowValue,
+                bronzeValue1 = bronzeValue1,
+                bronzeValue2 = bronzeValue2,
+                bronzeValue3 = bronzeValue3,
+                bronzeValue4 = bronzeValue4,
+                bronzeValue5 = bronzeValue5,
+                bronzeValue6 = bronzeValue6,
+                bronzeValue7 = bronzeValue7,
+                bronzeValue8 = bronzeValue8,
+                silverValue1 = silverValue1,
+                silverValue2 = silverValue2,
+                silverValue3 = silverValue3,
+                silverValue4 = silverValue4,
+                silverValue5 = silverValue5,
+                silverValue6 = silverValue6,
+                silverValue7 = silverValue7,
+                silverValue8 = silverValue8,
+                goldValue1 = goldValue1,
+                goldValue2 = goldValue2,
+                goldValue3 = goldValue3,
+                goldValue4 = goldValue4,
+                goldValue5 = goldValue5,
+                goldValue6 = goldValue6,
+                goldValue7 = goldValue7,
+                goldValue8 = goldValue8,
+                diamondValue1 = diamondValue1,
+                diamondValue2 = diamondValue2,
+                diamondValue3 = diamondValue3,
+                diamondValue4 = diamondValue4,
+                diamondValue5 = diamondValue5,
+                diamondValue6 = diamondValue6,
+                diamondValue7 = diamondValue7,
+                diamondValue8 = diamondValue8,
+                platinumValue1 = platinumValue1,
+                platinumValue2 = platinumValue2,
+                platinumValue3 = platinumValue3,
+                platinumValue4 = platinumValue4,
+                platinumValue5 = platinumValue5,
+                platinumValue6 = platinumValue6,
+                platinumValue7 = platinumValue7,
+                platinumValue8 = platinumValue8,
+                epicValue1 = epicValue1,
+                epicValue2 = epicValue2,
+                epicValue3 = epicValue3,
+                epicValue4 = epicValue4,
+                epicValue5 = epicValue5,
+                epicValue6 = epicValue6,
+                epicValue7 = epicValue7,
+                epicValue8 = epicValue8,
+                userName = userName,
+                dataStoreManager = dataStoreManager,
+                userMoneyValue = userMoneyValue,
+                userGenerationLevel = userGenerationLevel
+            )
+        }
 
         Image(
             painterResource(R.drawable.income_fon),
@@ -108,6 +167,22 @@ fun NavigationActivity(
             contentScale = ContentScale.FillBounds
         )
 
+        // top row user info and money
+        Row (
+            verticalAlignment = Alignment.Top,
+            horizontalArrangement = Arrangement.Start,
+            modifier = Modifier.fillMaxSize().padding(top = 48.dp, start = 16.dp)
+        ) {
+            IconButton(onClick = {
+                dialogShowValue.value = true
+            }) {
+                Icon(
+                    Icons.Rounded.Person,
+                    contentDescription = "user info"
+                )
+            }
+            Text(userName.value)
+        }
         Row (
             verticalAlignment = Alignment.Top,
             horizontalArrangement = Arrangement.End,
@@ -115,6 +190,7 @@ fun NavigationActivity(
         ) {
             Text("money: ${userMoneyValue.value}")
         }
+
         NavHost(
             navController = navController,
             startDestination = Screens.MainIncome.route,
@@ -173,7 +249,8 @@ fun NavigationActivity(
                     epicValue7 = epicValue7,
                     epicValue8 = epicValue8,
                     userGenerationLevel = userGenerationLevel,
-                    navController = navController
+                    navController = navController,
+                    userName = userName
                 )
             }
             composable (route = Screens.MainCollection.route) {
@@ -226,6 +303,7 @@ fun NavigationActivity(
                     epicValue6 = epicValue6,
                     epicValue7 = epicValue7,
                     epicValue8 = epicValue8,
+                    navController = navController
                 )
             }
             composable (route = Screens.MainConnection.route) {
@@ -280,42 +358,26 @@ fun NavigationActivity(
                     epicValue8 = epicValue8,
                     userMoneyValue = userMoneyValue,
                     userGenerationLevel = userGenerationLevel,
-                    dataStoreManager = dataStoreManager
+                    dataStoreManager = dataStoreManager,
+                    userName = userName,
+                    navController = navController
                 )
             }
             composable (route = Screens.MainShop.route) {
                 MainShop(
-                    dataStoreManager = dataStoreManager
+                    dataStoreManager = dataStoreManager,
+                    navController = navController
                 )
             }
             composable (route = Screens.MainSearching.route) {
-                MainSearching(navController = navController)
-            }
-            composable (route = Screens.MainInformation.route) {
-                MainInformation()
+                MainSearching(
+                    navController = navController
+                )
             }
             composable (route = Screens.MainIncome.route) {
-                MainIncome(navController = navController)
-            }
-            composable (route = Screens.MainChange.route) {
-                MainChange()
-            }
-        }
-        Row (
-            verticalAlignment = Alignment.Bottom,
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = 32.dp, start = 16.dp, end = 16.dp)
-        ) {
-            IconButton(onClick = {navController.navigate(Screens.MainCollection.route)}) {
-                Icon(Icons.TwoTone.Favorite, contentDescription = "collection")
-            }
-            IconButton(onClick = {navController.navigate(Screens.MainIncome.route)}) {
-                Icon(Icons.TwoTone.Home, contentDescription = "home")
-            }
-            IconButton(onClick = {navController.navigate(Screens.MainConnection.route)}) {
-                Icon(Icons.TwoTone.Share, contentDescription = "connection")
+                MainIncome(
+                    navController = navController
+                )
             }
         }
     }

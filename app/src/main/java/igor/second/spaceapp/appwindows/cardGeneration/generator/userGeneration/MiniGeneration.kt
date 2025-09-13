@@ -33,6 +33,7 @@ import igor.second.spaceapp.appwindows.cardGeneration.content.InCollectionButton
 fun MiniGeneration(
     modifier: Modifier = Modifier,
     userGenerationLevel: MutableState<Int>,
+    userName: MutableState<String>,
     userMoneyValue: MutableState<Int>,
     dataStoreManager: DataStoreManager,
     bronzeValue1: MutableState<Int>,
@@ -195,7 +196,8 @@ fun MiniGeneration(
                 epicValue8 = epicValue8,
                 userMoneyValue = userMoneyValue,
                 dataStoreManager = dataStoreManager,
-                userGenerationLevel = userGenerationLevel
+                userGenerationLevel = userGenerationLevel,
+                userName = userName
             )
         } else {
             Column (

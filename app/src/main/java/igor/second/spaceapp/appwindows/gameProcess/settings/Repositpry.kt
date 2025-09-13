@@ -12,7 +12,6 @@ class Repository {
 
     fun loadMessages(onSuccess: (List<Message>) -> Unit, onError: (String) -> Unit) {
         Log.d(tag, "load messages...")
-
         apiService.getMessages().enqueue(object : Callback<List<Message>> {
             override fun onResponse(call: Call<List<Message>>, response: Response<List<Message>>) {
                 if (response.isSuccessful) {
@@ -25,7 +24,6 @@ class Repository {
                     onError(errorMsg)
                 }
             }
-
             override fun onFailure(call: Call<List<Message>>, t: Throwable) {
                 val errorMsg = "Error network: ${t.message}"
                 Log.e(tag, errorMsg)
@@ -36,7 +34,6 @@ class Repository {
 
     fun sendMessage(message: Message, onSuccess: () -> Unit, onError: (String) -> Unit) {
         Log.d(tag, "Send messages: ${message.content}")
-
         apiService.sendMessage(message).enqueue(object : Callback<Message> {
             override fun onResponse(call: Call<Message>, response: Response<Message>) {
                 if (response.isSuccessful) {
@@ -48,7 +45,6 @@ class Repository {
                     onError(errorMsg)
                 }
             }
-
             override fun onFailure(call: Call<Message>, t: Throwable) {
                 val errorMsg = "Error network on send: ${t.message}"
                 Log.e(tag, errorMsg)
@@ -59,8 +55,6 @@ class Repository {
 
     fun deleteAllMessages(onSuccess: () -> Unit, onError: (String) -> Unit) {
         Log.d(tag, "Deleting all messages from server via REST...")
-
-        // Пробуем основной метод
         apiService.deleteAllMessages().enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
@@ -70,7 +64,6 @@ class Repository {
                     Log.w(tag, "Primary delete failed (${response.code()}) ...")
                 }
             }
-
             override fun onFailure(call: Call<Void>, t: Throwable) {
                 Log.w(tag, "Primary delete network error ...")
             }

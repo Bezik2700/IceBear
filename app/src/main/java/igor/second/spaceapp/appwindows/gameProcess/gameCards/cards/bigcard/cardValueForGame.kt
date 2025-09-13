@@ -1,4 +1,4 @@
-package igor.second.spaceapp.appwindows.gameProcess.gameCards.logic
+package igor.second.spaceapp.appwindows.gameProcess.gameCards.cards.bigcard
 
 import androidx.compose.runtime.MutableState
 

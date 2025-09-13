@@ -1,4 +1,4 @@
-package igor.second.spaceapp.appwindows.gameProcess.gameCards.cards
+package igor.second.spaceapp.appwindows.gameProcess.gameCards.cards.bigcard
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
@@ -7,9 +7,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -17,7 +19,8 @@ import igor.second.spaceapp.R
 
 @Composable
 fun GameBigCard(
-    @DrawableRes image: Int
+    @DrawableRes image: Int,
+    text: String
 ){
 
     Box(modifier = Modifier.padding(bottom = 16.dp)){
@@ -61,12 +64,15 @@ fun GameBigCard(
             modifier = Modifier
                 .size(width = 160.dp, height = 320.dp)
         ) {
-            Image(
-                painterResource(image),
-                contentDescription = "box card top",
-                contentScale = ContentScale.FillBounds,
-                modifier = Modifier.fillMaxSize()
-            )
+            Box(){
+                Image(
+                    painterResource(image),
+                    contentDescription = "box card top",
+                    contentScale = ContentScale.FillBounds,
+                    modifier = Modifier.fillMaxSize()
+                )
+                Text(text, color = Color.White)
+            }
         }
     }
 }

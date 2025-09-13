@@ -1,13 +1,14 @@
 package igor.second.spaceapp.appwindows.gameProcess
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -16,13 +17,20 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import igor.second.spaceapp.appsettings.DataStoreManager
+import igor.second.spaceapp.appsettings.MainViewModel
+import igor.second.spaceapp.appsettings.network.IsNotOnlineDialog
+import igor.second.spaceapp.appsettings.network.NetworkUtils
+import igor.second.spaceapp.appwindows.Screens
 import igor.second.spaceapp.appwindows.gameProcess.gameCards.GameCardBox
-import igor.second.spaceapp.appwindows.gameProcess.gameCards.cards.ChatCards
 import igor.second.spaceapp.appwindows.gameProcess.gameCards.cards.CustomSlider
-import igor.second.spaceapp.appwindows.gameProcess.gameCards.cards.GameBigCard
-import igor.second.spaceapp.appwindows.gameProcess.gameCards.logic.bigCardImage
+import igor.second.spaceapp.appwindows.gameProcess.gameCards.cards.bigcard.GameBigCard
+import igor.second.spaceapp.appwindows.gameProcess.gameCards.cards.bigcard.bigCardImage
+import igor.second.spaceapp.appwindows.gameProcess.gameCards.cards.chatcard.ChatCards
 import igor.second.spaceapp.appwindows.gameProcess.settings.Message
 import igor.second.spaceapp.appwindows.gameProcess.settings.Repository
 import kotlinx.coroutines.delay
@@ -81,38 +89,59 @@ fun MainConnection(
     epicValue8: MutableState<Int>,
     userMoneyValue: MutableState<Int>,
     userGenerationLevel: MutableState<Int>,
-    dataStoreManager: DataStoreManager
+    dataStoreManager: DataStoreManager,
+    mainViewModel: MainViewModel = viewModel(),
+    userName: MutableState<String>,
+    navController: NavController
 ){
 
     var sliderPosition = remember { mutableFloatStateOf(1f) }
 
-    val userName = remember { "User${(1000..9999).random()}" }
-    var messages by remember { mutableStateOf<List<Message>>(emptyList()) }
-    val repository = remember { Repository() }
-    val coroutineScope = rememberCoroutineScope()
-    var isLoading by remember { mutableStateOf(true) }
-    var error by remember { mutableStateOf<String?>(null) }
+    val context = LocalContext.current
 
-    val lastMessage = remember(messages) {
-        messages.maxByOrNull { it.created_at ?: "" }
-    }
-    val lastCardValue = remember(lastMessage) {
-        lastMessage?.card_value ?: ""
-    }
+    val isOnline by mainViewModel.isOnline.collectAsState()
+
+    var messages by remember { mutableStateOf<List<Message>>(emptyList()) }
+
+    val repository = remember { Repository() }
+
+    val coroutineScope = rememberCoroutineScope()
+
+    var isLoading = remember { mutableStateOf(true) }
+
+    var isSending = remember { mutableStateOf(false) }
+
+    var error = remember { mutableStateOf<String?>("") }
+
+    var messageText = remember { mutableStateOf("") }
+
+    val lastMessage = remember(messages) { messages.maxByOrNull { it.created_at ?: "" } }
+
+    val lastCardValue = remember(lastMessage) { lastMessage?.card_value ?: 0 }
+
+    var enabledForProgress = remember { mutableStateOf(false) }
 
     fun loadMessages() {
         coroutineScope.launch {
             repository.loadMessages(
                 onSuccess = { loadedMessages ->
                     messages = loadedMessages
-                    isLoading = false
-                    error = null
+                    isLoading.value = false
+                    error.value = ""
                 },
                 onError = { errorMessage ->
-                    error = errorMessage
-                    isLoading = false
+                    error.value = errorMessage
+                    isLoading.value = false
                 }
             )
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        while (true) {
+            val connectivityStatus = NetworkUtils.isNetworkAvailable(context)
+            mainViewModel.updateNetworkStatus(connectivityStatus)
+            delay(5000)
         }
     }
 
@@ -123,73 +152,98 @@ fun MainConnection(
         }
     }
 
-    Column (
-        verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
-            .fillMaxSize()
-            .padding(bottom = 120.dp, top = 80.dp)
-    ) {
-        GameBigCard(image = bigCardImage(lastCardValue = lastCardValue))
-        Text(lastCardValue.toString())
-        ChatCards(
-            userName = userName,
-            repository = Repository()
-        )
-        GameCardBox(
-            sliderPosition = sliderPosition,
-            bronzeValue1 = bronzeValue1,
-            bronzeValue2 = bronzeValue2,
-            bronzeValue3 = bronzeValue3,
-            bronzeValue4 = bronzeValue4,
-            bronzeValue5 = bronzeValue5,
-            bronzeValue6 = bronzeValue6,
-            bronzeValue7 = bronzeValue7,
-            bronzeValue8 = bronzeValue8,
-            silverValue1 = silverValue1,
-            silverValue2 = silverValue2,
-            silverValue3 = silverValue3,
-            silverValue4 = silverValue4,
-            silverValue5 = silverValue5,
-            silverValue6 = silverValue6,
-            silverValue7 = silverValue7,
-            silverValue8 = silverValue8,
-            goldValue1 = goldValue1,
-            goldValue2 = goldValue2,
-            goldValue3 = goldValue3,
-            goldValue4 = goldValue4,
-            goldValue5 = goldValue5,
-            goldValue6 = goldValue6,
-            goldValue7 = goldValue7,
-            goldValue8 = goldValue8,
-            diamondValue1 = diamondValue1,
-            diamondValue2 = diamondValue2,
-            diamondValue3 = diamondValue3,
-            diamondValue4 = diamondValue4,
-            diamondValue5 = diamondValue5,
-            diamondValue6 = diamondValue6,
-            diamondValue7 = diamondValue7,
-            diamondValue8 = diamondValue8,
-            platinumValue1 = platinumValue1,
-            platinumValue2 = platinumValue2,
-            platinumValue3 = platinumValue3,
-            platinumValue4 = platinumValue4,
-            platinumValue5 = platinumValue5,
-            platinumValue6 = platinumValue6,
-            platinumValue7 = platinumValue7,
-            platinumValue8 = platinumValue8,
-            epicValue1 = epicValue1,
-            epicValue2 = epicValue2,
-            epicValue3 = epicValue3,
-            epicValue4 = epicValue4,
-            epicValue5 = epicValue5,
-            epicValue6 = epicValue6,
-            epicValue7 = epicValue7,
-            epicValue8 = epicValue8,
-            userMoneyValue = userMoneyValue,
-            userGenerationLevel = userGenerationLevel,
-            dataStoreManager = dataStoreManager
-        )
-        CustomSlider(sliderPosition = sliderPosition)
+    val timerEnabled by mainViewModel.timerEnabled.collectAsState()
+
+    LaunchedEffect(key1 = null) {
+        if (timerEnabled){ mainViewModel.timerEnabledChange() }
+    }
+
+    if (!isOnline){
+        IsNotOnlineDialog(context = context)
+    } else {
+        Column (
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = modifier
+                .fillMaxSize()
+                .padding(bottom = 120.dp, top = 80.dp)
+        ) {
+
+            GameBigCard(
+                image = bigCardImage(lastCardValue = lastCardValue),
+                text = lastCardValue.toString()
+            )
+
+            ChatCards(
+                userName = userName.value,
+                repository = Repository()
+            )
+
+            GameCardBox(
+                sliderPosition = sliderPosition,
+                bronzeValue1 = bronzeValue1,
+                bronzeValue2 = bronzeValue2,
+                bronzeValue3 = bronzeValue3,
+                bronzeValue4 = bronzeValue4,
+                bronzeValue5 = bronzeValue5,
+                bronzeValue6 = bronzeValue6,
+                bronzeValue7 = bronzeValue7,
+                bronzeValue8 = bronzeValue8,
+                silverValue1 = silverValue1,
+                silverValue2 = silverValue2,
+                silverValue3 = silverValue3,
+                silverValue4 = silverValue4,
+                silverValue5 = silverValue5,
+                silverValue6 = silverValue6,
+                silverValue7 = silverValue7,
+                silverValue8 = silverValue8,
+                goldValue1 = goldValue1,
+                goldValue2 = goldValue2,
+                goldValue3 = goldValue3,
+                goldValue4 = goldValue4,
+                goldValue5 = goldValue5,
+                goldValue6 = goldValue6,
+                goldValue7 = goldValue7,
+                goldValue8 = goldValue8,
+                diamondValue1 = diamondValue1,
+                diamondValue2 = diamondValue2,
+                diamondValue3 = diamondValue3,
+                diamondValue4 = diamondValue4,
+                diamondValue5 = diamondValue5,
+                diamondValue6 = diamondValue6,
+                diamondValue7 = diamondValue7,
+                diamondValue8 = diamondValue8,
+                platinumValue1 = platinumValue1,
+                platinumValue2 = platinumValue2,
+                platinumValue3 = platinumValue3,
+                platinumValue4 = platinumValue4,
+                platinumValue5 = platinumValue5,
+                platinumValue6 = platinumValue6,
+                platinumValue7 = platinumValue7,
+                platinumValue8 = platinumValue8,
+                epicValue1 = epicValue1,
+                epicValue2 = epicValue2,
+                epicValue3 = epicValue3,
+                epicValue4 = epicValue4,
+                epicValue5 = epicValue5,
+                epicValue6 = epicValue6,
+                epicValue7 = epicValue7,
+                epicValue8 = epicValue8,
+                userMoneyValue = userMoneyValue,
+                userGenerationLevel = userGenerationLevel,
+                dataStoreManager = dataStoreManager,
+                lastCardValue = lastCardValue.toString(),
+                userName = userName,
+                coroutineScope = coroutineScope,
+                isSending = isSending,
+                messageText = messageText,
+                error = error,
+                enabledForProgress = enabledForProgress
+            )
+            CustomSlider(sliderPosition = sliderPosition)
+        }
+    }
+    BackHandler {
+        navController.navigate(Screens.MainIncome.route)
     }
 }

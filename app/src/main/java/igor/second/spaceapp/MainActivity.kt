@@ -6,10 +6,13 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.navigation.compose.rememberNavController
+import androidx.work.WorkManager
 import igor.second.spaceapp.appsettings.DataStoreManager
-import igor.second.spaceapp.appsettings.NavigationActivity
+import igor.second.spaceapp.appsettings.workManager.AppWorkManager
+import igor.second.spaceapp.appwindows.NavigationActivity
 import igor.second.spaceapp.ui.theme.SpaceAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -17,6 +20,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        val workManager = WorkManager.getInstance(this)
+        workManager.enqueue(AppWorkManager.createWorkRequest())
 
         val dataStoreManager = DataStoreManager(this)
 
@@ -26,6 +32,7 @@ class MainActivity : ComponentActivity() {
                 // data values
                 var userGenerationLevel = remember { mutableIntStateOf(1) }
                 var userMoneyValue = remember { mutableIntStateOf(0) }
+                var userName = remember { mutableStateOf("") }
 
                 var bronzeValue1 = remember { mutableIntStateOf(0) }
                 var bronzeValue2 = remember { mutableIntStateOf(0) }
@@ -85,6 +92,7 @@ class MainActivity : ComponentActivity() {
                     dataStoreManager.getSettings().collect { settings ->
                         userGenerationLevel.intValue = settings.userGenerationLevel
                         userMoneyValue.intValue = settings.userMoneyValue
+                        userName.value = settings.userName
                         bronzeValue1.intValue = settings.bronzeValue1
                         bronzeValue2.intValue = settings.bronzeValue2
                         bronzeValue3.intValue = settings.bronzeValue3
@@ -187,12 +195,12 @@ class MainActivity : ComponentActivity() {
                     epicValue7 = epicValue7,
                     epicValue8 = epicValue8,
                     navController = rememberNavController(),
-                    userGenerationLevel = userGenerationLevel
+                    userGenerationLevel = userGenerationLevel,
+                    userName = userName
                 )
             }
         }
     }
 }
-
 
 

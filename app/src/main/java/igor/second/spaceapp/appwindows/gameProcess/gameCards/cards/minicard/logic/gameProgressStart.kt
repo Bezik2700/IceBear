@@ -1,4 +1,4 @@
-package igor.second.spaceapp.appwindows.gameProcess.gameCards.logic
+package igor.second.spaceapp.appwindows.gameProcess.gameCards.cards.minicard.logic
 
 import androidx.compose.runtime.MutableState
 import igor.second.spaceapp.appsettings.DataStoreManager
@@ -10,6 +10,7 @@ fun gameProcessStart(
     sliderPosition: MutableState<Float>,
     cardNumber: Int,
     dataStoreManager: DataStoreManager,
+    userName: MutableState<String>,
     userMoneyValue: MutableState<Int>,
     userGenerationLevel: MutableState<Int>,
     bronzeValue1: MutableState<Int>,
@@ -188,7 +189,8 @@ fun gameProcessStart(
                 epicValue7 = epicValue7.value,
                 epicValue8 = epicValue8.value,
                 userGenerationLevel = userGenerationLevel.value,
-                userMoneyValue = userMoneyValue.value
+                userMoneyValue = userMoneyValue.value,
+                userName = userName.value
             )
         )
     }

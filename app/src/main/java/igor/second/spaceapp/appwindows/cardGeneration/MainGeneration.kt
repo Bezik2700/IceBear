@@ -1,5 +1,6 @@
 package igor.second.spaceapp.appwindows.cardGeneration
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,8 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import igor.second.spaceapp.appsettings.DataStoreManager
+import igor.second.spaceapp.appsettings.TimerFromLevels
+import igor.second.spaceapp.appwindows.Screens
 import igor.second.spaceapp.appwindows.cardGeneration.content.FinishCard
-import igor.second.spaceapp.appwindows.cardGeneration.content.TimerFromLevels
 import igor.second.spaceapp.appwindows.cardGeneration.content.finishCardValue
 import igor.second.spaceapp.appwindows.cardGeneration.generator.autoGeneration.AutoGenerationCard
 import igor.second.spaceapp.appwindows.cardGeneration.generator.userGeneration.MiniGeneration
@@ -24,6 +26,7 @@ import igor.second.spaceapp.appwindows.cardGeneration.generator.userGeneration.M
 fun MainGeneration(
     navController: NavController,
     dataStoreManager: DataStoreManager,
+    userName: MutableState<String>,
     userGenerationLevel: MutableState<Int>,
     userMoneyValue: MutableState<Int>,
     bronzeValue1: MutableState<Int>,
@@ -154,7 +157,8 @@ fun MainGeneration(
                     userMoneyValue = userMoneyValue,
                     dataStoreManager = dataStoreManager,
                     userGenerationLevel = userGenerationLevel,
-                    autoGenerationEnabler = autoGenerationEnabler
+                    autoGenerationEnabler = autoGenerationEnabler,
+                    userName = userName
                 )
             }
         } else {
@@ -216,9 +220,13 @@ fun MainGeneration(
                     userMoneyValue = userMoneyValue,
                     dataStoreManager = dataStoreManager,
                     userGenerationLevel = userGenerationLevel,
-                    autoGenerationEnabler = autoGenerationEnabler
+                    autoGenerationEnabler = autoGenerationEnabler,
+                    userName = userName
                 )
             }
         }
+    }
+    BackHandler {
+        navController.navigate(Screens.MainIncome.route)
     }
 }

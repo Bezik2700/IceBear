@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 fun IncomeCardValue(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
+    onClickInformation: () -> Unit,
     cardWidth: Float,
     @StringRes name: Int,
     @DrawableRes image: Int
@@ -51,7 +52,9 @@ fun IncomeCardValue(
                 horizontalArrangement = Arrangement.End,
                 modifier = modifier.fillMaxWidth()
             ) {
-                IconButton(onClick = {}) {
+                IconButton(onClick = {
+                    onClickInformation.invoke()
+                }) {
                     Icon(
                         Icons.Rounded.Info,
                         contentDescription = null
