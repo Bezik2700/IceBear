@@ -3,9 +3,9 @@ package igor.second.spaceapp.appwindows.cardGeneration.content
 import androidx.compose.runtime.MutableState
 import igor.second.spaceapp.R
 
-fun finishCardValue(userGenerationLevel: MutableState<Int>): Int{
+fun finishCardValue(generationValue: MutableState<Int>): Int{
 
-    val image = when (userGenerationLevel.value) {
+    val image = when (generationValue.value) {
         in 1..10 -> (R.drawable.bronze_1)
         in 11..20 -> (R.drawable.bronze_2)
         in 21..30 -> (R.drawable.bronze_3)
@@ -54,7 +54,7 @@ fun finishCardValue(userGenerationLevel: MutableState<Int>): Int{
         in 451..460 -> (R.drawable.epic_6)
         in 461..470 -> (R.drawable.epic_7)
         in 471..480 -> (R.drawable.epic_8)
-        else -> (R.drawable.ic_launcher_background)
+        else -> (R.drawable.flip_side_card)
     }
     return image
 }

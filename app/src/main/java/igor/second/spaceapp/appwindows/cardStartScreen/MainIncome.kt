@@ -92,7 +92,7 @@ fun MainIncome(
                         informationEnabled.value = true
                                          },
                     name = R.string.shopping_screen,
-                    image = R.drawable.ic_launcher_background,
+                    image = R.drawable.income_card_shop,
                     cardWidth = 0.5f
                 )
                 IncomeCardValue(
@@ -102,7 +102,7 @@ fun MainIncome(
                         informationEnabled.value = true
                                          },
                     name = R.string.generation_screen,
-                    image = R.drawable.ic_launcher_background,
+                    image = R.drawable.income_card_generation,
                     cardWidth = 1f
                 )
             }
@@ -114,7 +114,7 @@ fun MainIncome(
                         informationEnabled.value = true
                                          },
                     name = R.string.find_screen,
-                    image = R.drawable.ic_launcher_background,
+                    image = R.drawable.income_card_searching,
                     cardWidth = 0.5f
                 )
                 IncomeCardValue(
@@ -124,7 +124,7 @@ fun MainIncome(
                         informationEnabled.value = true
                                          },
                     name = R.string.collection_screen,
-                    image = R.drawable.ic_launcher_background,
+                    image = R.drawable.income_card_collection,
                     cardWidth = 1f
                 )
             }

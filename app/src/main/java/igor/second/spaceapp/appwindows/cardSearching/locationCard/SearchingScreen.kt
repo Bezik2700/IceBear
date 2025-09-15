@@ -9,17 +9,19 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableDoubleStateOf
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -29,15 +31,17 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import igor.second.spaceapp.R
+import igor.second.spaceapp.appwindows.cardSearching.canvas.AnimationIcon
+import igor.second.spaceapp.appwindows.cardSearching.locationSetting.LocationViewModel
 
 @Composable
 fun SearchingScreen(
     modifier: Modifier = Modifier,
-    distanceMeters: Double,
     distanceToTarget: Double,
     arrowBitmap: Bitmap?,
     bearingToTarget: Float,
-    compassDirection: Float
+    compassDirection: Float,
+    locationViewModel: LocationViewModel
 ){
 
     val relativeBearing = (bearingToTarget - compassDirection + 360) % 360
@@ -45,6 +49,21 @@ fun SearchingScreen(
         targetValue = relativeBearing,
         animationSpec = tween(durationMillis = 200)
     )
+    val distanceStart = rememberSaveable { mutableDoubleStateOf(distanceToTarget) }
+    var imageValue = remember { mutableIntStateOf((1..5).random()) }
+    val image = when(imageValue.intValue){
+        1 -> R.drawable.searching_map_1
+        2 -> R.drawable.searching_map_2
+        3 -> R.drawable.searching_map_3
+        4 -> R.drawable.searching_map_4
+        else -> R.drawable.searching_map_5
+    }
+
+    LaunchedEffect(distanceToTarget > 0.0) {
+        if (distanceStart.doubleValue == 0.0){
+            distanceStart.doubleValue = distanceToTarget
+        }
+    }
 
     Card (
         modifier = modifier
@@ -53,10 +72,15 @@ fun SearchingScreen(
     ) {
         Box(modifier = modifier.fillMaxSize()) {
             Image(
-                painterResource(R.drawable.ic_launcher_background),
+                painterResource(image),
                 contentDescription = "map",
                 modifier = modifier.fillMaxSize(),
                 contentScale = ContentScale.FillBounds
+            )
+            AnimationIcon(
+                distanceStart = distanceStart,
+                distanceToTarget = distanceToTarget,
+                locationViewModel = locationViewModel
             )
             Column(
                 verticalArrangement = Arrangement.Bottom,
@@ -64,12 +88,12 @@ fun SearchingScreen(
                 modifier = modifier.fillMaxSize().padding(bottom = 16.dp)
             ) {
                 Box(
-                    modifier = Modifier.size(96.dp),
+                    modifier = Modifier.size(96.dp).padding(bottom = 16.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Canvas(modifier = Modifier.fillMaxSize()) {
                         drawCircle(
-                            color = Color.Black.copy(alpha = 0.2f),
+                            color = Color.Red.copy(alpha = 0.4f),
                             radius = size.minDimension / 2
                         )
                     }
@@ -83,25 +107,19 @@ fun SearchingScreen(
                         )
                     }
                 }
-                Text("Дистанция до цели:")
-                Text(
-                    text = "${"%.1f".format(distanceToTarget)} метров",
-                    style = MaterialTheme.typography.displayMedium
-                )
-                Text(
-                    text = "Направление: ${"%.0f".format(relativeBearing)}°",
-                    style = MaterialTheme.typography.titleMedium
-                )
+                Card (
+                    modifier = modifier
+                        .padding(start = 16.dp, end = 16.dp)
+                        .fillMaxWidth()
+                ) {
+                    Text(
+                        text = "${"%.1f".format(distanceToTarget)} m",
+                        modifier = modifier.align(alignment = Alignment.CenterHorizontally),
+                        color = Color.Red,
+                        style = MaterialTheme.typography.displayMedium
+                    )
+                }
             }
-            LinearProgressIndicator(
-                progress = { (1 - (distanceToTarget / distanceMeters)).toFloat() },
-                modifier = Modifier
-                    .width(320.dp)
-                    .height(4.dp)
-                    .rotate(90f)
-                    .align(Alignment.CenterEnd)
-                    .offset(y = (-120).dp)
-            )
         }
     }
 }

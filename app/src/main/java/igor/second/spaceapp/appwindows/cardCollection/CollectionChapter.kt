@@ -1,6 +1,7 @@
 package igor.second.spaceapp.appwindows.cardCollection
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,8 +13,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun CollectionChapter(
@@ -43,6 +48,7 @@ fun CollectionChapter(
     cardScore7: Int,
     cardScore8: Int,
     @StringRes collectionName: Int,
+    nameColor: Color
 ){
     Column (
         verticalArrangement = Arrangement.Center,
@@ -52,13 +58,23 @@ fun CollectionChapter(
             .padding(top = 16.dp)
     ) {
         Card (modifier = modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp)
+            .fillMaxWidth()
+            .padding(bottom = 8.dp, start = 8.dp, end = 8.dp)
         ) {
-            Text(
-                stringResource(collectionName),
-                modifier = modifier
-                    .align(alignment = Alignment.CenterHorizontally))
+            Column (
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.Start,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(color = nameColor)
+            ) {
+                Text(stringResource(collectionName),
+                    fontSize = 18.sp,
+                    fontStyle = FontStyle.Italic,
+                    fontWeight = FontWeight.Bold,
+                    modifier = modifier.padding(start = 16.dp)
+                )
+            }
         }
         Row (
             verticalAlignment = Alignment.CenterVertically,

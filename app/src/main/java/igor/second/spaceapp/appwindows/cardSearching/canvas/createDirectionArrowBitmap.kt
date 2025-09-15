@@ -1,4 +1,4 @@
-package igor.second.spaceapp.appwindows.cardSearching.locationSetting
+package igor.second.spaceapp.appwindows.cardSearching.canvas
 
 import android.graphics.Bitmap
 import android.graphics.Canvas

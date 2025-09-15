@@ -1,4 +1,4 @@
-package igor.second.spaceapp.appwindows.cardGeneration.generator
+package igor.second.spaceapp.appwindows.cardShopping.offline
 
 import androidx.compose.runtime.MutableState
 import igor.second.spaceapp.appsettings.DataStoreManager
@@ -6,7 +6,11 @@ import igor.second.spaceapp.appsettings.SettingData
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-fun addCardValue(
+fun offlinePurchaseFun(
+    purchaseValue: Int,
+    userGenerationLevel: MutableState<Int>,
+    userName: MutableState<String>,
+    userMoneyValue: MutableState<Int>,
     dataStoreManager: DataStoreManager,
     bronzeValue1: MutableState<Int>,
     bronzeValue2: MutableState<Int>,
@@ -55,64 +59,18 @@ fun addCardValue(
     epicValue5: MutableState<Int>,
     epicValue6: MutableState<Int>,
     epicValue7: MutableState<Int>,
-    epicValue8: MutableState<Int>,
-    userGenerationLevel: MutableState<Int>,
-    userMoneyValue: MutableState<Int>,
-    userName: MutableState<String>,
-    generationValue: MutableState<Int>
+    epicValue8: MutableState<Int>
 ) = runBlocking {
-    launch {
-        when (generationValue.value){
-            in 1..10 -> bronzeValue1.value += 1
-            in 11..20 -> bronzeValue2.value += 1
-            in 21..30 -> bronzeValue3.value += 1
-            in 31..40 -> bronzeValue4.value += 1
-            in 41..50 -> bronzeValue5.value += 1
-            in 51..60 -> bronzeValue6.value += 1
-            in 61..70 -> bronzeValue7.value += 1
-            in 71..80 -> bronzeValue8.value += 1
-            in 81..90 -> silverValue1.value += 1
-            in 91..100 -> silverValue2.value += 1
-            in 101..110 -> silverValue3.value += 1
-            in 111..120 -> silverValue4.value += 1
-            in 121..130 -> silverValue5.value += 1
-            in 131..140 -> silverValue6.value += 1
-            in 141..150 -> silverValue7.value += 1
-            in 151..160 -> silverValue8.value += 1
-            in 161..170 -> goldValue1.value += 1
-            in 171..180 -> goldValue2.value += 1
-            in 181..190 -> goldValue3.value += 1
-            in 191..200 -> goldValue4.value += 1
-            in 201..210 -> goldValue5.value += 1
-            in 211..220 -> goldValue6.value += 1
-            in 221..230 -> goldValue7.value += 1
-            in 231..240 -> goldValue8.value += 1
-            in 241..250 -> diamondValue1.value += 1
-            in 251..260 -> diamondValue2.value += 1
-            in 261..270 -> diamondValue3.value += 1
-            in 271..280 -> diamondValue4.value += 1
-            in 281..290 -> diamondValue5.value += 1
-            in 291..300 -> diamondValue6.value += 1
-            in 301..310 -> diamondValue7.value += 1
-            in 311..320 -> diamondValue8.value += 1
-            in 321..330 -> platinumValue1.value += 1
-            in 331..340 -> platinumValue2.value += 1
-            in 341..350 -> platinumValue3.value += 1
-            in 351..360 -> platinumValue4.value += 1
-            in 361..370 -> platinumValue5.value += 1
-            in 371..380 -> platinumValue6.value += 1
-            in 381..390 -> platinumValue7.value += 1
-            in 391..400 -> platinumValue8.value += 1
-            in 401..410 -> epicValue1.value += 1
-            in 411..420 -> epicValue2.value += 1
-            in 421..430 -> epicValue3.value += 1
-            in 431..440 -> epicValue4.value += 1
-            in 441..450 -> epicValue5.value += 1
-            in 451..460 -> epicValue6.value += 1
-            in 461..470 -> epicValue7.value += 1
-            in 471..480 -> epicValue8.value += 1
-        }
+
+    when (purchaseValue){
+        1 -> goldValue1.value += 1
+        2 -> goldValue2.value += 1
+        3 -> diamondValue1.value += 1
+        4 -> diamondValue2.value += 1
+        5 -> platinumValue1.value += 1
+        6 -> platinumValue2.value += 1
     }
+
     launch {
         dataStoreManager.saveSettings(
             SettingData(

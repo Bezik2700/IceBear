@@ -186,7 +186,6 @@ class PurchaseViewModel(
 
     private fun isConsumableProduct(productId: String?): Boolean {
         return productId?.startsWith("plus_money_") == true ||
-                productId?.startsWith("add_card_") == true ||
                 productId?.startsWith("upgrade_") == true
     }
 
@@ -220,14 +219,14 @@ class PurchaseViewModel(
     private fun handlePurchaseRewards(purchase: Purchase) {
         viewModelScope.launch {
             when (purchase.products.firstOrNull()) {
-                "upgrade_1" -> dataStoreManager.upGenerationLevel(10)
-                "upgrade_2" -> dataStoreManager.upGenerationLevel(30)
-                "upgrade_3" -> dataStoreManager.upGenerationLevel(90)
-                "upgrade_4" -> dataStoreManager.upGenerationLevel(150)
-                "plus_money_1" -> dataStoreManager.upMoneyValue(15)
-                "plus_money_2" -> dataStoreManager.upMoneyValue(45)
-                "plus_money_3" -> dataStoreManager.upMoneyValue(110)
-                "plus_money_4" -> dataStoreManager.upMoneyValue(250)
+                "upgrade_1" -> dataStoreManager.upGenerationLevel(1)
+                "upgrade_2" -> dataStoreManager.upGenerationLevel(3)
+                "upgrade_3" -> dataStoreManager.upGenerationLevel(7)
+                "upgrade_4" -> dataStoreManager.upGenerationLevel(19)
+                "plus_money_1" -> dataStoreManager.upMoneyValue(1000)
+                "plus_money_2" -> dataStoreManager.upMoneyValue(4900)
+                "plus_money_3" -> dataStoreManager.upMoneyValue(9900)
+                "plus_money_4" -> dataStoreManager.upMoneyValue(99900)
                 "add_platinum_card1" -> dataStoreManager.plusCardValue(1)
                 "add_platinum_card2" -> dataStoreManager.plusCardValue(2)
                 "add_platinum_card3" -> dataStoreManager.plusCardValue(3)
@@ -260,14 +259,14 @@ class PurchaseViewModel(
     fun handleRefund(purchase: Purchase) {
         viewModelScope.launch {
             when (purchase.products.firstOrNull()) {
-                "upgrade_1" -> dataStoreManager.removeGenerationLevel(10)
-                "upgrade_2" -> dataStoreManager.removeGenerationLevel(30)
-                "upgrade_3" -> dataStoreManager.removeGenerationLevel(90)
-                "upgrade_4" -> dataStoreManager.removeGenerationLevel(150)
-                "plus_money_1" -> dataStoreManager.removeMoneyValue(15)
-                "plus_money_2" -> dataStoreManager.removeMoneyValue(45)
-                "plus_money_3" -> dataStoreManager.removeMoneyValue(110)
-                "plus_money_4" -> dataStoreManager.removeMoneyValue(250)
+                "upgrade_1" -> dataStoreManager.removeGenerationLevel(1)
+                "upgrade_2" -> dataStoreManager.removeGenerationLevel(3)
+                "upgrade_3" -> dataStoreManager.removeGenerationLevel(7)
+                "upgrade_4" -> dataStoreManager.removeGenerationLevel(19)
+                "plus_money_1" -> dataStoreManager.removeMoneyValue(1000)
+                "plus_money_2" -> dataStoreManager.removeMoneyValue(4900)
+                "plus_money_3" -> dataStoreManager.removeMoneyValue(9900)
+                "plus_money_4" -> dataStoreManager.removeMoneyValue(99900)
                 "add_platinum_card1" -> dataStoreManager.removeCardValue(1)
                 "add_platinum_card2" -> dataStoreManager.removeCardValue(2)
                 "add_platinum_card3" -> dataStoreManager.removeCardValue(3)

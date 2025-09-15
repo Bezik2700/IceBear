@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.Card
@@ -25,12 +24,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import igor.second.spaceapp.R
 
 @Composable
 fun CollectionSmallCard(
@@ -58,26 +60,26 @@ fun CollectionSmallCard(
                         .fillMaxWidth()
                         .padding(bottom = 8.dp)
                 ) {
-                    Card (modifier = modifier.clip(CircleShape).size(40.dp)) {
-                        IconButton(
-                            onClick = {enabled = !enabled}
-                        ) {
-                            Icon(
-                                Icons.Rounded.Close,
-                                contentDescription = "exit"
-                            )
-                        }
+                    IconButton(
+                        onClick = {enabled = !enabled}
+                    ) {
+                        Icon(
+                            Icons.Rounded.Close,
+                            tint = Color.White,
+                            contentDescription = "exit"
+                        )
                     }
                 }
-                Card (modifier = Modifier.size(width = 280.dp, height = 560.dp)) {
+                Card (modifier = modifier
+                    .size(width = 280.dp, height = 560.dp)
+                ) {
                     Image(
                         painterResource(cardImage),
                         contentDescription = "box card",
                         contentScale = ContentScale.FillBounds,
-                        modifier = Modifier.fillMaxSize()
+                        modifier = modifier.fillMaxSize()
                     )
                 }
-                Text(stringResource(cardName))
             }
         }
     } else {
@@ -85,7 +87,7 @@ fun CollectionSmallCard(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(cardScore.toString())
+            Text(stringResource(cardName))
             Card (
                 modifier = Modifier
                     .size(width = 64.dp, height = 128.dp)
@@ -98,7 +100,20 @@ fun CollectionSmallCard(
                     modifier = Modifier.fillMaxSize()
                 )
             }
-            Text(stringResource(cardName))
+            Text(
+                cardScore.toString(),
+                fontSize = 18.sp
+            )
         }
     }
+}
+
+@Preview
+@Composable
+fun CollectionSmallCardPreview(){
+    CollectionSmallCard(
+        cardScore = 0,
+        cardImage = R.drawable.bronze_1,
+        cardName = R.string.bronze1
+    )
 }

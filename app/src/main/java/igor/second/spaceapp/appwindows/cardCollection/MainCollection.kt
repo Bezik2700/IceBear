@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import igor.second.spaceapp.R
@@ -102,7 +103,8 @@ fun MainCollection(
                 cardScore6 = bronzeValue6.value,
                 cardScore7 = bronzeValue7.value,
                 cardScore8 = bronzeValue8.value,
-                collectionName = R.string.bronze
+                collectionName = R.string.bronze,
+                nameColor = Color(0xFFC9882B)
             )
             CollectionChapter(
                 modifier = modifier,
@@ -130,7 +132,8 @@ fun MainCollection(
                 cardScore6 = silverValue6.value,
                 cardScore7 = silverValue7.value,
                 cardScore8 = silverValue8.value,
-                collectionName = R.string.silver
+                collectionName = R.string.silver,
+                nameColor = Color(0xFFC0C0C0)
             )
             CollectionChapter(
                 modifier = modifier,
@@ -158,7 +161,8 @@ fun MainCollection(
                 cardScore6 = goldValue6.value,
                 cardScore7 = goldValue7.value,
                 cardScore8 = goldValue8.value,
-                collectionName = R.string.gold
+                collectionName = R.string.gold,
+                nameColor = Color(0xFFE0B500)
             )
             CollectionChapter(
                 modifier = modifier,
@@ -186,7 +190,8 @@ fun MainCollection(
                 cardScore6 = diamondValue6.value,
                 cardScore7 = diamondValue7.value,
                 cardScore8 = diamondValue8.value,
-                collectionName = R.string.diamond
+                collectionName = R.string.diamond,
+                nameColor = Color(0xFF005BFF)
             )
             CollectionChapter(
                 modifier = modifier,
@@ -214,7 +219,8 @@ fun MainCollection(
                 cardScore6 = platinumValue6.value,
                 cardScore7 = platinumValue7.value,
                 cardScore8 = platinumValue8.value,
-                collectionName = R.string.platinum
+                collectionName = R.string.platinum,
+                nameColor = Color(0xFFFF0000)
             )
             CollectionChapter(
                 modifier = modifier,
@@ -242,7 +248,8 @@ fun MainCollection(
                 cardScore6 = epicValue6.value,
                 cardScore7 = epicValue7.value,
                 cardScore8 = epicValue8.value,
-                collectionName = R.string.epic
+                collectionName = R.string.epic,
+                nameColor = Color(0xFF22A92D)
             )
         }
     }

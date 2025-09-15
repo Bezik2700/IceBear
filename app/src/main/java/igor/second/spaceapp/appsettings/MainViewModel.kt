@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 
 class MainViewModel: ViewModel() {
 
-    private val _timer = MutableStateFlow(10)
+    private val _timer = MutableStateFlow(7)
     val timer: StateFlow<Int> = _timer
 
     private val _timerEnabled = MutableStateFlow(false)
@@ -30,7 +30,7 @@ class MainViewModel: ViewModel() {
 
     fun timerRestart(){
         viewModelScope.launch {
-            _timer.value = 10
+            _timer.value = 7
         }
     }
 

@@ -1,17 +1,13 @@
 package igor.second.spaceapp.appwindows.cardGeneration.generator.userGeneration
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.Switch
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -20,18 +16,19 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import igor.second.spaceapp.R
 import igor.second.spaceapp.appsettings.DataStoreManager
 import igor.second.spaceapp.appsettings.MainViewModel
 import igor.second.spaceapp.appwindows.cardGeneration.content.InCollectionButton
+import igor.second.spaceapp.appwindows.cardGeneration.generator.autoGeneration.userGenerationLevelUpgrade
 
 @Composable
 fun MiniGeneration(
     modifier: Modifier = Modifier,
+    context: Context,
+    generationValue: MutableState<Int>,
     userGenerationLevel: MutableState<Int>,
     userName: MutableState<String>,
     userMoneyValue: MutableState<Int>,
@@ -84,7 +81,6 @@ fun MiniGeneration(
     epicValue6: MutableState<Int>,
     epicValue7: MutableState<Int>,
     epicValue8: MutableState<Int>,
-    autoGenerationEnabler: MutableState<Boolean>,
     viewModel: MainViewModel = viewModel()
 ){
 
@@ -96,6 +92,7 @@ fun MiniGeneration(
 
     if (timerEnabled){
         Text(userGenerationLevel.value.toString())
+        Text(generationValue.value.toString())
         Row (
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
@@ -103,8 +100,9 @@ fun MiniGeneration(
         ) {
             GenerationButton(
                 modifier = modifier.padding(end = 16.dp),
+                generationValue = generationValue,
                 userGenerationLevel = userGenerationLevel,
-                icon = R.drawable.ic_launcher_background
+                color = Color.Green
             )
             Column (
                 verticalArrangement = Arrangement.Center,
@@ -113,13 +111,15 @@ fun MiniGeneration(
             ) {
                 GenerationButton(
                     modifier = modifier.padding(bottom = 16.dp, end = 16.dp),
+                    generationValue = generationValue,
                     userGenerationLevel = userGenerationLevel,
-                    icon = R.drawable.ic_launcher_background
+                    color = Color.Yellow
                 )
                 GenerationButton(
                     modifier = modifier.padding(end = 16.dp),
+                    generationValue = generationValue,
                     userGenerationLevel = userGenerationLevel,
-                    icon = R.drawable.ic_launcher_background
+                    color = Color.LightGray
                 )
             }
             Column (
@@ -129,22 +129,25 @@ fun MiniGeneration(
             ) {
                 GenerationButton(
                     modifier = modifier.padding(bottom = 16.dp),
+                    generationValue = generationValue,
                     userGenerationLevel = userGenerationLevel,
-                    icon = R.drawable.ic_launcher_background
+                    color = Color.Red
                 )
                 GenerationButton(
+                    generationValue = generationValue,
                     userGenerationLevel = userGenerationLevel,
-                    icon = R.drawable.ic_launcher_background
+                    color = Color.Magenta
                 )
             }
             GenerationButton(
                 modifier = modifier.padding(start = 16.dp),
+                generationValue = generationValue,
                 userGenerationLevel = userGenerationLevel,
-                icon = R.drawable.ic_launcher_background
+                color = Color.Cyan
             )
         }
     } else {
-        if (userGenerationLevel.value != 0){
+        if (generationValue.value != 0){
             InCollectionButton(
                 bronzeValue1 = bronzeValue1,
                 bronzeValue2 = bronzeValue2,
@@ -197,7 +200,8 @@ fun MiniGeneration(
                 userMoneyValue = userMoneyValue,
                 dataStoreManager = dataStoreManager,
                 userGenerationLevel = userGenerationLevel,
-                userName = userName
+                userName = userName,
+                generationValue = generationValue
             )
         } else {
             Column (
@@ -207,30 +211,35 @@ fun MiniGeneration(
                     .fillMaxWidth()
                     .padding(8.dp)
             ) {
-                Card (modifier = Modifier
-                    .size(160.dp)
-                    .clip(CircleShape)) {
-                    Column (
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(color = Color.Red)
-                            .clickable(onClick = {
-                                userMoneyValue.value -= 1
-                                viewModel.timerRestart()
-                                viewModel.timerEnabledChange()
-                            }
-                            )) {
-                        Text(text = "Start")
-                    }
+                Button(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .padding(start = 16.dp, end = 16.dp),
+                    onClick = {
+                        if (userMoneyValue.value >= 10){
+                            userMoneyValue.value -= 10
+                            viewModel.timerRestart()
+                            viewModel.timerEnabledChange()
+                        } else {
+                            Toast.makeText(context, "not enough money", Toast.LENGTH_SHORT).show()
+                        }
+                }) {
+                    Text(text = "Start generation")
                 }
-                Switch(
-                    checked = autoGenerationEnabler.value,
-                    onCheckedChange = {
-                        autoGenerationEnabler.value = it
-                    }
-                )
+                Button(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .padding(start = 16.dp, end = 16.dp),
+                    onClick = {
+                        if (userMoneyValue.value >= 50){
+                            userMoneyValue.value -= 50
+                            userGenerationLevelUpgrade(userGenerationLevel = userGenerationLevel)
+                        } else {
+                            Toast.makeText(context, "not enough money", Toast.LENGTH_SHORT).show()
+                        }
+                }) {
+                    Text(text = "Start auto generation")
+                }
             }
         }
     }

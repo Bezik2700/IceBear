@@ -63,7 +63,8 @@ fun InCollectionButton(
     epicValue5: MutableState<Int>,
     epicValue6: MutableState<Int>,
     epicValue7: MutableState<Int>,
-    epicValue8: MutableState<Int>
+    epicValue8: MutableState<Int>,
+    generationValue: MutableState<Int>
 ){
 
     var scope = rememberCoroutineScope()
@@ -122,11 +123,12 @@ fun InCollectionButton(
                 userMoneyValue = userMoneyValue,
                 dataStoreManager = dataStoreManager,
                 userGenerationLevel = userGenerationLevel,
-                userName = userName
+                userName = userName,
+                generationValue = generationValue
             )
         }
         scope.launch {
-            userGenerationLevel.value = 0
+            generationValue.value = 0
             dataStoreManager.saveSettings(
                 SettingData(
                     bronzeValue1 = bronzeValue1.value,

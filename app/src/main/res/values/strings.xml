@@ -1,19 +1,61 @@
 <resources>
     <string name="app_name">Ice bear</string>
 
+    // main screen text
+    <string name="exit">EXIT</string>
+    <string name="exit_enabled">Are you sure you want to exit?</string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
+
+    // searching text
+    <string name="on_target">Congratulations, you have reached your goal</string>
+    <string name="on_menu">To main menu</string>
+    <string name="search_again">Search again</string>
+    <string name="location_update">Determine your location…</string>
+
     // shopping names
-    <string name="generation_screen">Generation screen</string>
-    <string name="shopping_screen">Shopping screen</string>
-    <string name="find_screen">Find screen</string>
-    <string name="collection_screen">Collection screen</string>
+    <string name="generation_screen">GENERATION</string>
+    <string name="shopping_screen">SHOPPING</string>
+    <string name="find_screen">SEARCHING</string>
+    <string name="collection_screen">COLLECTION</string>
+    <string name="money">$</string>
+
+    // info about purchase
+    <string name="plus_money_info">plus_money_info</string>
+    <string name="upgrade_info">upgrade_info</string>
+    <string name="add_platinum_info">add_platinum_info</string>
+    <string name="add_epic_info">add_epic_info</string>
+
+    // buy cards
+    <string name="buy">Buy</string>
+    <string name="plus_money_1">1000</string>
+    <string name="plus_money_2">4900</string>
+    <string name="plus_money_3">9900</string>
+    <string name="plus_money_4">99900</string>
+    <string name="upgrade_1">1</string>
+    <string name="upgrade_2">3</string>
+    <string name="upgrade_3">7</string>
+    <string name="upgrade_4">19</string>
+    <string name="gold_1">GOLD 1</string>
+    <string name="gold_2">GOLD 2</string>
+    <string name="diamond_1">DIAMOND 1</string>
+    <string name="diamond_2">DIAMOND 2</string>
+    <string name="platinum_1">PLATINUM 1</string>
+    <string name="platinum_2">PLATINUM 2</string>
+    <string name="platinum_3">PLATINUM 3</string>
+    <string name="platinum_4">PLATINUM 4</string>
+    <string name="epic_1">EPIC 1</string>
+    <string name="epic_2">EPIC 2</string>
+    <string name="epic_3">EPIC 3</string>
+    <string name="epic_4">EPIC 4</string>
 
     // block names
-    <string name="bronze">BRONZE</string>
-    <string name="silver">SILVER</string>
-    <string name="gold">GOLD</string>
-    <string name="diamond">DIAMOND</string>
-    <string name="platinum">PLATINUM</string>
-    <string name="epic">EPIC</string>
+    <string name="bronze">BRONZE collection</string>
+    <string name="silver">SILVER collection</string>
+    <string name="gold">GOLD collection</string>
+    <string name="diamond">DIAMOND collection</string>
+    <string name="platinum">PLATINUM collection</string>
+    <string name="epic">EPIC collection</string>
 
     // card names
     <string name="bronze1">bronze 1</string>
