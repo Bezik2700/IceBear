@@ -10,6 +10,31 @@ class Repository {
     private val tag = "ChatRepository"
     private val apiService = Retrofit.getService()
 
+    fun loadUserNames(onSuccess: (List<String>) -> Unit, onError: (String) -> Unit) {
+        Log.d(tag, "Загрузка имен пользователей...")
+
+        apiService.getUserNames().enqueue(object : Callback<List<UserRating>> {
+            override fun onResponse(call: Call<List<UserRating>>, response: Response<List<UserRating>>) {
+                if (response.isSuccessful) {
+                    val users = response.body() ?: emptyList()
+                    val names = users.map { it.name }
+                    Log.d(tag, "Успешно! Загружено ${names.size} имен")
+                    onSuccess(names)
+                } else {
+                    val errorMsg = "Ошибка: ${response.code()}"
+                    Log.e(tag, errorMsg)
+                    onError(errorMsg)
+                }
+            }
+
+            override fun onFailure(call: Call<List<UserRating>>, t: Throwable) {
+                val errorMsg = "Ошибка сети: ${t.message}"
+                Log.e(tag, errorMsg)
+                onError(errorMsg)
+            }
+        })
+    }
+
     fun loadMessages(onSuccess: (List<Message>) -> Unit, onError: (String) -> Unit) {
         Log.d(tag, "load messages...")
         apiService.getMessages().enqueue(object : Callback<List<Message>> {

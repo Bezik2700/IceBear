@@ -3,7 +3,6 @@ package igor.second.spaceapp.appwindows.cardStartScreen
 import android.app.Activity
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,8 +10,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Card
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -28,6 +25,7 @@ import androidx.navigation.NavController
 import igor.second.spaceapp.R
 import igor.second.spaceapp.appwindows.Screens
 import igor.second.spaceapp.appwindows.cardInformation.MainInformation
+import igor.second.spaceapp.appwindows.cardStartScreen.ratingSetting.UserRating
 
 @Composable
 fun MainIncome(
@@ -57,23 +55,8 @@ fun MainIncome(
                 .fillMaxWidth()
                 .fillMaxHeight(0.5f)
         ) {
-            Card (
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(bottom = 16.dp, start = 8.dp, end = 8.dp)
-                    .clickable(onClick = {
-                            navController.navigate(Screens.MainConnection.route)
-                        }
-                    )
-            ) {
-                Column (
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    Text("start game process")
-                }
-            }
+            UserRating()
+            StartGameProcess(navController = navController)
         }
         Column (
             verticalArrangement = Arrangement.Center,

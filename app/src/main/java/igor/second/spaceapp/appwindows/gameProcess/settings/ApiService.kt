@@ -20,4 +20,7 @@ interface ApiService {
         @Header("Prefer") prefer: String = "return=minimal",
         @Query("id") id: String = "gt.0"
     ): Call<Void>
+
+    @GET("user_rating?select=name&order=created_at.asc")
+    fun getUserNames(): Call<List<UserRating>>
 }

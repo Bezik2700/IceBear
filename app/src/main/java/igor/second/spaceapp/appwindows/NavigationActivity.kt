@@ -1,21 +1,13 @@
 package igor.second.spaceapp.appwindows
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Person
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -25,6 +17,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import igor.second.spaceapp.R
 import igor.second.spaceapp.appsettings.DataStoreManager
+import igor.second.spaceapp.appsettings.TopRowNavigation
 import igor.second.spaceapp.appsettings.UserInfoDialog
 import igor.second.spaceapp.appwindows.cardCollection.MainCollection
 import igor.second.spaceapp.appwindows.cardGeneration.MainGeneration
@@ -168,33 +161,16 @@ fun NavigationActivity(
         )
 
         // top row user info and money
-        Row (
-            verticalAlignment = Alignment.Top,
-            horizontalArrangement = Arrangement.Start,
-            modifier = Modifier.fillMaxSize().padding(top = 48.dp, start = 16.dp)
-        ) {
-            IconButton(onClick = {
-                dialogShowValue.value = true
-            }) {
-                Icon(
-                    Icons.Rounded.Person,
-                    contentDescription = "user info"
-                )
-            }
-            Text(userName.value)
-        }
-        Row (
-            verticalAlignment = Alignment.Top,
-            horizontalArrangement = Arrangement.End,
-            modifier = Modifier.fillMaxSize().padding(top = 48.dp, end = 16.dp)
-        ) {
-            Text("money: ${userMoneyValue.value}")
-        }
+        TopRowNavigation(
+            dialogShowValue = dialogShowValue,
+            userMoneyValue = userMoneyValue,
+            userName = userName
+        )
 
         NavHost(
             navController = navController,
             startDestination = Screens.MainIncome.route,
-            modifier = Modifier
+            modifier = Modifier.padding(top = 32.dp)
         ) {
             composable (route = Screens.MainGeneration.route) {
                 MainGeneration(
