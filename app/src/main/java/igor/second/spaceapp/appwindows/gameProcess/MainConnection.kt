@@ -115,9 +115,20 @@ fun MainConnection(
 
     var messageText = remember { mutableStateOf("") }
 
-    val lastMessage = remember(messages) { messages.maxByOrNull { it.created_at ?: "" } }
+    val thirdLastMessage = remember(messages) {
+        messages.sortedByDescending { it.created_at ?: "" }.getOrNull(2) }
+    val thirdLastCardValue = remember(thirdLastMessage) {
+        thirdLastMessage?.card_value ?: 0 }
 
-    val lastCardValue = remember(lastMessage) { lastMessage?.card_value ?: 0 }
+    val secondLastMessage = remember(messages) {
+        messages.sortedByDescending { it.created_at ?: "" }.getOrNull(1) }
+    val secondLastCardValue = remember(secondLastMessage) {
+        secondLastMessage?.card_value ?: 0 }
+
+    val lastMessage = remember(messages) {
+        messages.maxByOrNull { it.created_at ?: "" } }
+    val lastCardValue = remember(lastMessage) {
+        lastMessage?.card_value ?: 0 }
 
     var enabledForProgress = remember { mutableStateOf(false) }
 
@@ -169,14 +180,17 @@ fun MainConnection(
                 .padding(bottom = 120.dp, top = 80.dp)
         ) {
 
+            ChatCards(
+                userName = userName.value,
+                repository = Repository(),
+                lastCardValue = lastCardValue.toString(),
+                secondLastCardValue = secondLastCardValue.toString(),
+                thirdLastCardValue = thirdLastCardValue.toString()
+            )
+
             GameBigCard(
                 image = bigCardImage(lastCardValue = lastCardValue),
                 text = lastCardValue.toString()
-            )
-
-            ChatCards(
-                userName = userName.value,
-                repository = Repository()
             )
 
             GameCardBox(
@@ -238,7 +252,9 @@ fun MainConnection(
                 isSending = isSending,
                 messageText = messageText,
                 error = error,
-                enabledForProgress = enabledForProgress
+                enabledForProgress = enabledForProgress,
+                secondLastCardValue = secondLastCardValue.toString(),
+                thirdLastCardValue = thirdLastCardValue.toString()
             )
             CustomSlider(sliderPosition = sliderPosition)
         }

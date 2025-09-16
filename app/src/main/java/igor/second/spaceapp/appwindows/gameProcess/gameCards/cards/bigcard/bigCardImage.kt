@@ -53,7 +53,7 @@ fun bigCardImage(lastCardValue: Any): Int {
         460 -> R.drawable.epic_6
         470 -> R.drawable.epic_7
         480 -> R.drawable.epic_8
-        else -> R.drawable.ic_launcher_background
+        else -> R.drawable.flip_side_card
     }
 
     return image

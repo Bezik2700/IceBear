@@ -1,9 +1,9 @@
 package igor.second.spaceapp.appwindows.gameProcess.gameCards
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -71,6 +71,8 @@ fun GameCardBox(
     userMoneyValue: MutableState<Int>,
     dataStoreManager: DataStoreManager,
     lastCardValue: String,
+    secondLastCardValue: String,
+    thirdLastCardValue: String,
     userName: MutableState<String>,
     coroutineScope: CoroutineScope,
     isSending: MutableState<Boolean>,
@@ -81,14 +83,15 @@ fun GameCardBox(
 
     val repository = remember { Repository() }
 
-    Box(modifier = Modifier) {
-
+    Column (
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
+    ) {
         Row(
             verticalAlignment = Alignment.Bottom,
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = 108.dp, start = 64.dp)
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
         ) {
             GameCardBoxPart(
                 sliderPosition = sliderPosition,
@@ -151,7 +154,9 @@ fun GameCardBox(
                 number = 1,
                 repository = repository,
                 error = error,
-                enabledForProgress = enabledForProgress
+                enabledForProgress = enabledForProgress,
+                secondLastCardValue = secondLastCardValue,
+                thirdLastCardValue = thirdLastCardValue
             )
             GameCardBoxPart(
                 sliderPosition = sliderPosition,
@@ -214,7 +219,9 @@ fun GameCardBox(
                 number = 2,
                 repository = repository,
                 error = error,
-                enabledForProgress = enabledForProgress
+                enabledForProgress = enabledForProgress,
+                secondLastCardValue = secondLastCardValue,
+                thirdLastCardValue = thirdLastCardValue
             )
             GameCardBoxPart(
                 sliderPosition = sliderPosition,
@@ -277,7 +284,9 @@ fun GameCardBox(
                 number = 3,
                 repository = repository,
                 error = error,
-                enabledForProgress = enabledForProgress
+                enabledForProgress = enabledForProgress,
+                secondLastCardValue = secondLastCardValue,
+                thirdLastCardValue = thirdLastCardValue
             )
             GameCardBoxPart(
                 sliderPosition = sliderPosition,
@@ -340,15 +349,15 @@ fun GameCardBox(
                 number = 4,
                 repository = repository,
                 error = error,
-                enabledForProgress = enabledForProgress
+                enabledForProgress = enabledForProgress,
+                secondLastCardValue = secondLastCardValue,
+                thirdLastCardValue = thirdLastCardValue
             )
         }
         Row (
             verticalAlignment = Alignment.Bottom,
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = 48.dp)
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth()
         ) {
             GameCardBoxPart(
                 sliderPosition = sliderPosition,
@@ -411,7 +420,9 @@ fun GameCardBox(
                 number = 5,
                 repository = repository,
                 error = error,
-                enabledForProgress = enabledForProgress
+                enabledForProgress = enabledForProgress,
+                secondLastCardValue = secondLastCardValue,
+                thirdLastCardValue = thirdLastCardValue
             )
             GameCardBoxPart(
                 sliderPosition = sliderPosition,
@@ -474,7 +485,9 @@ fun GameCardBox(
                 number = 6,
                 repository = repository,
                 error = error,
-                enabledForProgress = enabledForProgress
+                enabledForProgress = enabledForProgress,
+                secondLastCardValue = secondLastCardValue,
+                thirdLastCardValue = thirdLastCardValue
             )
             GameCardBoxPart(
                 sliderPosition = sliderPosition,
@@ -537,7 +550,9 @@ fun GameCardBox(
                 number = 7,
                 repository = repository,
                 error = error,
-                enabledForProgress = enabledForProgress
+                enabledForProgress = enabledForProgress,
+                secondLastCardValue = secondLastCardValue,
+                thirdLastCardValue = thirdLastCardValue
             )
             GameCardBoxPart(
                 sliderPosition = sliderPosition,
@@ -600,7 +615,9 @@ fun GameCardBox(
                 number = 8,
                 repository = repository,
                 error = error,
-                enabledForProgress = enabledForProgress
+                enabledForProgress = enabledForProgress,
+                secondLastCardValue = secondLastCardValue,
+                thirdLastCardValue = thirdLastCardValue
             )
         }
     }

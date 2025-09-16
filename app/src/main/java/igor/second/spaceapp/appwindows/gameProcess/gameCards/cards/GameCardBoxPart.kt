@@ -3,6 +3,10 @@ package igor.second.spaceapp.appwindows.gameProcess.gameCards.cards
 import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import igor.second.spaceapp.appsettings.DataStoreManager
 import igor.second.spaceapp.appwindows.gameProcess.gameCards.cards.bigcard.cardValueForGame
@@ -72,6 +76,8 @@ fun GameCardBoxPart(
     userName: MutableState<String>,
     dataStoreManager: DataStoreManager,
     lastCardValue: String,
+    secondLastCardValue: String,
+    thirdLastCardValue: String,
     coroutineScope: CoroutineScope,
     isSending: MutableState<Boolean>,
     messageText: MutableState<String>,
@@ -83,104 +89,156 @@ fun GameCardBoxPart(
 
     var context = LocalContext.current
 
+    var messages by remember { mutableStateOf<List<Message>>(emptyList()) }
+    var isLoading by remember { mutableStateOf(true) }
+
+    fun loadMessages() {
+        coroutineScope.launch {
+            repository.loadMessages(
+                onSuccess = { loadedMessages ->
+                    messages = loadedMessages
+                    isLoading = false
+                    error.value = null
+                },
+                onError = { errorMessage ->
+                    error.value = errorMessage
+                    isLoading = false
+                }
+            )
+        }
+    }
+
+    fun clearChatFromServer() {
+        coroutineScope.launch {
+            repository.deleteAllMessages(
+                onSuccess = {
+                    messages = emptyList()
+                    loadMessages()
+                },
+                onError = { errorMessage ->
+                    error.value = "Ошибка очистки: $errorMessage"
+                }
+            )
+        }
+    }
+
+    fun chatUpdate(){
+        if (lastCardValue == secondLastCardValue &&
+            lastCardValue == thirdLastCardValue &&
+            lastCardValue.toInt() != 0 &&
+            secondLastCardValue.toInt() != 0 &&
+            thirdLastCardValue.toInt() != 0
+        ){
+            clearChatFromServer()
+        }
+    }
+
     GameMiniCard(
         onClick = {
-            if (lastCardValue.toInt() <= cardValueForGame(
-                    sliderPosition = sliderPosition,
-                    cardNumber = number
-                )
-            ) {
-                gameProcessStart(
-                    dataStoreManager = dataStoreManager,
-                    userGenerationLevel = userGenerationLevel,
-                    userMoneyValue = userMoneyValue,
-                    sliderPosition = sliderPosition,
-                    cardNumber = number,
-                    bronzeValue1 = bronzeValue1,
-                    bronzeValue2 = bronzeValue2,
-                    bronzeValue3 = bronzeValue3,
-                    bronzeValue4 = bronzeValue4,
-                    bronzeValue5 = bronzeValue5,
-                    bronzeValue6 = bronzeValue6,
-                    bronzeValue7 = bronzeValue7,
-                    bronzeValue8 = bronzeValue8,
-                    silverValue1 = silverValue1,
-                    silverValue2 = silverValue2,
-                    silverValue3 = silverValue3,
-                    silverValue4 = silverValue4,
-                    silverValue5 = silverValue5,
-                    silverValue6 = silverValue6,
-                    silverValue7 = silverValue7,
-                    silverValue8 = silverValue8,
-                    goldValue1 = goldValue1,
-                    goldValue2 = goldValue2,
-                    goldValue3 = goldValue3,
-                    goldValue4 = goldValue4,
-                    goldValue5 = goldValue5,
-                    goldValue6 = goldValue6,
-                    goldValue7 = goldValue7,
-                    goldValue8 = goldValue8,
-                    diamondValue1 = diamondValue1,
-                    diamondValue2 = diamondValue2,
-                    diamondValue3 = diamondValue3,
-                    diamondValue4 = diamondValue4,
-                    diamondValue5 = diamondValue5,
-                    diamondValue6 = diamondValue6,
-                    diamondValue7 = diamondValue7,
-                    diamondValue8 = diamondValue8,
-                    platinumValue1 = platinumValue1,
-                    platinumValue2 = platinumValue2,
-                    platinumValue3 = platinumValue3,
-                    platinumValue4 = platinumValue4,
-                    platinumValue5 = platinumValue5,
-                    platinumValue6 = platinumValue6,
-                    platinumValue7 = platinumValue7,
-                    platinumValue8 = platinumValue8,
-                    epicValue1 = epicValue1,
-                    epicValue2 = epicValue2,
-                    epicValue3 = epicValue3,
-                    epicValue4 = epicValue4,
-                    epicValue5 = epicValue5,
-                    epicValue6 = epicValue6,
-                    epicValue7 = epicValue7,
-                    epicValue8 = epicValue8,
-                    userName = userName
-                )
-
-                messageText.value = context.getString(
-                    messageTextGenerate(
+            coroutineScope.launch {
+                if (lastCardValue.toInt() <= cardValueForGame(
+                        sliderPosition = sliderPosition,
+                        cardNumber = number
+                    ) || lastCardValue.toInt() - 20 <= cardValueForGame(
                         sliderPosition = sliderPosition,
                         cardNumber = number
                     )
-                )
+                ) {
+                    gameProcessStart(
+                        dataStoreManager = dataStoreManager,
+                        userGenerationLevel = userGenerationLevel,
+                        userMoneyValue = userMoneyValue,
+                        sliderPosition = sliderPosition,
+                        cardNumber = number,
+                        bronzeValue1 = bronzeValue1,
+                        bronzeValue2 = bronzeValue2,
+                        bronzeValue3 = bronzeValue3,
+                        bronzeValue4 = bronzeValue4,
+                        bronzeValue5 = bronzeValue5,
+                        bronzeValue6 = bronzeValue6,
+                        bronzeValue7 = bronzeValue7,
+                        bronzeValue8 = bronzeValue8,
+                        silverValue1 = silverValue1,
+                        silverValue2 = silverValue2,
+                        silverValue3 = silverValue3,
+                        silverValue4 = silverValue4,
+                        silverValue5 = silverValue5,
+                        silverValue6 = silverValue6,
+                        silverValue7 = silverValue7,
+                        silverValue8 = silverValue8,
+                        goldValue1 = goldValue1,
+                        goldValue2 = goldValue2,
+                        goldValue3 = goldValue3,
+                        goldValue4 = goldValue4,
+                        goldValue5 = goldValue5,
+                        goldValue6 = goldValue6,
+                        goldValue7 = goldValue7,
+                        goldValue8 = goldValue8,
+                        diamondValue1 = diamondValue1,
+                        diamondValue2 = diamondValue2,
+                        diamondValue3 = diamondValue3,
+                        diamondValue4 = diamondValue4,
+                        diamondValue5 = diamondValue5,
+                        diamondValue6 = diamondValue6,
+                        diamondValue7 = diamondValue7,
+                        diamondValue8 = diamondValue8,
+                        platinumValue1 = platinumValue1,
+                        platinumValue2 = platinumValue2,
+                        platinumValue3 = platinumValue3,
+                        platinumValue4 = platinumValue4,
+                        platinumValue5 = platinumValue5,
+                        platinumValue6 = platinumValue6,
+                        platinumValue7 = platinumValue7,
+                        platinumValue8 = platinumValue8,
+                        epicValue1 = epicValue1,
+                        epicValue2 = epicValue2,
+                        epicValue3 = epicValue3,
+                        epicValue4 = epicValue4,
+                        epicValue5 = epicValue5,
+                        epicValue6 = epicValue6,
+                        epicValue7 = epicValue7,
+                        epicValue8 = epicValue8,
+                        userName = userName
+                    )
 
-                if (messageText.value.isNotBlank() && !isSending.value) {
-                    isSending.value = true
-                    val message = Message(
-                        content = messageText.value,
-                        sender_name = userName.value,
-                        card_value = cardValueForGame(
+                    messageText.value = context.getString(
+                        messageTextGenerate(
                             sliderPosition = sliderPosition,
                             cardNumber = number
                         )
                     )
-                    coroutineScope.launch {
-                        repository.sendMessage(
-                            message = message,
-                            onSuccess = {
-                                messageText.value = ""
-                                isSending.value = false
-                            },
-                            onError = { errorMessage ->
-                                error.value = errorMessage
-                                isSending.value = false
-                            }
+
+                    if (messageText.value.isNotBlank() && !isSending.value) {
+                        isSending.value = true
+                        val message = Message(
+                            content = messageText.value,
+                            sender_name = userName.value,
+                            card_value = cardValueForGame(
+                                sliderPosition = sliderPosition,
+                                cardNumber = number
+                            )
                         )
+                        coroutineScope.launch {
+                            repository.sendMessage(
+                                message = message,
+                                onSuccess = {
+                                    messageText.value = ""
+                                    isSending.value = false
+                                },
+                                onError = { errorMessage ->
+                                    error.value = errorMessage
+                                    isSending.value = false
+                                }
+                            )
+                        }
                     }
+                    enabledForProgress.value = true
+                } else {
+                    Toast.makeText(context, "not", Toast.LENGTH_SHORT).show()
                 }
-                enabledForProgress.value = true
-            } else {
-                Toast.makeText(context, "not", Toast.LENGTH_SHORT).show()
+            }
+            coroutineScope.launch {
+                chatUpdate()
             }
         },
         image = cardNumber(sliderPosition = sliderPosition, cardValue = number),
@@ -235,6 +293,10 @@ fun GameCardBoxPart(
             epicValue6 = epicValue6,
             epicValue7 = epicValue7,
             epicValue8 = epicValue8
+        ),
+        cardValue = cardValueForGame(
+            sliderPosition = sliderPosition,
+            cardNumber = number
         )
     )
 }

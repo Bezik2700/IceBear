@@ -1,5 +1,6 @@
 package igor.second.spaceapp.appwindows.cardStartScreen.ratingSetting
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -18,8 +19,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import igor.second.spaceapp.R
 
 @Composable
 fun UserRating(ratingViewModel: RatingViewModel = viewModel()){
@@ -34,49 +39,63 @@ fun UserRating(ratingViewModel: RatingViewModel = viewModel()){
             .fillMaxHeight(0.5f)
             .padding(bottom = 8.dp, start = 8.dp, end = 8.dp)
     ) {
-        if (isLoading) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .weight(1f),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        } else {
-            if (userNames.isNotEmpty()) {
-                LazyColumn(
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    items(userNames) { name ->
-                        UserRatingItem(name = name)
-                    }
-                }
-            } else {
+        Box(modifier = Modifier){
+            Image(
+                painterResource(R.drawable.income_card_game),
+                contentDescription = "rating fon",
+                contentScale = ContentScale.FillBounds,
+                modifier = Modifier.fillMaxSize()
+            )
+
+            if (isLoading) {
                 Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .weight(1f),
+                    modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("Нет данных о пользователях")
+                    CircularProgressIndicator()
                 }
-            }
-        }
-
-        error?.let { errorMessage ->
-            AlertDialog(
-                onDismissRequest = { ratingViewModel.clearError() },
-                title = { Text("Ошибка") },
-                text = { Text(errorMessage) },
-                confirmButton = {
-                    Button(onClick = { ratingViewModel.clearError() }) {
-                        Text("OK")
+            } else {
+                if (userNames.isNotEmpty()) {
+                    LazyColumn(
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        item {
+                            Text(
+                                "TOP",
+                                fontSize = 32.sp
+                            )
+                        }
+                        items(userNames) { name ->
+                            UserRatingItem(
+                                name = name,
+                                id = userNames.indexOf(name) + 1
+                            )
+                        }
+                    }
+                } else {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text("Нет данных о пользователях")
                     }
                 }
-            )
+            }
+            error?.let { errorMessage ->
+                AlertDialog(
+                    onDismissRequest = { ratingViewModel.clearError() },
+                    title = { Text("Ошибка") },
+                    text = { Text(errorMessage) },
+                    confirmButton = {
+                        Button(onClick = { ratingViewModel.clearError() }) {
+                            Text("OK")
+                        }
+                    }
+                )
+            }
         }
     }
 }

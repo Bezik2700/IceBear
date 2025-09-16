@@ -6,6 +6,8 @@
     <string name="exit_enabled">Are you sure you want to exit?</string>
     <string name="yes">YES</string>
     <string name="no">NO</string>
+    <string name="game">GAME</string>
+    <string name="user">user</string>
 
     // searching text
     <string name="on_target">Congratulations, you have reached your goal</string>

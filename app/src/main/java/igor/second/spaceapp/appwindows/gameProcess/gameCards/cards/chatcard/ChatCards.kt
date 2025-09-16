@@ -6,12 +6,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -32,22 +32,17 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun ChatCards(
-    modifier: Modifier = Modifier,
     userName: String,
-    repository: Repository
+    repository: Repository,
+    lastCardValue: String,
+    secondLastCardValue: String,
+    thirdLastCardValue: String
 ){
 
     var messages by remember { mutableStateOf<List<Message>>(emptyList()) }
     val coroutineScope = rememberCoroutineScope()
     var isLoading by remember { mutableStateOf(true) }
     var error by remember { mutableStateOf<String?>(null) }
-
-    val lastMessage = remember(messages) {
-        messages.maxByOrNull { it.created_at ?: "" }
-    }
-    val lastCardValue = remember(lastMessage) {
-        lastMessage?.card_value ?: ""
-    }
 
     fun loadMessages() {
         coroutineScope.launch {
@@ -86,60 +81,57 @@ fun ChatCards(
         }
     }
 
-    Card (
-        modifier = modifier
-            .fillMaxHeight(0.4f)
-            .padding(16.dp)
+    Column(
+        modifier = Modifier
+            .padding(bottom = 16.dp)
+            .fillMaxWidth()
+            .fillMaxHeight(0.2f)
     ) {
-        Column(
-            modifier = Modifier
-                .padding()
-                .fillMaxSize()
-        ) {
-            if (isLoading) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        CircularProgressIndicator()
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Text("Загрузка сообщений...")
+        if (isLoading) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    CircularProgressIndicator()
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text("Загрузка сообщений...")
+                }
+            }
+        } else if (error != null) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text("Ошибка:", color = MaterialTheme.colorScheme.error)
+                    Text(error!!, color = MaterialTheme.colorScheme.error)
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Button(onClick = { loadMessages() }) {
+                        Text("Повторить")
                     }
                 }
-            } else if (error != null) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text("Ошибка:", color = MaterialTheme.colorScheme.error)
-                        Text(error!!, color = MaterialTheme.colorScheme.error)
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Button(onClick = { loadMessages() }) {
-                            Text("Повторить")
-                        }
-                    }
+            }
+        } else {
+            LazyColumn(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxSize(),
+                reverseLayout = true
+            ) {
+                item {
+                    Button(onClick = {clearChatFromServer()}) { Text("DELETE") }
                 }
-            } else {
-                LazyColumn(
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.fillMaxSize(),
-                    reverseLayout = true
-                ) {
-                    items(messages.reversed()) { message ->
-                        MessageUI(
-                            message = message,
-                            isMyMessage = message.sender_name == userName
-                        )
-                    }
-                    item {
-                        Button(onClick = {clearChatFromServer()}) { Text("DELETE") }
-                    }
-                    item {
-                        Text(lastCardValue.toString())
-                    }
+                item {
+                    Text(lastCardValue)
+                    Text(secondLastCardValue)
+                    Text(thirdLastCardValue)
+                }
+                items(messages.reversed()) { message ->
+                    MessageUI(
+                        message = message,
+                        isMyMessage = message.sender_name == userName
+                    )
                 }
             }
         }
