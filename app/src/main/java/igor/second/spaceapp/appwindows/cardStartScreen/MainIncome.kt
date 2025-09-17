@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
@@ -30,12 +31,12 @@ import igor.second.spaceapp.appwindows.cardStartScreen.ratingSetting.UserRating
 @Composable
 fun MainIncome(
     navController: NavController,
+    userName: MutableState<String>,
     modifier: Modifier = Modifier
 ){
 
     var informationValue by remember { mutableIntStateOf(0) }
     var informationEnabled = remember { mutableStateOf(false) }
-
     var showExitDialog by remember { mutableStateOf(false) }
     var backPressTime by remember { mutableLongStateOf(0L) }
 
@@ -56,7 +57,11 @@ fun MainIncome(
                 .fillMaxHeight(0.5f)
         ) {
             UserRating()
-            StartGameProcess(navController = navController)
+            StartGameProcess(
+                navController = navController,
+                userName = userName,
+                context = context
+            )
         }
         Column (
             verticalArrangement = Arrangement.Center,

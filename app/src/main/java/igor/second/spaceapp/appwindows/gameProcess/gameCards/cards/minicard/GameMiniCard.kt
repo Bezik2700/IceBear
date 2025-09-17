@@ -36,7 +36,7 @@ fun GameMiniCard(
     Row (
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
-        modifier = Modifier
+        modifier = Modifier.padding(start = 8.dp)
     ) {
         Text(
             "($cardScore)",
@@ -45,7 +45,7 @@ fun GameMiniCard(
         )
         Card (
             modifier = Modifier
-                .size(width = 64.dp, height = 112.dp)
+                .size(width = 64.dp, height = 96.dp)
                 .padding(end = 8.dp)
                 .clickable(
                     enabled = cardScore != 0,

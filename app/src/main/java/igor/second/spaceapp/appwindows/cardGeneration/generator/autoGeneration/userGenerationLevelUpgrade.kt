@@ -2,118 +2,118 @@ package igor.second.spaceapp.appwindows.cardGeneration.generator.autoGeneration
 
 import androidx.compose.runtime.MutableState
 
-fun userGenerationLevelUpgrade(userGenerationLevel: MutableState<Int>){
+fun userGenerationLevelUpgrade(generationValue: MutableState<Int>){
 
     var collection = generateCollection()
     var value = generateValue()
 
     if (collection == 1){
         if (value == 1){
-            userGenerationLevel.value = (1..10).random()
+            generationValue.value = (1..10).random()
         } else if (value == 2){
-            userGenerationLevel.value = (11..20).random()
+            generationValue.value = (11..20).random()
         } else if (value == 3){
-            userGenerationLevel.value = (21..30).random()
+            generationValue.value = (21..30).random()
         } else if (value == 4){
-            userGenerationLevel.value = (31..40).random()
+            generationValue.value = (31..40).random()
         } else if (value == 5){
-            userGenerationLevel.value = (41..50).random()
+            generationValue.value = (41..50).random()
         } else if (value == 6){
-            userGenerationLevel.value = (51..60).random()
+            generationValue.value = (51..60).random()
         } else if (value == 7){
-            userGenerationLevel.value = (61..70).random()
+            generationValue.value = (61..70).random()
         } else {
-            userGenerationLevel.value = (71..80).random()
+            generationValue.value = (71..80).random()
         }
     } else if (collection == 2){
         if (value == 1){
-            userGenerationLevel.value = (81..90).random()
+            generationValue.value = (81..90).random()
         } else if (value == 2){
-            userGenerationLevel.value = (91..100).random()
+            generationValue.value = (91..100).random()
         } else if (value == 3){
-            userGenerationLevel.value = (101..110).random()
+            generationValue.value = (101..110).random()
         } else if (value == 4){
-            userGenerationLevel.value = (111..120).random()
+            generationValue.value = (111..120).random()
         } else if (value == 5){
-            userGenerationLevel.value = (121..130).random()
+            generationValue.value = (121..130).random()
         } else if (value == 6){
-            userGenerationLevel.value = (131..140).random()
+            generationValue.value = (131..140).random()
         } else if (value == 7){
-            userGenerationLevel.value = (141..150).random()
+            generationValue.value = (141..150).random()
         } else {
-            userGenerationLevel.value = (151..160).random()
+            generationValue.value = (151..160).random()
         }
     } else if (collection == 3){
         if (value == 1){
-            userGenerationLevel.value = (161..170).random()
+            generationValue.value = (161..170).random()
         } else if (value == 2){
-            userGenerationLevel.value = (171..180).random()
+            generationValue.value = (171..180).random()
         } else if (value == 3){
-            userGenerationLevel.value = (181..190).random()
+            generationValue.value = (181..190).random()
         } else if (value == 4){
-            userGenerationLevel.value = (191..200).random()
+            generationValue.value = (191..200).random()
         } else if (value == 5){
-            userGenerationLevel.value = (201..210).random()
+            generationValue.value = (201..210).random()
         } else if (value == 6){
-            userGenerationLevel.value = (211..220).random()
+            generationValue.value = (211..220).random()
         } else if (value == 7){
-            userGenerationLevel.value = (221..230).random()
+            generationValue.value = (221..230).random()
         } else {
-            userGenerationLevel.value = (231..240).random()
+            generationValue.value = (231..240).random()
         }
     } else if (collection == 4){
         if (value == 1){
-            userGenerationLevel.value = (241..250).random()
+            generationValue.value = (241..250).random()
         } else if (value == 2){
-            userGenerationLevel.value = (251..260).random()
+            generationValue.value = (251..260).random()
         } else if (value == 3){
-            userGenerationLevel.value = (261..270).random()
+            generationValue.value = (261..270).random()
         } else if (value == 4){
-            userGenerationLevel.value = (271..280).random()
+            generationValue.value = (271..280).random()
         } else if (value == 5){
-            userGenerationLevel.value = (281..290).random()
+            generationValue.value = (281..290).random()
         } else if (value == 6){
-            userGenerationLevel.value = (291..300).random()
+            generationValue.value = (291..300).random()
         } else if (value == 7){
-            userGenerationLevel.value = (301..310).random()
+            generationValue.value = (301..310).random()
         } else {
-            userGenerationLevel.value = (311..320).random()
+            generationValue.value = (311..320).random()
         }
     } else if (collection == 5){
         if (value == 1){
-            userGenerationLevel.value = (321..330).random()
+            generationValue.value = (321..330).random()
         } else if (value == 2){
-            userGenerationLevel.value = (331..340).random()
+            generationValue.value = (331..340).random()
         } else if (value == 3){
-            userGenerationLevel.value = (341..350).random()
+            generationValue.value = (341..350).random()
         } else if (value == 4){
-            userGenerationLevel.value = (351..360).random()
+            generationValue.value = (351..360).random()
         } else if (value == 5){
-            userGenerationLevel.value = (361..370).random()
+            generationValue.value = (361..370).random()
         } else if (value == 6){
-            userGenerationLevel.value = (371..380).random()
+            generationValue.value = (371..380).random()
         } else if (value == 7){
-            userGenerationLevel.value = (381..390).random()
+            generationValue.value = (381..390).random()
         } else {
-            userGenerationLevel.value = (391..400).random()
+            generationValue.value = (391..400).random()
         }
     } else if (collection == 6){
         if (value == 1){
-            userGenerationLevel.value = (401..410).random()
+            generationValue.value = (401..410).random()
         } else if (value == 2){
-            userGenerationLevel.value = (411..420).random()
+            generationValue.value = (411..420).random()
         } else if (value == 3){
-            userGenerationLevel.value = (421..430).random()
+            generationValue.value = (421..430).random()
         } else if (value == 4){
-            userGenerationLevel.value = (431..440).random()
+            generationValue.value = (431..440).random()
         } else if (value == 5){
-            userGenerationLevel.value = (441..450).random()
+            generationValue.value = (441..450).random()
         } else if (value == 6){
-            userGenerationLevel.value = (451..460).random()
+            generationValue.value = (451..460).random()
         } else if (value == 7){
-            userGenerationLevel.value = (461..470).random()
+            generationValue.value = (461..470).random()
         } else {
-            userGenerationLevel.value = (471..480).random()
+            generationValue.value = (471..480).random()
         }
     }
 }

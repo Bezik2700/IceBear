@@ -33,24 +33,32 @@ class DataStoreManager(private val context: Context) {
 
     }
 
-    // Получить текущее значение счетчика
-    val userMoneyValue: Flow<Int> = context.dataStore.data
-        .map { preferences ->
-            preferences[USER_MONEY_VALUE] ?: 0
-        }
-
-    // Получить время последнего обновления
     val lastUpdate: Flow<Long> = context.dataStore.data
         .map { preferences ->
             preferences[LAST_UPDATE_KEY] ?: 0L
         }
 
-    // добавить userMoneyValue
+    // добавить userMoneyValue за несколько часов
     suspend fun incrementCounter() {
         context.dataStore.edit { preferences ->
             val userMoneyValue = preferences[USER_MONEY_VALUE] ?: 0
-            preferences[USER_MONEY_VALUE] = userMoneyValue + 10
-            preferences[LAST_UPDATE_KEY] = System.currentTimeMillis()
+            preferences[USER_MONEY_VALUE] = userMoneyValue + 5
+        }
+    }
+
+    // Обновить время последнего обновления
+    suspend fun updateLastUpdate(timestamp: Long = System.currentTimeMillis()) {
+        context.dataStore.edit { preferences ->
+            preferences[LAST_UPDATE_KEY] = timestamp
+        }
+    }
+
+    // Инициализировать время при первом запуске
+    suspend fun initializeLastUpdate() {
+        context.dataStore.edit { preferences ->
+            if (preferences[LAST_UPDATE_KEY] == null) {
+                preferences[LAST_UPDATE_KEY] = System.currentTimeMillis()
+            }
         }
     }
 

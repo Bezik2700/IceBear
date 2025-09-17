@@ -87,11 +87,11 @@ fun MainConnection(
     epicValue6: MutableState<Int>,
     epicValue7: MutableState<Int>,
     epicValue8: MutableState<Int>,
+    userName: MutableState<String>,
     userMoneyValue: MutableState<Int>,
     userGenerationLevel: MutableState<Int>,
     dataStoreManager: DataStoreManager,
     mainViewModel: MainViewModel = viewModel(),
-    userName: MutableState<String>,
     navController: NavController
 ){
 
@@ -177,15 +177,12 @@ fun MainConnection(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = modifier
                 .fillMaxSize()
-                .padding(bottom = 120.dp, top = 80.dp)
+                .padding(bottom = 120.dp, top = 64.dp)
         ) {
 
             ChatCards(
                 userName = userName.value,
-                repository = Repository(),
-                lastCardValue = lastCardValue.toString(),
-                secondLastCardValue = secondLastCardValue.toString(),
-                thirdLastCardValue = thirdLastCardValue.toString()
+                repository = repository
             )
 
             GameBigCard(
@@ -254,7 +251,8 @@ fun MainConnection(
                 error = error,
                 enabledForProgress = enabledForProgress,
                 secondLastCardValue = secondLastCardValue.toString(),
-                thirdLastCardValue = thirdLastCardValue.toString()
+                thirdLastCardValue = thirdLastCardValue.toString(),
+                repository = repository
             )
             CustomSlider(sliderPosition = sliderPosition)
         }

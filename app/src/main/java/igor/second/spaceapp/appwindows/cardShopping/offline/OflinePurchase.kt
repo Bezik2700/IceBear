@@ -88,7 +88,7 @@ fun OfflinePurchase(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
-            .padding(8.dp)
+            .padding(bottom = 32.dp, start = 8.dp)
     ) {
         Row (
             verticalAlignment = Alignment.CenterVertically,

@@ -43,7 +43,7 @@ fun MessageUI(message: Message, isMyMessage: Boolean) {
                 )
                 Text(
                     text = " ${message.sender_name} ",
-                    fontSize = 24.sp
+                    fontSize = 18.sp
                 )
                 Text(
                     text = "${message.content} ",
@@ -51,7 +51,7 @@ fun MessageUI(message: Message, isMyMessage: Boolean) {
                 )
                 Text(
                     text = "(${message.card_value})",
-                    fontSize = 24.sp
+                    fontSize = 18.sp
                 )
             }
             HorizontalDivider()
@@ -69,7 +69,7 @@ fun MessageUI(message: Message, isMyMessage: Boolean) {
                 )
                 Text(
                     text = " ${message.sender_name} ",
-                    fontSize = 24.sp
+                    fontSize = 18.sp
                 )
                 Text(
                     text = "${message.content} ",
@@ -77,7 +77,7 @@ fun MessageUI(message: Message, isMyMessage: Boolean) {
                 )
                 Text(
                     text = "(${message.card_value})",
-                    fontSize = 24.sp
+                    fontSize = 18.sp
                 )
             }
             HorizontalDivider()

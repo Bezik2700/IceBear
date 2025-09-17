@@ -1,5 +1,7 @@
 package igor.second.spaceapp.appwindows.cardStartScreen
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -10,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -24,14 +27,22 @@ import igor.second.spaceapp.R
 import igor.second.spaceapp.appwindows.Screens
 
 @Composable
-fun StartGameProcess(navController: NavController){
+fun StartGameProcess(
+    userName: MutableState<String>,
+    navController: NavController,
+    context: Context
+){
     Card (
         modifier = Modifier
             .fillMaxSize()
             .padding(bottom = 16.dp, start = 8.dp, end = 8.dp)
             .clickable(onClick = {
-                navController.navigate(Screens.MainConnection.route) }
-            )
+                if (userName.value != "") {
+                    navController.navigate(Screens.MainConnection.route)
+                } else {
+                    Toast.makeText(context, "User name null", Toast.LENGTH_SHORT).show()
+                }
+            })
     ) {
         Box(modifier = Modifier){
             Image(

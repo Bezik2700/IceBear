@@ -23,4 +23,8 @@ interface ApiService {
 
     @GET("user_rating?select=name&order=created_at.asc")
     fun getUserNames(): Call<List<UserRating>>
+
+    @POST("user_rating")
+    fun addUserToRating(@Body userRating: UserRating): Call<UserRating>
+
 }

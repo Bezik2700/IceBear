@@ -10,6 +10,31 @@ class Repository {
     private val tag = "ChatRepository"
     private val apiService = Retrofit.getService()
 
+    fun addUserToRating(userName: String, onSuccess: () -> Unit, onError: (String) -> Unit) {
+        Log.d(tag, "Добавляем пользователя $userName в рейтинг")
+
+        val userRating = UserRating(name = userName)
+
+        apiService.addUserToRating(userRating).enqueue(object : Callback<UserRating> {
+            override fun onResponse(call: Call<UserRating>, response: Response<UserRating>) {
+                if (response.isSuccessful) {
+                    Log.d(tag, "Пользователь $userName успешно добавлен в рейтинг")
+                    onSuccess()
+                } else {
+                    val errorMsg = "Ошибка добавления в рейтинг: ${response.code()}"
+                    Log.e(tag, errorMsg)
+                    onError(errorMsg)
+                }
+            }
+
+            override fun onFailure(call: Call<UserRating>, t: Throwable) {
+                val errorMsg = "Ошибка сети при добавлении в рейтинг: ${t.message}"
+                Log.e(tag, errorMsg)
+                onError(errorMsg)
+            }
+        })
+    }
+
     fun loadUserNames(onSuccess: (List<String>) -> Unit, onError: (String) -> Unit) {
         Log.d(tag, "Загрузка имен пользователей...")
 
@@ -36,21 +61,22 @@ class Repository {
     }
 
     fun loadMessages(onSuccess: (List<Message>) -> Unit, onError: (String) -> Unit) {
-        Log.d(tag, "load messages...")
+        Log.d(tag, "Загружаем сообщения...")
         apiService.getMessages().enqueue(object : Callback<List<Message>> {
             override fun onResponse(call: Call<List<Message>>, response: Response<List<Message>>) {
                 if (response.isSuccessful) {
                     val messages = response.body() ?: emptyList()
-                    Log.d(tag, "Great! Download ${messages.size} messages")
+                    Log.d(tag, "Успешно! Загружено ${messages.size} сообщений")
                     onSuccess(messages)
                 } else {
-                    val errorMsg = "Error HTTP: ${response.code()}"
+                    val errorMsg = "HTTP ошибка: ${response.code()}"
                     Log.e(tag, errorMsg)
                     onError(errorMsg)
                 }
             }
+
             override fun onFailure(call: Call<List<Message>>, t: Throwable) {
-                val errorMsg = "Error network: ${t.message}"
+                val errorMsg = "Ошибка сети: ${t.message}"
                 Log.e(tag, errorMsg)
                 onError(errorMsg)
             }
@@ -58,20 +84,21 @@ class Repository {
     }
 
     fun sendMessage(message: Message, onSuccess: () -> Unit, onError: (String) -> Unit) {
-        Log.d(tag, "Send messages: ${message.content}")
+        Log.d(tag, "Отправляем сообщение: ${message.content}")
         apiService.sendMessage(message).enqueue(object : Callback<Message> {
             override fun onResponse(call: Call<Message>, response: Response<Message>) {
                 if (response.isSuccessful) {
-                    Log.d(tag, "Message send great")
+                    Log.d(tag, "Сообщение отправлено успешно")
                     onSuccess()
                 } else {
-                    val errorMsg = "Error send: ${response.code()}"
+                    val errorMsg = "Ошибка отправки: ${response.code()}"
                     Log.e(tag, errorMsg)
                     onError(errorMsg)
                 }
             }
+
             override fun onFailure(call: Call<Message>, t: Throwable) {
-                val errorMsg = "Error network on send: ${t.message}"
+                val errorMsg = "Ошибка сети при отправке: ${t.message}"
                 Log.e(tag, errorMsg)
                 onError(errorMsg)
             }
@@ -86,7 +113,9 @@ class Repository {
                     Log.d(tag, "All messages deleted successfully via REST")
                     onSuccess()
                 } else {
+                    val errorMsg = "Ошибка отправки: ${response.code()}"
                     Log.w(tag, "Primary delete failed (${response.code()}) ...")
+                    onError(errorMsg)
                 }
             }
             override fun onFailure(call: Call<Void>, t: Throwable) {

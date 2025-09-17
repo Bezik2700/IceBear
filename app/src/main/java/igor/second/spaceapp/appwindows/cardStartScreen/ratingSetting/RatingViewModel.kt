@@ -24,6 +24,21 @@ class RatingViewModel : ViewModel() {
         loadUserNames()
     }
 
+    fun addUserToRating(userName: String) {
+        viewModelScope.launch {
+            repository.addUserToRating(
+                userName = userName,
+                onSuccess = {
+                    // Перезагружаем список имен после добавления
+                    loadUserNames()
+                },
+                onError = { errorMessage ->
+                    _error.value = "Ошибка добавления в рейтинг: $errorMessage"
+                }
+            )
+        }
+    }
+
     fun loadUserNames() {
         viewModelScope.launch {
             _isLoading.value = true
@@ -37,7 +52,7 @@ class RatingViewModel : ViewModel() {
                 onError = { errorMessage ->
                     _error.value = errorMessage
                     _isLoading.value = false
-                    _userNames.value = listOf("Иван", "Мария", "Петр", "Анна")
+                    _userNames.value = listOf("Иван", "Мария", "Петр")
                 }
             )
         }

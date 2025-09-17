@@ -39,7 +39,7 @@ fun OfflinePurchaseCard(
         modifier = Modifier
             .padding(end = 16.dp)
             .fillMaxWidth(cardWidth)
-            .height(240.dp)
+            .height(200.dp)
             .clickable(onClick = { onClick.invoke() })
     ) {
         Box(modifier = Modifier) {
@@ -81,11 +81,11 @@ fun OfflinePurchaseCard(
                         horizontalArrangement = Arrangement.Center,
                         modifier = Modifier.fillMaxWidth()
                     ) {
+                        Text(stringResource(R.string.money))
                         Text(
                             price.toString(),
                             fontSize = 24.sp,
                         )
-                        Text(stringResource(R.string.money))
                     }
                 }
             }

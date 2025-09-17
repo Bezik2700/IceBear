@@ -72,7 +72,7 @@ fun IncomeCardValue(
                 Text(
                     stringResource(name),
                     fontSize = 18.sp,
-                    color = Color.Black,
+                    color = Color(0xFFFF7F50),
                     fontWeight = FontWeight.Bold
                 )
             }

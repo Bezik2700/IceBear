@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -33,6 +34,9 @@ fun UserRating(ratingViewModel: RatingViewModel = viewModel()){
     val isLoading by ratingViewModel.isLoading.collectAsState()
     val error by ratingViewModel.error.collectAsState()
 
+    val lastThreeNames = remember(userNames) {
+        userNames.takeLast(3).reversed()
+    }
     Card (
         modifier = Modifier
             .fillMaxWidth()
@@ -55,7 +59,7 @@ fun UserRating(ratingViewModel: RatingViewModel = viewModel()){
                     CircularProgressIndicator()
                 }
             } else {
-                if (userNames.isNotEmpty()) {
+                if (lastThreeNames.isNotEmpty()) {
                     LazyColumn(
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally,
@@ -67,10 +71,11 @@ fun UserRating(ratingViewModel: RatingViewModel = viewModel()){
                                 fontSize = 32.sp
                             )
                         }
-                        items(userNames) { name ->
+                        items(lastThreeNames) { name ->
+                            val displayIndex = lastThreeNames.indexOf(name) + 1
                             UserRatingItem(
                                 name = name,
-                                id = userNames.indexOf(name) + 1
+                                id = displayIndex
                             )
                         }
                     }

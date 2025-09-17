@@ -1,6 +1,7 @@
 package igor.second.spaceapp.appsettings.workManager
 
 import android.content.Context
+import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
@@ -18,24 +19,34 @@ class AppWorkManager(
 
     override suspend fun doWork(): Result {
         return try {
-
             val lastUpdate = dataStoreManager.lastUpdate.first()
             val currentTime = System.currentTimeMillis()
-            val oneHourInMillis = 60 * 60 * 1000L
 
-            if (currentTime - lastUpdate >= oneHourInMillis) {
+            Log.d("AppWorkManager", "Last update: $lastUpdate, Current time: $currentTime")
+
+            // Правильное определение миллисекунд в часе
+            val oneHourInMillis = 24 * 60 * 60 * 1000L
+            // Правильный расчет пройденных часов
+            val hoursPassed = (currentTime - lastUpdate) / oneHourInMillis
+            Log.d("AppWorkManager", "Hours passed: $hoursPassed")
+
+            if (hoursPassed >= 1) {
                 dataStoreManager.incrementCounter()
+                dataStoreManager.updateLastUpdate(currentTime)
             }
 
             Result.success()
         } catch (e: Exception) {
+            Log.e("AppWorkManager", "Error in doWork", e)
             Result.retry()
         }
     }
 
     companion object {
         fun createWorkRequest(): PeriodicWorkRequest {
-            return PeriodicWorkRequestBuilder<AppWorkManager>(1, TimeUnit.HOURS)
+            return PeriodicWorkRequestBuilder<AppWorkManager>(
+                15, TimeUnit.MINUTES
+            )
                 .setInitialDelay(1, TimeUnit.HOURS)
                 .build()
         }

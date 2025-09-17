@@ -24,7 +24,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import igor.second.spaceapp.R
 import igor.second.spaceapp.appwindows.gameProcess.settings.Message
 import igor.second.spaceapp.appwindows.gameProcess.settings.Repository
 import kotlinx.coroutines.delay
@@ -33,10 +36,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun ChatCards(
     userName: String,
-    repository: Repository,
-    lastCardValue: String,
-    secondLastCardValue: String,
-    thirdLastCardValue: String
+    repository: Repository
 ){
 
     var messages by remember { mutableStateOf<List<Message>>(emptyList()) }
@@ -55,20 +55,6 @@ fun ChatCards(
                 onError = { errorMessage ->
                     error = errorMessage
                     isLoading = false
-                }
-            )
-        }
-    }
-
-    fun clearChatFromServer() {
-        coroutineScope.launch {
-            repository.deleteAllMessages(
-                onSuccess = {
-                    messages = emptyList()
-                    loadMessages()
-                },
-                onError = { errorMessage ->
-                    error = "Ошибка очистки: $errorMessage"
                 }
             )
         }
@@ -112,6 +98,19 @@ fun ChatCards(
                     }
                 }
             }
+        } else if(messages.isEmpty()){
+            Column (
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(start = 32.dp, end = 32.dp)
+            ) {
+                Text(
+                    stringResource(R.string.starting),
+                    fontSize = 24.sp
+                    )
+            }
         } else {
             LazyColumn(
                 verticalArrangement = Arrangement.Center,
@@ -119,14 +118,6 @@ fun ChatCards(
                 modifier = Modifier.fillMaxSize(),
                 reverseLayout = true
             ) {
-                item {
-                    Button(onClick = {clearChatFromServer()}) { Text("DELETE") }
-                }
-                item {
-                    Text(lastCardValue)
-                    Text(secondLastCardValue)
-                    Text(thirdLastCardValue)
-                }
                 items(messages.reversed()) { message ->
                     MessageUI(
                         message = message,

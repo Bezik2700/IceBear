@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -78,15 +77,14 @@ fun GameCardBox(
     isSending: MutableState<Boolean>,
     messageText: MutableState<String>,
     error: MutableState<String?>,
-    enabledForProgress: MutableState<Boolean>
+    enabledForProgress: MutableState<Boolean>,
+    repository: Repository
 ){
-
-    val repository = remember { Repository() }
 
     Column (
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
+        modifier = Modifier.padding(top = 8.dp)
     ) {
         Row(
             verticalAlignment = Alignment.Bottom,

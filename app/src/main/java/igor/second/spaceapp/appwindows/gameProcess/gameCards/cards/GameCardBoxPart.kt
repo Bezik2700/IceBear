@@ -8,7 +8,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import igor.second.spaceapp.appsettings.DataStoreManager
+import igor.second.spaceapp.appwindows.cardStartScreen.ratingSetting.RatingViewModel
 import igor.second.spaceapp.appwindows.gameProcess.gameCards.cards.bigcard.cardValueForGame
 import igor.second.spaceapp.appwindows.gameProcess.gameCards.cards.minicard.GameMiniCard
 import igor.second.spaceapp.appwindows.gameProcess.gameCards.cards.minicard.logic.cardNumber
@@ -84,13 +86,16 @@ fun GameCardBoxPart(
     number: Int,
     repository: Repository,
     error: MutableState<String?>,
-    enabledForProgress: MutableState<Boolean>
+    enabledForProgress: MutableState<Boolean>,
+    ratingViewModel: RatingViewModel = viewModel()
 ){
 
     var context = LocalContext.current
 
     var messages by remember { mutableStateOf<List<Message>>(emptyList()) }
     var isLoading by remember { mutableStateOf(true) }
+    var wasChatCleared by remember { mutableStateOf(false) }
+    var isClearing by remember { mutableStateOf(false) }
 
     fun loadMessages() {
         coroutineScope.launch {
@@ -108,42 +113,54 @@ fun GameCardBoxPart(
         }
     }
 
-    fun clearChatFromServer() {
+    fun clearChatFromServer(callback: (Boolean) -> Unit = {}) {
         coroutineScope.launch {
+            isClearing = true
+
+            ratingViewModel.addUserToRating(userName.value)
+
             repository.deleteAllMessages(
                 onSuccess = {
                     messages = emptyList()
+                    wasChatCleared = true
+                    isClearing = false
+                    callback(true)
                     loadMessages()
                 },
                 onError = { errorMessage ->
                     error.value = "Ошибка очистки: $errorMessage"
+                    isClearing = false
+                    callback(false)
                 }
             )
-        }
-    }
-
-    fun chatUpdate(){
-        if (lastCardValue == secondLastCardValue &&
-            lastCardValue == thirdLastCardValue &&
-            lastCardValue.toInt() != 0 &&
-            secondLastCardValue.toInt() != 0 &&
-            thirdLastCardValue.toInt() != 0
-        ){
-            clearChatFromServer()
         }
     }
 
     GameMiniCard(
         onClick = {
             coroutineScope.launch {
-                if (lastCardValue.toInt() <= cardValueForGame(
-                        sliderPosition = sliderPosition,
-                        cardNumber = number
-                    ) || lastCardValue.toInt() - 20 <= cardValueForGame(
-                        sliderPosition = sliderPosition,
-                        cardNumber = number
+
+                if (isClearing) {
+                    Toast.makeText(context, "Идет очистка чата, подождите", Toast.LENGTH_SHORT).show()
+                    return@launch
+                }
+
+                val currentCardValue = cardValueForGame(
+                    sliderPosition = sliderPosition,
+                    cardNumber = number
+                )
+
+                if (lastCardValue.toInt() - 30 <= currentCardValue &&
+                    lastCardValue.toInt() + 30 >= currentCardValue) {
+
+                    val cardValueToSend = currentCardValue
+                    val messageContent = context.getString(
+                        messageTextGenerate(
+                            sliderPosition = sliderPosition,
+                            cardNumber = number
+                        )
                     )
-                ) {
+
                     gameProcessStart(
                         dataStoreManager = dataStoreManager,
                         userGenerationLevel = userGenerationLevel,
@@ -201,24 +218,45 @@ fun GameCardBoxPart(
                         userName = userName
                     )
 
-                    messageText.value = context.getString(
-                        messageTextGenerate(
-                            sliderPosition = sliderPosition,
-                            cardNumber = number
-                        )
-                    )
+                    val shouldClearChat = lastCardValue == secondLastCardValue &&
+                            lastCardValue == thirdLastCardValue &&
+                            lastCardValue.toInt() != 0 &&
+                            secondLastCardValue.toInt() != 0 &&
+                            thirdLastCardValue.toInt() != 0
 
-                    if (messageText.value.isNotBlank() && !isSending.value) {
-                        isSending.value = true
-                        val message = Message(
-                            content = messageText.value,
-                            sender_name = userName.value,
-                            card_value = cardValueForGame(
-                                sliderPosition = sliderPosition,
-                                cardNumber = number
+                    if (shouldClearChat) {
+                        clearChatFromServer { success ->
+                            if (success && messageContent.isNotBlank() && !isSending.value) {
+                                isSending.value = true
+                                val message = Message(
+                                    content = messageContent,
+                                    sender_name = userName.value,
+                                    card_value = cardValueToSend
+                                )
+                                repository.sendMessage(
+                                    message = message,
+                                    onSuccess = {
+                                        messageText.value = ""
+                                        isSending.value = false
+                                        wasChatCleared = false
+                                    },
+                                    onError = { errorMessage ->
+                                        error.value = errorMessage
+                                        isSending.value = false
+                                        wasChatCleared = false
+                                    }
+                                )
+                            }
+                        }
+                    } else {
+                        // Обычная отправка без очистки
+                        if (messageContent.isNotBlank() && !isSending.value) {
+                            isSending.value = true
+                            val message = Message(
+                                content = messageContent,
+                                sender_name = userName.value,
+                                card_value = cardValueToSend
                             )
-                        )
-                        coroutineScope.launch {
                             repository.sendMessage(
                                 message = message,
                                 onSuccess = {
@@ -236,9 +274,6 @@ fun GameCardBoxPart(
                 } else {
                     Toast.makeText(context, "not", Toast.LENGTH_SHORT).show()
                 }
-            }
-            coroutineScope.launch {
-                chatUpdate()
             }
         },
         image = cardNumber(sliderPosition = sliderPosition, cardValue = number),

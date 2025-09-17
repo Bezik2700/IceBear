@@ -1,6 +1,8 @@
 package igor.second.spaceapp.appsettings
 
 import android.widget.Toast
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,10 +11,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -22,9 +28,17 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import igor.second.spaceapp.R
 import kotlinx.coroutines.launch
 
 @Composable
@@ -93,24 +107,79 @@ fun UserInfoDialog(
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(200.dp)
+                    .height(240.dp)
                     .padding(16.dp),
                 shape = RoundedCornerShape(16.dp),
             ) {
                 Column(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier
+                        .background(color = Color(0xFF87CEFA))
+                        .fillMaxSize()
+                        .padding(8.dp)
                 ) {
-                    Text("Enter your name or generate auto")
-                    TextField(
-                        value = textFieldText,
-                        onValueChange = { textFieldText = it }
+                    Text(
+                        stringResource(R.string.enter_name),
+                        fontSize = 24.sp,
+                        color = Color.Black
                     )
-                    Row {
-                        Button(onClick = {
-                            userName.value = "User: ${(9999..100000).random()}"
-                        }) { Text("Generate") }
+                    Text(
+                        stringResource(R.string.name_not_change),
+                        color = Color.DarkGray,
+                        fontSize = 12.sp
+                    )
+                    OutlinedTextField(
+                        value = textFieldText,
+                        onValueChange = { textFieldText = it.take(10) },
+                        modifier = Modifier,
+                        textStyle = TextStyle(
+                            fontSize = 24.sp,
+                            color = Color(0xFF2D3748),
+                            textAlign = TextAlign.Center
+                        ),
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Text
+                        ),
+                        visualTransformation = VisualTransformation.None,
+                        colors = TextFieldDefaults.colors(
+                            focusedTextColor = Color(0xFF2D3748),
+                            unfocusedTextColor = Color(0xFF2D3748),
+                            cursorColor = Color(0xFF4299E1),
+                            focusedContainerColor = Color(0xFFF7FAFC),
+                            unfocusedContainerColor = Color(0xFFF7FAFC),
+                            focusedIndicatorColor = Color(0xFF4299E1),
+                            unfocusedIndicatorColor = Color(0xFFCBD5E0),
+                            focusedLabelColor = Color(0xFF4299E1),
+                            unfocusedLabelColor = Color(0xFF718096),
+                            focusedPlaceholderColor = Color(0xFFA0AEC0),
+                            unfocusedPlaceholderColor = Color(0xFFA0AEC0),
+                        ),
+                        shape = androidx.compose.material3.MaterialTheme.shapes.medium,
+                        placeholder = {
+                            Text(
+                                stringResource(R.string.max_symbols),
+                                fontSize = 18.sp,
+                                color = Color(0xFFA0AEC0),
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    )
+                    Row (
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        TextButton(onClick = {
+                            userName.value = "user:${(9999..1000000).random()}"
+                            textFieldText = userName.value
+                        }) {
+                            Text(
+                                stringResource(R.string.auto_generation),
+                                color = Color.DarkGray
+                            )
+                        }
                         Button(onClick = {
                             userName.value = textFieldText
                             coroutine.launch {
@@ -173,7 +242,24 @@ fun UserInfoDialog(
                             coroutine.launch {
                                 dialogShowValue.value = false
                             }
-                        }) { Text("Save") }
+                        },
+                            modifier = Modifier
+                            .fillMaxWidth()
+                            .height(56.dp)
+                            .padding(start = 36.dp, top = 8.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(0xFF2196F3),
+                                contentColor = Color.White
+                            ),
+                            shape = RoundedCornerShape(12.dp),
+                            elevation = ButtonDefaults.buttonElevation(
+                                defaultElevation = 8.dp,
+                                pressedElevation = 4.dp,
+                                disabledElevation = 0.dp
+                            ),
+                            border = BorderStroke(2.dp, Color(0xFF1976D2))) {
+                            Text("Save")
+                        }
                     }
                 }
             }

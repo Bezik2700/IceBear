@@ -216,6 +216,20 @@ fun MiniGeneration(
                         .fillMaxWidth()
                         .padding(start = 16.dp, end = 16.dp),
                     onClick = {
+                        if (userMoneyValue.value >= 50){
+                            userMoneyValue.value -= 50
+                            userGenerationLevelUpgrade(generationValue = generationValue)
+                        } else {
+                            Toast.makeText(context, "not enough money", Toast.LENGTH_SHORT).show()
+                        }
+                    }) {
+                    Text(text = "Start auto generation")
+                }
+                Button(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .padding(start = 16.dp, end = 16.dp),
+                    onClick = {
                         if (userMoneyValue.value >= 10){
                             userMoneyValue.value -= 10
                             viewModel.timerRestart()
@@ -225,20 +239,6 @@ fun MiniGeneration(
                         }
                 }) {
                     Text(text = "Start generation")
-                }
-                Button(
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .padding(start = 16.dp, end = 16.dp),
-                    onClick = {
-                        if (userMoneyValue.value >= 50){
-                            userMoneyValue.value -= 50
-                            userGenerationLevelUpgrade(userGenerationLevel = userGenerationLevel)
-                        } else {
-                            Toast.makeText(context, "not enough money", Toast.LENGTH_SHORT).show()
-                        }
-                }) {
-                    Text(text = "Start auto generation")
                 }
             }
         }

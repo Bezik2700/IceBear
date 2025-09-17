@@ -455,7 +455,8 @@ fun NavigationActivity(
             }
             composable (route = Screens.MainIncome.route) {
                 MainIncome(
-                    navController = navController
+                    navController = navController,
+                    userName = userName
                 )
             }
         }

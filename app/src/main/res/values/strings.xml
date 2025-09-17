@@ -8,6 +8,11 @@
     <string name="no">NO</string>
     <string name="game">GAME</string>
     <string name="user">user</string>
+    <string name="starting">Has anyone started the game yet? You can start by clicking on any bronze card.</string>
+    <string name="enter_name">Your name?</string>
+    <string name="auto_generation">GENERATE</string>
+    <string name="name_not_change">(once saved, the name cannot be changed)</string>
+    <string name="max_symbols">• max 10 symbols</string>
 
     // searching text
     <string name="on_target">Congratulations, you have reached your goal</string>
@@ -21,7 +26,6 @@
     <string name="find_screen">SEARCHING</string>
     <string name="collection_screen">COLLECTION</string>
     <string name="money">$</string>
-
     // info about purchase
     <string name="plus_money_info">plus_money_info</string>
     <string name="upgrade_info">upgrade_info</string>
