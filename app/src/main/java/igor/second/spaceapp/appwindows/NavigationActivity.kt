@@ -18,12 +18,12 @@ import androidx.navigation.compose.composable
 import igor.second.spaceapp.R
 import igor.second.spaceapp.appsettings.DataStoreManager
 import igor.second.spaceapp.appsettings.TopRowNavigation
-import igor.second.spaceapp.appsettings.UserInfoDialog
 import igor.second.spaceapp.appwindows.cardCollection.MainCollection
 import igor.second.spaceapp.appwindows.cardGeneration.MainGeneration
 import igor.second.spaceapp.appwindows.cardSearching.MainSearching
 import igor.second.spaceapp.appwindows.cardShopping.MainShop
 import igor.second.spaceapp.appwindows.cardStartScreen.MainIncome
+import igor.second.spaceapp.appwindows.cardStartScreen.dialog.UserInfoDialog
 import igor.second.spaceapp.appwindows.gameProcess.MainConnection
 
 sealed class Screens(val route: String){
@@ -455,8 +455,60 @@ fun NavigationActivity(
             }
             composable (route = Screens.MainIncome.route) {
                 MainIncome(
+                    bronzeValue1 = bronzeValue1,
+                    bronzeValue2 = bronzeValue2,
+                    bronzeValue3 = bronzeValue3,
+                    bronzeValue4 = bronzeValue4,
+                    bronzeValue5 = bronzeValue5,
+                    bronzeValue6 = bronzeValue6,
+                    bronzeValue7 = bronzeValue7,
+                    bronzeValue8 = bronzeValue8,
+                    silverValue1 = silverValue1,
+                    silverValue2 = silverValue2,
+                    silverValue3 = silverValue3,
+                    silverValue4 = silverValue4,
+                    silverValue5 = silverValue5,
+                    silverValue6 = silverValue6,
+                    silverValue7 = silverValue7,
+                    silverValue8 = silverValue8,
+                    goldValue1 = goldValue1,
+                    goldValue2 = goldValue2,
+                    goldValue3 = goldValue3,
+                    goldValue4 = goldValue4,
+                    goldValue5 = goldValue5,
+                    goldValue6 = goldValue6,
+                    goldValue7 = goldValue7,
+                    goldValue8 = goldValue8,
+                    diamondValue1 = diamondValue1,
+                    diamondValue2 = diamondValue2,
+                    diamondValue3 = diamondValue3,
+                    diamondValue4 = diamondValue4,
+                    diamondValue5 = diamondValue5,
+                    diamondValue6 = diamondValue6,
+                    diamondValue7 = diamondValue7,
+                    diamondValue8 = diamondValue8,
+                    platinumValue1 = platinumValue1,
+                    platinumValue2 = platinumValue2,
+                    platinumValue3 = platinumValue3,
+                    platinumValue4 = platinumValue4,
+                    platinumValue5 = platinumValue5,
+                    platinumValue6 = platinumValue6,
+                    platinumValue7 = platinumValue7,
+                    platinumValue8 = platinumValue8,
+                    epicValue1 = epicValue1,
+                    epicValue2 = epicValue2,
+                    epicValue3 = epicValue3,
+                    epicValue4 = epicValue4,
+                    epicValue5 = epicValue5,
+                    epicValue6 = epicValue6,
+                    epicValue7 = epicValue7,
+                    epicValue8 = epicValue8,
+                    userMoneyValue = userMoneyValue,
+                    userGenerationLevel = userGenerationLevel,
+                    dataStoreManager = dataStoreManager,
+                    userName = userName,
                     navController = navController,
-                    userName = userName
+                    dialogShowValue = dialogShowValue
                 )
             }
         }

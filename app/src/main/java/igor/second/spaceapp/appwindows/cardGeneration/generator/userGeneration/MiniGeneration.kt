@@ -5,9 +5,16 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.CheckCircle
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -17,12 +24,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import igor.second.spaceapp.appsettings.DataStoreManager
 import igor.second.spaceapp.appsettings.MainViewModel
-import igor.second.spaceapp.appwindows.cardGeneration.content.InCollectionButton
+import igor.second.spaceapp.appwindows.cardGeneration.generator.buttons.InCollectionButton
 import igor.second.spaceapp.appwindows.cardGeneration.generator.autoGeneration.userGenerationLevelUpgrade
+import igor.second.spaceapp.appwindows.cardGeneration.generator.buttons.GenerationButton
+import igor.second.spaceapp.appwindows.cardGeneration.generator.buttons.GradientButton
 
 @Composable
 fun MiniGeneration(
@@ -85,14 +96,14 @@ fun MiniGeneration(
 ){
 
     val timerEnabled by viewModel.timerEnabled.collectAsState()
+    val buttonElevation = 8.dp
+    val buttonShape = RoundedCornerShape(16.dp)
 
     LaunchedEffect(key1 = null) {
-        if (timerEnabled){ viewModel.timerEnabledChange() }
+        if (timerEnabled) { viewModel.timerEnabledChange() }
     }
 
     if (timerEnabled){
-        Text(userGenerationLevel.value.toString())
-        Text(generationValue.value.toString())
         Row (
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
@@ -204,42 +215,102 @@ fun MiniGeneration(
                 generationValue = generationValue
             )
         } else {
-            Column (
+            Column(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = modifier
                     .fillMaxWidth()
-                    .padding(8.dp)
+                    .padding(16.dp)
             ) {
-                Button(
+                // Стилизованная кнопка авто-генерации
+                GradientButton(
                     modifier = modifier
                         .fillMaxWidth()
-                        .padding(start = 16.dp, end = 16.dp),
+                        .height(60.dp)
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
                     onClick = {
-                        if (userMoneyValue.value >= 50){
+                        if (userMoneyValue.value >= 50) {
                             userMoneyValue.value -= 50
                             userGenerationLevelUpgrade(generationValue = generationValue)
                         } else {
-                            Toast.makeText(context, "not enough money", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "Not enough money", Toast.LENGTH_SHORT).show()
                         }
-                    }) {
-                    Text(text = "Start auto generation")
-                }
-                Button(
+                    },
+                    gradientColors = listOf(Color(0xFF667EEA), Color(0xFF764BA2)),
+                    elevation = 12.dp,
+                    shape = RoundedCornerShape(20.dp),
+                    content = {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            Icon(
+                                Icons.Rounded.CheckCircle,
+                                contentDescription = "Auto generate",
+                                modifier = Modifier.size(24.dp),
+                                tint = Color.White
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "Start Auto Generation",
+                                color = Color.White,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 16.sp
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "$ 50",
+                                color = Color.White.copy(alpha = 0.8f),
+                                fontSize = 14.sp
+                            )
+                        }
+                    }
+                )
+
+                GradientButton(
                     modifier = modifier
                         .fillMaxWidth()
-                        .padding(start = 16.dp, end = 16.dp),
+                        .height(60.dp)
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
                     onClick = {
-                        if (userMoneyValue.value >= 10){
+                        if (userMoneyValue.value >= 10) {
                             userMoneyValue.value -= 10
                             viewModel.timerRestart()
                             viewModel.timerEnabledChange()
                         } else {
-                            Toast.makeText(context, "not enough money", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "Not enough money", Toast.LENGTH_SHORT).show()
                         }
-                }) {
-                    Text(text = "Start generation")
-                }
+                    },
+                    gradientColors = listOf(Color(0xFF11998E), Color(0xFF38EF7D)),
+                    elevation = 12.dp,
+                    shape = RoundedCornerShape(20.dp),
+                    content = {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            Icon(
+                                Icons.Rounded.CheckCircle,
+                                contentDescription = "Generate",
+                                modifier = Modifier.size(24.dp),
+                                tint = Color.White
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "Start Generation",
+                                color = Color.White,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 16.sp
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "$ 10",
+                                color = Color.White.copy(alpha = 0.8f),
+                                fontSize = 14.sp
+                            )
+                        }
+                    }
+                )
             }
         }
     }

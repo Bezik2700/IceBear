@@ -3,6 +3,7 @@ package igor.second.spaceapp.appwindows.cardStartScreen
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,15 +12,18 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -36,44 +40,64 @@ fun IncomeCardValue(
     cardWidth: Float,
     @StringRes name: Int,
     @DrawableRes image: Int
-){
-    Card (
+) {
+    Card(
         modifier = modifier
             .fillMaxWidth(cardWidth)
-            .clickable(onClick = {onClick.invoke()})
-            .padding(start = 8.dp, end = 8.dp, bottom = 16.dp)
+            .clickable(onClick = onClick)
+            .padding(8.dp)
     ) {
-        Box(modifier){
+        Box {
             Image(
-                painterResource(image),
-                contentScale = ContentScale.FillBounds,
-                modifier = modifier.fillMaxSize(),
-                contentDescription = "income card fon"
+                painter = painterResource(image),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
             )
-            Row (
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.End,
-                modifier = modifier.fillMaxWidth()
-            ) {
-                IconButton(onClick = {
-                    onClickInformation.invoke()
-                }) {
-                    Icon(
-                        Icons.Rounded.Info,
-                        contentDescription = null
+
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                Color.Transparent,
+                                Color.Black.copy(alpha = 0.4f)
+                            )
+                        )
                     )
-                }
-            }
-            Column (
-                verticalArrangement = Arrangement.Bottom,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = modifier.fillMaxSize()
+            )
+
+            Column(
+                modifier = Modifier.fillMaxSize().padding(4.dp),
+                verticalArrangement = Arrangement.SpaceBetween
             ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    IconButton(
+                        onClick = onClickInformation,
+                        modifier = Modifier.size(28.dp),
+                        colors = IconButtonDefaults.iconButtonColors(
+                            containerColor = Color.White,
+                            contentColor = Color(0xFF6B5B7A),
+                        )
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.Info,
+                            contentDescription = "dialog info",
+                            modifier = Modifier.size(44.dp)
+                        )
+                    }
+                }
+
                 Text(
                     stringResource(name),
-                    fontSize = 18.sp,
-                    color = Color(0xFFFF7F50),
-                    fontWeight = FontWeight.Bold
+                    color = Color.White,
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp
                 )
             }
         }

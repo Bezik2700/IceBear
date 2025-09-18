@@ -30,7 +30,7 @@ class MainViewModel: ViewModel() {
 
     fun timerRestart(){
         viewModelScope.launch {
-            _timer.value = 7
+            _timer.value = 10
         }
     }
 

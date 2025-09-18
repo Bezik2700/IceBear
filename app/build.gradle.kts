@@ -41,6 +41,9 @@ android {
 
 dependencies {
 
+    // google font
+    implementation (libs.androidx.ui.text)
+    implementation (libs.androidx.ui.text.google.fonts)
     // billing
     implementation (libs.billing)
     implementation (libs.billing.ktx)

@@ -1,4 +1,4 @@
-package igor.second.spaceapp.appsettings
+package igor.second.spaceapp.appwindows.cardStartScreen.dialog
 
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
@@ -15,6 +15,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -39,6 +40,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import igor.second.spaceapp.R
+import igor.second.spaceapp.appsettings.DataStoreManager
+import igor.second.spaceapp.appsettings.SettingData
 import kotlinx.coroutines.launch
 
 @Composable
@@ -156,7 +159,7 @@ fun UserInfoDialog(
                             focusedPlaceholderColor = Color(0xFFA0AEC0),
                             unfocusedPlaceholderColor = Color(0xFFA0AEC0),
                         ),
-                        shape = androidx.compose.material3.MaterialTheme.shapes.medium,
+                        shape = MaterialTheme.shapes.medium,
                         placeholder = {
                             Text(
                                 stringResource(R.string.max_symbols),

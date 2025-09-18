@@ -15,7 +15,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import igor.second.spaceapp.appsettings.DataStoreManager
-import igor.second.spaceapp.appsettings.TimerFromLevels
+import igor.second.spaceapp.appsettings.timer.TimerFromLevels
 import igor.second.spaceapp.appwindows.Screens
 import igor.second.spaceapp.appwindows.cardGeneration.content.FinishCard
 import igor.second.spaceapp.appwindows.cardGeneration.content.finishCardValue

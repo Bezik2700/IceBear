@@ -1,4 +1,4 @@
-package igor.second.spaceapp.appwindows.cardGeneration.generator
+package igor.second.spaceapp.appwindows.cardGeneration.generator.buttons
 
 import androidx.compose.runtime.MutableState
 import igor.second.spaceapp.appsettings.DataStoreManager

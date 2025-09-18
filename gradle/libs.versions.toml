@@ -23,6 +23,8 @@ navigationCompose = "2.9.2"
 okhttp = "4.11.0"
 playServicesLocation = "21.3.0"
 retrofit = "2.9.0"
+uiText = "1.9.1"
+uiTextGoogleFonts = "1.9.1"
 workRuntimeKtx = "2.9.0"
 
 [libraries]
@@ -35,6 +37,8 @@ androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = 
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 androidx-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "foundation" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+androidx-ui-text-google-fonts = { module = "androidx.compose.ui:ui-text-google-fonts", version.ref = "uiTextGoogleFonts" }
+androidx-ui-text = { module = "androidx.compose.ui:ui-text", version.ref = "uiText" }
 androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "workRuntimeKtx" }
 billing = { module = "com.android.billingclient:billing", version.ref = "billing" }
 billing-ktx = { module = "com.android.billingclient:billing-ktx", version.ref = "billing" }

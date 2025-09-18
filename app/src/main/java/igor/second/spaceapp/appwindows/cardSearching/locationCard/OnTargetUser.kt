@@ -26,7 +26,7 @@ import androidx.navigation.NavController
 import igor.second.spaceapp.R
 import igor.second.spaceapp.appsettings.DataStoreManager
 import igor.second.spaceapp.appwindows.Screens
-import igor.second.spaceapp.appwindows.cardGeneration.generator.addCardValue
+import igor.second.spaceapp.appwindows.cardGeneration.generator.buttons.addCardValue
 
 @Composable
 fun OnTargetUser(

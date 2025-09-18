@@ -34,27 +34,27 @@ fun TopRowNavigation(
     ) {
         Row (
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
+            horizontalArrangement = Arrangement.Start,
         ) {
             IconButton(onClick = { dialogShowValue.value = true }) {
                 Icon(
                     Icons.Rounded.Person,
-                    tint = Color(0xFF722F37),
-                    modifier = Modifier.size(64.dp),
+                    tint = Color(0xFF9678B6),
+                    modifier = Modifier.size(24.dp),
                     contentDescription = "user info"
                 )
             }
             Text(
                 userName.value,
-                fontSize = 24.sp,
-                color = Color(0xFF722F37),
+                fontSize = 20.sp,
+                color = Color(0xFF9678B6),
                 fontWeight = FontWeight.Bold
             )
         }
         Text(
             ("$ ${userMoneyValue.value}"),
-            color = Color(0xFF722F37),
-            fontSize = 24.sp,
+            color = Color(0xFF9678B6),
+            fontSize = 20.sp,
             fontWeight = FontWeight.Bold
         )
     }
