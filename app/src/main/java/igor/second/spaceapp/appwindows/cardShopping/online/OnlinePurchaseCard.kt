@@ -40,8 +40,8 @@ fun OnlinePurchaseCard(
 ) {
     Card(modifier = modifier.padding(end = 16.dp)) {
         Card(modifier = modifier
-                .width(140.dp)
-                .height(240.dp)
+            .width(140.dp)
+            .height(240.dp)
         ) {
             Box(modifier = modifier) {
                 Image(
@@ -79,7 +79,7 @@ fun OnlinePurchaseCard(
                         Card (
                             modifier = modifier
                                 .fillMaxWidth()
-                                .clickable(onClick = {onRefundClick})
+                                .clickable(onClick = onRefundClick)
                         ) {
                             Text("Request Refund")
                         }
@@ -87,7 +87,7 @@ fun OnlinePurchaseCard(
                         Card (
                             modifier = modifier
                                 .fillMaxWidth()
-                                .clickable(onClick = {onPurchaseClick})
+                                .clickable(onClick = onPurchaseClick)
                         ) {
                             Text(
                                 product.oneTimePurchaseOfferDetails?.formattedPrice ?: "",

@@ -25,7 +25,27 @@ class PurchaseViewModel(
     context: Context,
     private val dataStoreManager: DataStoreManager
 ) : ViewModel() {
-    private val billingClient = rememberBillingClient(context)
+    // Константы для идентификаторов товаров
+    companion object {
+        const val UPGRADE_1 = "upgrade_1"
+        const val UPGRADE_2 = "upgrade_2"
+        const val UPGRADE_3 = "upgrade_3"
+        const val UPGRADE_4 = "upgrade_4"
+        const val PLUS_MONEY_1 = "plus_money_1"
+        const val PLUS_MONEY_2 = "plus_money_2"
+        const val PLUS_MONEY_3 = "plus_money_3"
+        const val PLUS_MONEY_4 = "plus_money_4"
+        const val ADD_PLATINUM_CARD1 = "add_platinum_card1"
+        const val ADD_PLATINUM_CARD2 = "add_platinum_card2"
+        const val ADD_PLATINUM_CARD3 = "add_platinum_card3"
+        const val ADD_PLATINUM_CARD4 = "add_platinum_card4"
+        const val ADD_EPIC_CARD1 = "add_epic_card1"
+        const val ADD_EPIC_CARD2 = "add_epic_card2"
+        const val ADD_EPIC_CARD3 = "add_epic_card3"
+        const val ADD_EPIC_CARD4 = "add_epic_card4"
+    }
+
+    private val billingClient = createBillingClient(context)
 
     private val _products = MutableStateFlow<List<ProductDetails>>(emptyList())
     val products: StateFlow<List<ProductDetails>> = _products.asStateFlow()
@@ -43,7 +63,7 @@ class PurchaseViewModel(
         setupBilling()
     }
 
-    private fun rememberBillingClient(context: Context): BillingClient {
+    private fun createBillingClient(context: Context): BillingClient {
         return BillingClient.newBuilder(context)
             .setListener { billingResult, purchases ->
                 if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && purchases != null) {
@@ -77,67 +97,67 @@ class PurchaseViewModel(
             .setProductList(
                 listOf(
                     QueryProductDetailsParams.Product.newBuilder()
-                        .setProductId("upgrade_1")
+                        .setProductId(UPGRADE_1)
                         .setProductType(BillingClient.ProductType.INAPP)
                         .build(),
                     QueryProductDetailsParams.Product.newBuilder()
-                        .setProductId("upgrade_2")
+                        .setProductId(UPGRADE_2)
                         .setProductType(BillingClient.ProductType.INAPP)
                         .build(),
                     QueryProductDetailsParams.Product.newBuilder()
-                        .setProductId("upgrade_3")
+                        .setProductId(UPGRADE_3)
                         .setProductType(BillingClient.ProductType.INAPP)
                         .build(),
                     QueryProductDetailsParams.Product.newBuilder()
-                        .setProductId("upgrade_4")
+                        .setProductId(UPGRADE_4)
                         .setProductType(BillingClient.ProductType.INAPP)
                         .build(),
                     QueryProductDetailsParams.Product.newBuilder()
-                        .setProductId("plus_money_1")
+                        .setProductId(PLUS_MONEY_1)
                         .setProductType(BillingClient.ProductType.INAPP)
                         .build(),
                     QueryProductDetailsParams.Product.newBuilder()
-                        .setProductId("plus_money_2")
+                        .setProductId(PLUS_MONEY_2)
                         .setProductType(BillingClient.ProductType.INAPP)
                         .build(),
                     QueryProductDetailsParams.Product.newBuilder()
-                        .setProductId("plus_money_3")
+                        .setProductId(PLUS_MONEY_3)
                         .setProductType(BillingClient.ProductType.INAPP)
                         .build(),
                     QueryProductDetailsParams.Product.newBuilder()
-                        .setProductId("plus_money_4")
+                        .setProductId(PLUS_MONEY_4)
                         .setProductType(BillingClient.ProductType.INAPP)
                         .build(),
                     QueryProductDetailsParams.Product.newBuilder()
-                        .setProductId("add_platinum_card1")
+                        .setProductId(ADD_PLATINUM_CARD1)
                         .setProductType(BillingClient.ProductType.INAPP)
                         .build(),
                     QueryProductDetailsParams.Product.newBuilder()
-                        .setProductId("add_platinum_card2")
+                        .setProductId(ADD_PLATINUM_CARD2)
                         .setProductType(BillingClient.ProductType.INAPP)
                         .build(),
                     QueryProductDetailsParams.Product.newBuilder()
-                        .setProductId("add_platinum_card3")
+                        .setProductId(ADD_PLATINUM_CARD3)
                         .setProductType(BillingClient.ProductType.INAPP)
                         .build(),
                     QueryProductDetailsParams.Product.newBuilder()
-                        .setProductId("add_platinum_card4")
+                        .setProductId(ADD_PLATINUM_CARD4)
                         .setProductType(BillingClient.ProductType.INAPP)
                         .build(),
                     QueryProductDetailsParams.Product.newBuilder()
-                        .setProductId("add_epic_card1")
+                        .setProductId(ADD_EPIC_CARD1)
                         .setProductType(BillingClient.ProductType.INAPP)
                         .build(),
                     QueryProductDetailsParams.Product.newBuilder()
-                        .setProductId("add_epic_card2")
+                        .setProductId(ADD_EPIC_CARD2)
                         .setProductType(BillingClient.ProductType.INAPP)
                         .build(),
                     QueryProductDetailsParams.Product.newBuilder()
-                        .setProductId("add_epic_card3")
+                        .setProductId(ADD_EPIC_CARD3)
                         .setProductType(BillingClient.ProductType.INAPP)
                         .build(),
                     QueryProductDetailsParams.Product.newBuilder()
-                        .setProductId("add_epic_card4")
+                        .setProductId(ADD_EPIC_CARD4)
                         .setProductType(BillingClient.ProductType.INAPP)
                         .build()
                 )
@@ -168,12 +188,16 @@ class PurchaseViewModel(
             when (purchase.purchaseState) {
                 Purchase.PurchaseState.PURCHASED -> {
                     if (!purchase.isAcknowledged) {
-                        acknowledgePurchase(purchase)
+                        if (isConsumableProduct(purchase.products.firstOrNull())) {
+                            // Для потребляемых товаров - потребляем
+                            viewModelScope.launch {
+                                consumePurchase(purchase)
+                            }
+                        } else {
+                            // Для непотребляемых - подтверждаем
+                            acknowledgePurchase(purchase)
+                        }
                         handlePurchaseRewards(purchase)
-                    }
-
-                    if (isConsumableProduct(purchase.products.firstOrNull())) {
-                        viewModelScope.launch { consumePurchase(purchase) }
                     }
                 }
                 Purchase.PurchaseState.PENDING -> {
@@ -184,9 +208,19 @@ class PurchaseViewModel(
         }
     }
 
-    private fun isConsumableProduct(productId: String?): Boolean {
-        return productId?.startsWith("plus_money_") == true ||
-                productId?.startsWith("upgrade_") == true
+    fun isConsumableProduct(productId: String?): Boolean {
+        return productId?.startsWith("upgrade_") != true
+    }
+
+    fun isProductPurchased(productId: String): Boolean {
+        return if (isConsumableProduct(productId)) {
+            false
+        } else {
+            _purchases.value.any {
+                it.products.contains(productId) &&
+                        it.purchaseState == Purchase.PurchaseState.PURCHASED
+            }
+        }
     }
 
     private suspend fun consumePurchase(purchase: Purchase) {
@@ -197,7 +231,7 @@ class PurchaseViewModel(
         billingClient.consumePurchase(consumeParams).let { result ->
             if (result.billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
                 _status.value = "Purchase consumed: ${purchase.products.joinToString()}"
-                queryPurchases()
+                _purchases.value = _purchases.value.filter { it.purchaseToken != purchase.purchaseToken }
             } else {
                 _status.value = "Consume error: ${result.billingResult.debugMessage}"
             }
@@ -219,22 +253,22 @@ class PurchaseViewModel(
     private fun handlePurchaseRewards(purchase: Purchase) {
         viewModelScope.launch {
             when (purchase.products.firstOrNull()) {
-                "upgrade_1" -> dataStoreManager.upGenerationLevel(1)
-                "upgrade_2" -> dataStoreManager.upGenerationLevel(3)
-                "upgrade_3" -> dataStoreManager.upGenerationLevel(7)
-                "upgrade_4" -> dataStoreManager.upGenerationLevel(19)
-                "plus_money_1" -> dataStoreManager.upMoneyValue(1000)
-                "plus_money_2" -> dataStoreManager.upMoneyValue(4900)
-                "plus_money_3" -> dataStoreManager.upMoneyValue(9900)
-                "plus_money_4" -> dataStoreManager.upMoneyValue(99900)
-                "add_platinum_card1" -> dataStoreManager.plusCardValue(1)
-                "add_platinum_card2" -> dataStoreManager.plusCardValue(2)
-                "add_platinum_card3" -> dataStoreManager.plusCardValue(3)
-                "add_platinum_card4" -> dataStoreManager.plusCardValue(4)
-                "add_epic_card1" -> dataStoreManager.plusCardValue(5)
-                "add_epic_card2" -> dataStoreManager.plusCardValue(6)
-                "add_epic_card3" -> dataStoreManager.plusCardValue(7)
-                "add_epic_card4" -> dataStoreManager.plusCardValue(8)
+                UPGRADE_1 -> dataStoreManager.upGenerationLevel(1)
+                UPGRADE_2 -> dataStoreManager.upGenerationLevel(3)
+                UPGRADE_3 -> dataStoreManager.upGenerationLevel(7)
+                UPGRADE_4 -> dataStoreManager.upGenerationLevel(19)
+                PLUS_MONEY_1 -> dataStoreManager.upMoneyValue(1000)
+                PLUS_MONEY_2 -> dataStoreManager.upMoneyValue(4900)
+                PLUS_MONEY_3 -> dataStoreManager.upMoneyValue(9900)
+                PLUS_MONEY_4 -> dataStoreManager.upMoneyValue(99900)
+                ADD_PLATINUM_CARD1 -> dataStoreManager.plusCardValue(1)
+                ADD_PLATINUM_CARD2 -> dataStoreManager.plusCardValue(2)
+                ADD_PLATINUM_CARD3 -> dataStoreManager.plusCardValue(3)
+                ADD_PLATINUM_CARD4 -> dataStoreManager.plusCardValue(4)
+                ADD_EPIC_CARD1 -> dataStoreManager.plusCardValue(5)
+                ADD_EPIC_CARD2 -> dataStoreManager.plusCardValue(6)
+                ADD_EPIC_CARD3 -> dataStoreManager.plusCardValue(7)
+                ADD_EPIC_CARD4 -> dataStoreManager.plusCardValue(8)
             }
         }
     }
@@ -259,33 +293,29 @@ class PurchaseViewModel(
     fun handleRefund(purchase: Purchase) {
         viewModelScope.launch {
             when (purchase.products.firstOrNull()) {
-                "upgrade_1" -> dataStoreManager.removeGenerationLevel(1)
-                "upgrade_2" -> dataStoreManager.removeGenerationLevel(3)
-                "upgrade_3" -> dataStoreManager.removeGenerationLevel(7)
-                "upgrade_4" -> dataStoreManager.removeGenerationLevel(19)
-                "plus_money_1" -> dataStoreManager.removeMoneyValue(1000)
-                "plus_money_2" -> dataStoreManager.removeMoneyValue(4900)
-                "plus_money_3" -> dataStoreManager.removeMoneyValue(9900)
-                "plus_money_4" -> dataStoreManager.removeMoneyValue(99900)
-                "add_platinum_card1" -> dataStoreManager.removeCardValue(1)
-                "add_platinum_card2" -> dataStoreManager.removeCardValue(2)
-                "add_platinum_card3" -> dataStoreManager.removeCardValue(3)
-                "add_platinum_card4" -> dataStoreManager.removeCardValue(4)
-                "add_epic_card1" -> dataStoreManager.removeCardValue(5)
-                "add_epic_card2" -> dataStoreManager.removeCardValue(6)
-                "add_epic_card3" -> dataStoreManager.removeCardValue(7)
-                "add_epic_card4" -> dataStoreManager.removeCardValue(8)
-            }
-
-            if (isConsumableProduct(purchase.products.firstOrNull())) {
-                consumePurchase(purchase)
+                UPGRADE_1 -> dataStoreManager.removeGenerationLevel(1)
+                UPGRADE_2 -> dataStoreManager.removeGenerationLevel(3)
+                UPGRADE_3 -> dataStoreManager.removeGenerationLevel(7)
+                UPGRADE_4 -> dataStoreManager.removeGenerationLevel(19)
+                PLUS_MONEY_1 -> dataStoreManager.removeMoneyValue(1000)
+                PLUS_MONEY_2 -> dataStoreManager.removeMoneyValue(4900)
+                PLUS_MONEY_3 -> dataStoreManager.removeMoneyValue(9900)
+                PLUS_MONEY_4 -> dataStoreManager.removeMoneyValue(99900)
+                ADD_PLATINUM_CARD1 -> dataStoreManager.removeCardValue(1)
+                ADD_PLATINUM_CARD2 -> dataStoreManager.removeCardValue(2)
+                ADD_PLATINUM_CARD3 -> dataStoreManager.removeCardValue(3)
+                ADD_PLATINUM_CARD4 -> dataStoreManager.removeCardValue(4)
+                ADD_EPIC_CARD1 -> dataStoreManager.removeCardValue(5)
+                ADD_EPIC_CARD2 -> dataStoreManager.removeCardValue(6)
+                ADD_EPIC_CARD3 -> dataStoreManager.removeCardValue(7)
+                ADD_EPIC_CARD4 -> dataStoreManager.removeCardValue(8)
             }
 
             _showRefundNotification.value = "Refund processed for ${purchase.products.joinToString()}"
-
             queryPurchases()
         }
     }
+
     fun clearRefundNotification() {
         _showRefundNotification.value = null
     }

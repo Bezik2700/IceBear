@@ -60,7 +60,7 @@ fun OnlinePurchase(
             items(products.filter { it.productId.startsWith("add_epic") }) { product ->
                 OnlinePurchaseCard(
                     product = product,
-                    isPurchased = purchases.any { it.products.contains(product.productId) },
+                    isPurchased = viewModel.isProductPurchased(product.productId),
                     onPurchaseClick = { viewModel.makePurchase(activity, product) },
                     onRefundClick = {
                         purchases.firstOrNull { it.products.contains(product.productId) }?.let {
@@ -98,7 +98,7 @@ fun OnlinePurchase(
             items(products.filter { it.productId.startsWith("add_platinum") }) { product ->
                 OnlinePurchaseCard(
                     product = product,
-                    isPurchased = purchases.any { it.products.contains(product.productId) },
+                    isPurchased = viewModel.isProductPurchased(product.productId),
                     onPurchaseClick = { viewModel.makePurchase(activity, product) },
                     onRefundClick = {
                         purchases.firstOrNull { it.products.contains(product.productId) }?.let {
@@ -136,7 +136,7 @@ fun OnlinePurchase(
             items(products.filter { it.productId.startsWith("plus_") }) { product ->
                 OnlinePurchaseCard(
                     product = product,
-                    isPurchased = purchases.any { it.products.contains(product.productId) },
+                    isPurchased = viewModel.isProductPurchased(product.productId),
                     onPurchaseClick = { viewModel.makePurchase(activity, product) },
                     onRefundClick = {
                         purchases.firstOrNull { it.products.contains(product.productId) }?.let {
@@ -174,7 +174,7 @@ fun OnlinePurchase(
             items(products.filter { it.productId.startsWith("upgrade_") }) { product ->
                 OnlinePurchaseCard(
                     product = product,
-                    isPurchased = purchases.any { it.products.contains(product.productId) },
+                    isPurchased = viewModel.isProductPurchased(product.productId),
                     onPurchaseClick = { viewModel.makePurchase(activity, product) },
                     onRefundClick = {
                         purchases.firstOrNull { it.products.contains(product.productId) }?.let {
@@ -200,8 +200,7 @@ fun OnlinePurchase(
     if (dialogEnabled.value){
         PurchaseInfoDialog(
             enabled = dialogEnabled,
-            text =
-                when (dialogNumber){
+            text = when (dialogNumber){
                 1 -> R.string.add_epic_info
                 2 -> R.string.add_platinum_info
                 3 -> R.string.plus_money_info

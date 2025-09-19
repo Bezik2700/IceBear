@@ -17,7 +17,6 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("d
 class DataStoreManager(private val context: Context) {
 
     companion object {
-
         val LAST_UPDATE_KEY = longPreferencesKey("last_update_timestamp")
 
         val USER_GENERATION_LEVEL = intPreferencesKey("userGenerationLevel")
@@ -30,7 +29,6 @@ class DataStoreManager(private val context: Context) {
         val USER_EPIC_VALUE2 = intPreferencesKey("epicValue2")
         val USER_EPIC_VALUE3 = intPreferencesKey("epicValue3")
         val USER_EPIC_VALUE4 = intPreferencesKey("epicValue4")
-
     }
 
     val lastUpdate: Flow<Long> = context.dataStore.data
@@ -38,7 +36,6 @@ class DataStoreManager(private val context: Context) {
             preferences[LAST_UPDATE_KEY] ?: 0L
         }
 
-    // добавить userMoneyValue за несколько часов
     suspend fun incrementCounter() {
         context.dataStore.edit { preferences ->
             val userMoneyValue = preferences[USER_MONEY_VALUE] ?: 0
@@ -46,14 +43,12 @@ class DataStoreManager(private val context: Context) {
         }
     }
 
-    // Обновить время последнего обновления
     suspend fun updateLastUpdate(timestamp: Long = System.currentTimeMillis()) {
         context.dataStore.edit { preferences ->
             preferences[LAST_UPDATE_KEY] = timestamp
         }
     }
 
-    // Инициализировать время при первом запуске
     suspend fun initializeLastUpdate() {
         context.dataStore.edit { preferences ->
             if (preferences[LAST_UPDATE_KEY] == null) {
@@ -62,62 +57,32 @@ class DataStoreManager(private val context: Context) {
         }
     }
 
-    suspend fun plusCardValue(amount: Int){
+    suspend fun plusCardValue(amount: Int) {
         context.dataStore.edit { pref ->
-            if (amount == 1){
-                val current = pref[USER_PLATINUM_VALUE1] ?: 0
-                pref[USER_PLATINUM_VALUE1] = current + 1
-            } else if(amount == 2){
-                val current = pref[USER_PLATINUM_VALUE2] ?: 0
-                pref[USER_PLATINUM_VALUE2] = current + 1
-            } else if(amount == 3){
-                val current = pref[USER_PLATINUM_VALUE3] ?: 0
-                pref[USER_PLATINUM_VALUE3] = current + 1
-            } else if(amount == 4){
-                val current = pref[USER_PLATINUM_VALUE4] ?: 0
-                pref[USER_PLATINUM_VALUE4] = current + 1
-            } else if(amount == 5){
-                val current = pref[USER_EPIC_VALUE1] ?: 0
-                pref[USER_EPIC_VALUE1] = current + 1
-            } else if(amount == 6){
-                val current = pref[USER_EPIC_VALUE2] ?: 0
-                pref[USER_EPIC_VALUE2] = current + 1
-            } else if(amount == 7){
-                val current = pref[USER_EPIC_VALUE3] ?: 0
-                pref[USER_EPIC_VALUE3] = current + 1
-            } else {
-                val current = pref[USER_EPIC_VALUE4] ?: 0
-                pref[USER_EPIC_VALUE4] = current + 1
+            when (amount) {
+                1 -> pref[USER_PLATINUM_VALUE1] = (pref[USER_PLATINUM_VALUE1] ?: 0) + 1
+                2 -> pref[USER_PLATINUM_VALUE2] = (pref[USER_PLATINUM_VALUE2] ?: 0) + 1
+                3 -> pref[USER_PLATINUM_VALUE3] = (pref[USER_PLATINUM_VALUE3] ?: 0) + 1
+                4 -> pref[USER_PLATINUM_VALUE4] = (pref[USER_PLATINUM_VALUE4] ?: 0) + 1
+                5 -> pref[USER_EPIC_VALUE1] = (pref[USER_EPIC_VALUE1] ?: 0) + 1
+                6 -> pref[USER_EPIC_VALUE2] = (pref[USER_EPIC_VALUE2] ?: 0) + 1
+                7 -> pref[USER_EPIC_VALUE3] = (pref[USER_EPIC_VALUE3] ?: 0) + 1
+                8 -> pref[USER_EPIC_VALUE4] = (pref[USER_EPIC_VALUE4] ?: 0) + 1
             }
         }
     }
 
-    suspend fun removeCardValue(amount: Int){
+    suspend fun removeCardValue(amount: Int) {
         context.dataStore.edit { pref ->
-            if (amount == 1){
-                val current = pref[USER_PLATINUM_VALUE1] ?: 0
-                pref[USER_PLATINUM_VALUE1] = max(0, current - 1)
-            } else if(amount == 2){
-                val current = pref[USER_PLATINUM_VALUE2] ?: 0
-                pref[USER_PLATINUM_VALUE2] = max(0, current - 1)
-            } else if(amount == 3){
-                val current = pref[USER_PLATINUM_VALUE3] ?: 0
-                pref[USER_PLATINUM_VALUE4] = max(0, current - 1)
-            } else if(amount == 4){
-                val current = pref[USER_PLATINUM_VALUE4] ?: 0
-                pref[USER_PLATINUM_VALUE4] = max(0, current - 1)
-            } else if(amount == 5){
-                val current = pref[USER_EPIC_VALUE1] ?: 0
-                pref[USER_EPIC_VALUE1] = max(0, current - 1)
-            } else if(amount == 6){
-                val current = pref[USER_EPIC_VALUE2] ?: 0
-                pref[USER_EPIC_VALUE2] = max(0, current - 1)
-            } else if(amount == 7){
-                val current = pref[USER_EPIC_VALUE3] ?: 0
-                pref[USER_EPIC_VALUE3] = max(0, current - 1)
-            } else {
-                val current = pref[USER_EPIC_VALUE4] ?: 0
-                pref[USER_EPIC_VALUE4] = max(0, current - 1)
+            when (amount) {
+                1 -> pref[USER_PLATINUM_VALUE1] = max(0, (pref[USER_PLATINUM_VALUE1] ?: 0) - 1)
+                2 -> pref[USER_PLATINUM_VALUE2] = max(0, (pref[USER_PLATINUM_VALUE2] ?: 0) - 1)
+                3 -> pref[USER_PLATINUM_VALUE3] = max(0, (pref[USER_PLATINUM_VALUE3] ?: 0) - 1)
+                4 -> pref[USER_PLATINUM_VALUE4] = max(0, (pref[USER_PLATINUM_VALUE4] ?: 0) - 1)
+                5 -> pref[USER_EPIC_VALUE1] = max(0, (pref[USER_EPIC_VALUE1] ?: 0) - 1)
+                6 -> pref[USER_EPIC_VALUE2] = max(0, (pref[USER_EPIC_VALUE2] ?: 0) - 1)
+                7 -> pref[USER_EPIC_VALUE3] = max(0, (pref[USER_EPIC_VALUE3] ?: 0) - 1)
+                8 -> pref[USER_EPIC_VALUE4] = max(0, (pref[USER_EPIC_VALUE4] ?: 0) - 1)
             }
         }
     }

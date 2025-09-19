@@ -1,26 +1,54 @@
 package igor.second.spaceapp.appwindows.cardSearching.locationCard
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.slideInVertically
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import igor.second.spaceapp.R
@@ -84,11 +112,21 @@ fun OnTargetUser(
     userMoneyValue: MutableState<Int>,
     userName: MutableState<String>,
     navController: NavController
-){
-
+) {
     var userSearchingValue = remember { mutableIntStateOf((161..320).random()) }
 
-    var image = when(userSearchingValue.intValue){
+    // Определяем редкость
+    val rarity = when (userSearchingValue.intValue) {
+        in 161..240 -> "GOLD"
+        else -> "DIAMOND"
+    }
+
+    val rarityColor = when (rarity) {
+        "GOLD" -> Color(0xFFFFD700)
+        else -> Color(0xFFB9F2FF)
+    }
+
+    val image = when (userSearchingValue.intValue) {
         in 161..170 -> R.drawable.gold_1
         in 171..180 -> R.drawable.gold_2
         in 181..190 -> R.drawable.gold_3
@@ -107,144 +145,299 @@ fun OnTargetUser(
         else -> R.drawable.diamond_8
     }
 
-    Text(stringResource(R.string.on_target))
-    Card (
-        modifier = Modifier
-            .fillMaxHeight(0.6f)
-            .fillMaxWidth(0.7f)
-            .clip(RoundedCornerShape(32.dp))
-    ) {
-        Image(
-            painterResource(image),
-            contentDescription = "searching prize",
-            contentScale = ContentScale.FillBounds,
-            modifier = Modifier.fillMaxSize()
-        )
+    var animationPlayed by remember { mutableStateOf(false) }
+    LaunchedEffect(Unit) {
+        animationPlayed = true
     }
-    Row (
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(32.dp),
-        modifier = modifier.fillMaxWidth()
+
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(
+                        MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.1f),
+                        MaterialTheme.colorScheme.background
+                    )
+                )
+            ),
+        contentAlignment = Alignment.Center
     ) {
-        TextButton(onClick = {
-            addCardValue(
-                bronzeValue1 = bronzeValue1,
-                bronzeValue2 = bronzeValue2,
-                bronzeValue3 = bronzeValue3,
-                bronzeValue4 = bronzeValue4,
-                bronzeValue5 = bronzeValue5,
-                bronzeValue6 = bronzeValue6,
-                bronzeValue7 = bronzeValue7,
-                bronzeValue8 = bronzeValue8,
-                silverValue1 = silverValue1,
-                silverValue2 = silverValue2,
-                silverValue3 = silverValue3,
-                silverValue4 = silverValue4,
-                silverValue5 = silverValue5,
-                silverValue6 = silverValue6,
-                silverValue7 = silverValue7,
-                silverValue8 = silverValue8,
-                goldValue1 = goldValue1,
-                goldValue2 = goldValue2,
-                goldValue3 = goldValue3,
-                goldValue4 = goldValue4,
-                goldValue5 = goldValue5,
-                goldValue6 = goldValue6,
-                goldValue7 = goldValue7,
-                goldValue8 = goldValue8,
-                diamondValue1 = diamondValue1,
-                diamondValue2 = diamondValue2,
-                diamondValue3 = diamondValue3,
-                diamondValue4 = diamondValue4,
-                diamondValue5 = diamondValue5,
-                diamondValue6 = diamondValue6,
-                diamondValue7 = diamondValue7,
-                diamondValue8 = diamondValue8,
-                platinumValue1 = platinumValue1,
-                platinumValue2 = platinumValue2,
-                platinumValue3 = platinumValue3,
-                platinumValue4 = platinumValue4,
-                platinumValue5 = platinumValue5,
-                platinumValue6 = platinumValue6,
-                platinumValue7 = platinumValue7,
-                platinumValue8 = platinumValue8,
-                epicValue1 = epicValue1,
-                epicValue2 = epicValue2,
-                epicValue3 = epicValue3,
-                epicValue4 = epicValue4,
-                epicValue5 = epicValue5,
-                epicValue6 = epicValue6,
-                epicValue7 = epicValue7,
-                epicValue8 = epicValue8,
-                userMoneyValue = userMoneyValue,
-                dataStoreManager = dataStoreManager,
-                userGenerationLevel = userGenerationLevel,
-                userName = userName,
-                generationValue = userSearchingValue
-            )
-            navController.navigate(Screens.MainIncome.route)
-        }) {
-            Text(stringResource(R.string.on_menu))
-        }
-        Button(onClick = {
-            addCardValue(
-                bronzeValue1 = bronzeValue1,
-                bronzeValue2 = bronzeValue2,
-                bronzeValue3 = bronzeValue3,
-                bronzeValue4 = bronzeValue4,
-                bronzeValue5 = bronzeValue5,
-                bronzeValue6 = bronzeValue6,
-                bronzeValue7 = bronzeValue7,
-                bronzeValue8 = bronzeValue8,
-                silverValue1 = silverValue1,
-                silverValue2 = silverValue2,
-                silverValue3 = silverValue3,
-                silverValue4 = silverValue4,
-                silverValue5 = silverValue5,
-                silverValue6 = silverValue6,
-                silverValue7 = silverValue7,
-                silverValue8 = silverValue8,
-                goldValue1 = goldValue1,
-                goldValue2 = goldValue2,
-                goldValue3 = goldValue3,
-                goldValue4 = goldValue4,
-                goldValue5 = goldValue5,
-                goldValue6 = goldValue6,
-                goldValue7 = goldValue7,
-                goldValue8 = goldValue8,
-                diamondValue1 = diamondValue1,
-                diamondValue2 = diamondValue2,
-                diamondValue3 = diamondValue3,
-                diamondValue4 = diamondValue4,
-                diamondValue5 = diamondValue5,
-                diamondValue6 = diamondValue6,
-                diamondValue7 = diamondValue7,
-                diamondValue8 = diamondValue8,
-                platinumValue1 = platinumValue1,
-                platinumValue2 = platinumValue2,
-                platinumValue3 = platinumValue3,
-                platinumValue4 = platinumValue4,
-                platinumValue5 = platinumValue5,
-                platinumValue6 = platinumValue6,
-                platinumValue7 = platinumValue7,
-                platinumValue8 = platinumValue8,
-                epicValue1 = epicValue1,
-                epicValue2 = epicValue2,
-                epicValue3 = epicValue3,
-                epicValue4 = epicValue4,
-                epicValue5 = epicValue5,
-                epicValue6 = epicValue6,
-                epicValue7 = epicValue7,
-                epicValue8 = epicValue8,
-                userMoneyValue = userMoneyValue,
-                dataStoreManager = dataStoreManager,
-                userGenerationLevel = userGenerationLevel,
-                userName = userName,
-                generationValue = userSearchingValue
-            )
-            navController.navigate(Screens.MainSearching.route)
-        }) {
-            Text(stringResource(R.string.search_again))
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            // Заголовок
+            AnimatedVisibility(
+                visible = animationPlayed,
+                enter = slideInVertically(initialOffsetY = { -it }) + fadeIn(),
+                modifier = Modifier.weight(1f)
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = stringResource(R.string.on_target),
+                        style = MaterialTheme.typography.headlineLarge.copy(
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary
+                        ),
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+
+                    // Индикатор редкости
+                    Card(
+                        colors = CardDefaults.cardColors(
+                            containerColor = rarityColor.copy(alpha = 0.2f)
+                        ),
+                        shape = RoundedCornerShape(16.dp)
+                    ) {
+                        Text(
+                            text = when (rarity) {
+                                "GOLD" -> "ЗОЛОТАЯ НАХОДКА"
+                                else -> "АЛМАЗНАЯ НАХОДКА"
+                            },
+                            style = MaterialTheme.typography.labelLarge.copy(
+                                fontWeight = FontWeight.Bold,
+                                color = rarityColor
+                            ),
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                        )
+                    }
+                }
+            }
+
+            // Картинка находки
+            AnimatedVisibility(
+                visible = animationPlayed,
+                enter = scaleIn() + fadeIn(animationSpec = tween(1000)),
+                modifier = Modifier.weight(2f)
+            ) {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth(0.8f)
+                        .fillMaxHeight(0.6f)
+                        .shadow(
+                            elevation = 16.dp,
+                            shape = RoundedCornerShape(32.dp),
+                            spotColor = rarityColor.copy(alpha = 0.5f)
+                        ),
+                    shape = RoundedCornerShape(32.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surface
+                    )
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(
+                                brush = Brush.radialGradient(
+                                    colors = listOf(
+                                        rarityColor.copy(alpha = 0.1f),
+                                        Color.Transparent
+                                    )
+                                )
+                            )
+                    ) {
+                        Image(
+                            painter = painterResource(image),
+                            contentDescription = "searching prize",
+                            contentScale = ContentScale.FillBounds,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .graphicsLayer {
+                                    if (animationPlayed) {
+                                        rotationZ = 0f
+                                    }
+                                }
+                        )
+                    }
+                }
+            }
+
+            // Кнопки
+            AnimatedVisibility(
+                visible = animationPlayed,
+                enter = slideInVertically(initialOffsetY = { it }) + fadeIn(),
+                modifier = Modifier.weight(1f)
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(24.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    // Кнопка "В меню"
+                    OutlinedButton(
+                        onClick = {
+                            addCardValue(
+                                bronzeValue1 = bronzeValue1,
+                                bronzeValue2 = bronzeValue2,
+                                bronzeValue3 = bronzeValue3,
+                                bronzeValue4 = bronzeValue4,
+                                bronzeValue5 = bronzeValue5,
+                                bronzeValue6 = bronzeValue6,
+                                bronzeValue7 = bronzeValue7,
+                                bronzeValue8 = bronzeValue8,
+                                silverValue1 = silverValue1,
+                                silverValue2 = silverValue2,
+                                silverValue3 = silverValue3,
+                                silverValue4 = silverValue4,
+                                silverValue5 = silverValue5,
+                                silverValue6 = silverValue6,
+                                silverValue7 = silverValue7,
+                                silverValue8 = silverValue8,
+                                goldValue1 = goldValue1,
+                                goldValue2 = goldValue2,
+                                goldValue3 = goldValue3,
+                                goldValue4 = goldValue4,
+                                goldValue5 = goldValue5,
+                                goldValue6 = goldValue6,
+                                goldValue7 = goldValue7,
+                                goldValue8 = goldValue8,
+                                diamondValue1 = diamondValue1,
+                                diamondValue2 = diamondValue2,
+                                diamondValue3 = diamondValue3,
+                                diamondValue4 = diamondValue4,
+                                diamondValue5 = diamondValue5,
+                                diamondValue6 = diamondValue6,
+                                diamondValue7 = diamondValue7,
+                                diamondValue8 = diamondValue8,
+                                platinumValue1 = platinumValue1,
+                                platinumValue2 = platinumValue2,
+                                platinumValue3 = platinumValue3,
+                                platinumValue4 = platinumValue4,
+                                platinumValue5 = platinumValue5,
+                                platinumValue6 = platinumValue6,
+                                platinumValue7 = platinumValue7,
+                                platinumValue8 = platinumValue8,
+                                epicValue1 = epicValue1,
+                                epicValue2 = epicValue2,
+                                epicValue3 = epicValue3,
+                                epicValue4 = epicValue4,
+                                epicValue5 = epicValue5,
+                                epicValue6 = epicValue6,
+                                epicValue7 = epicValue7,
+                                epicValue8 = epicValue8,
+                                userMoneyValue = userMoneyValue,
+                                dataStoreManager = dataStoreManager,
+                                userGenerationLevel = userGenerationLevel,
+                                userName = userName,
+                                generationValue = userSearchingValue
+                            )
+                            navController.navigate(Screens.MainIncome.route)
+                        },
+                        modifier = Modifier.weight(1f),
+                        shape = RoundedCornerShape(16.dp),
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            contentColor = MaterialTheme.colorScheme.onSurface
+                        ),
+                        border = BorderStroke(
+                            2.dp,
+                            MaterialTheme.colorScheme.outline.copy(alpha = 0.5f)
+                        )
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Home,
+                            contentDescription = null,
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = stringResource(R.string.on_menu),
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    }
+
+                    // Кнопка "Искать снова"
+                    Button(
+                        onClick = {
+                            addCardValue(
+                                bronzeValue1 = bronzeValue1,
+                                bronzeValue2 = bronzeValue2,
+                                bronzeValue3 = bronzeValue3,
+                                bronzeValue4 = bronzeValue4,
+                                bronzeValue5 = bronzeValue5,
+                                bronzeValue6 = bronzeValue6,
+                                bronzeValue7 = bronzeValue7,
+                                bronzeValue8 = bronzeValue8,
+                                silverValue1 = silverValue1,
+                                silverValue2 = silverValue2,
+                                silverValue3 = silverValue3,
+                                silverValue4 = silverValue4,
+                                silverValue5 = silverValue5,
+                                silverValue6 = silverValue6,
+                                silverValue7 = silverValue7,
+                                silverValue8 = silverValue8,
+                                goldValue1 = goldValue1,
+                                goldValue2 = goldValue2,
+                                goldValue3 = goldValue3,
+                                goldValue4 = goldValue4,
+                                goldValue5 = goldValue5,
+                                goldValue6 = goldValue6,
+                                goldValue7 = goldValue7,
+                                goldValue8 = goldValue8,
+                                diamondValue1 = diamondValue1,
+                                diamondValue2 = diamondValue2,
+                                diamondValue3 = diamondValue3,
+                                diamondValue4 = diamondValue4,
+                                diamondValue5 = diamondValue5,
+                                diamondValue6 = diamondValue6,
+                                diamondValue7 = diamondValue7,
+                                diamondValue8 = diamondValue8,
+                                platinumValue1 = platinumValue1,
+                                platinumValue2 = platinumValue2,
+                                platinumValue3 = platinumValue3,
+                                platinumValue4 = platinumValue4,
+                                platinumValue5 = platinumValue5,
+                                platinumValue6 = platinumValue6,
+                                platinumValue7 = platinumValue7,
+                                platinumValue8 = platinumValue8,
+                                epicValue1 = epicValue1,
+                                epicValue2 = epicValue2,
+                                epicValue3 = epicValue3,
+                                epicValue4 = epicValue4,
+                                epicValue5 = epicValue5,
+                                epicValue6 = epicValue6,
+                                epicValue7 = epicValue7,
+                                epicValue8 = epicValue8,
+                                userMoneyValue = userMoneyValue,
+                                dataStoreManager = dataStoreManager,
+                                userGenerationLevel = userGenerationLevel,
+                                userName = userName,
+                                generationValue = userSearchingValue
+                            )
+                            navController.navigate(Screens.MainSearching.route)
+                        },
+                        modifier = Modifier.weight(1f),
+                        shape = RoundedCornerShape(16.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            contentColor = MaterialTheme.colorScheme.onPrimary
+                        ),
+                        elevation = ButtonDefaults.buttonElevation(
+                            defaultElevation = 8.dp,
+                            pressedElevation = 4.dp
+                        )
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Search,
+                            contentDescription = null,
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = stringResource(R.string.search_again),
+                            style = MaterialTheme.typography.bodyLarge.copy(
+                                fontWeight = FontWeight.SemiBold
+                            )
+                        )
+                    }
+                }
+            }
         }
     }
 }
