@@ -24,16 +24,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import igor.second.spaceapp.R
 import igor.second.spaceapp.appsettings.DataStoreManager
 import igor.second.spaceapp.appsettings.MainViewModel
-import igor.second.spaceapp.appwindows.cardGeneration.generator.buttons.InCollectionButton
 import igor.second.spaceapp.appwindows.cardGeneration.generator.autoGeneration.userGenerationLevelUpgrade
 import igor.second.spaceapp.appwindows.cardGeneration.generator.buttons.GenerationButton
 import igor.second.spaceapp.appwindows.cardGeneration.generator.buttons.GradientButton
+import igor.second.spaceapp.appwindows.cardGeneration.generator.buttons.InCollectionButton
 
 @Composable
 fun MiniGeneration(
@@ -215,6 +217,9 @@ fun MiniGeneration(
                 generationValue = generationValue
             )
         } else {
+
+            var string = stringResource(R.string.not_money)
+
             Column(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -222,7 +227,6 @@ fun MiniGeneration(
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
-                // Стилизованная кнопка авто-генерации
                 GradientButton(
                     modifier = modifier
                         .fillMaxWidth()
@@ -233,7 +237,7 @@ fun MiniGeneration(
                             userMoneyValue.value -= 50
                             userGenerationLevelUpgrade(generationValue = generationValue)
                         } else {
-                            Toast.makeText(context, "Not enough money", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, string, Toast.LENGTH_SHORT).show()
                         }
                     },
                     gradientColors = listOf(Color(0xFF667EEA), Color(0xFF764BA2)),
@@ -252,7 +256,7 @@ fun MiniGeneration(
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
-                                text = "Start Auto Generation",
+                                text = stringResource(R.string.auto_generation),
                                 color = Color.White,
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 16.sp
@@ -278,7 +282,7 @@ fun MiniGeneration(
                             viewModel.timerRestart()
                             viewModel.timerEnabledChange()
                         } else {
-                            Toast.makeText(context, "Not enough money", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, string, Toast.LENGTH_SHORT).show()
                         }
                     },
                     gradientColors = listOf(Color(0xFF11998E), Color(0xFF38EF7D)),
@@ -297,7 +301,7 @@ fun MiniGeneration(
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
-                                text = "Start Generation",
+                                text = stringResource(R.string.generation),
                                 color = Color.White,
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 16.sp

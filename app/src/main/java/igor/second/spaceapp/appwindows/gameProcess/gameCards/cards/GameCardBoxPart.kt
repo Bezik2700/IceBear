@@ -249,7 +249,6 @@ fun GameCardBoxPart(
                             }
                         }
                     } else {
-                        // Обычная отправка без очистки
                         if (messageContent.isNotBlank() && !isSending.value) {
                             isSending.value = true
                             val message = Message(

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Ice bear</string>
+    <string name="app_name">KOSMIX</string>
 
     // main screen text
     <string name="exit">EXIT</string>
@@ -10,15 +10,28 @@
     <string name="user">user</string>
     <string name="starting">Has anyone started the game yet? You can start by clicking on any bronze card.</string>
     <string name="enter_name">Your name?</string>
-    <string name="auto_generation">GENERATE</string>
+    <string name="auto_generation">AUTO GENERATE</string>
+    <string name="generation">GENERATE</string>
     <string name="name_not_change">(once saved, the name cannot be changed)</string>
     <string name="max_symbols">• max 10 symbols</string>
     <string name="exit_press">press again to exit</string>
+    <string name="not_money">Not enough money</string>
     <string name="top_users">TOP USERS</string>
     <string name="add_to_collection">Add to Collection</string>
+    <string name="understood">Understood</string>
+    
+    // income info
+    <string name="purchase_info">Here you can purchase cards for in-game currency, as well as buy cards and in-game currency for real money, and improve card generation.</string>
+    <string name="searching_info">Here you can immerse yourself in the exciting search for cards located near you (no less than diamond ones).</string>
+    <string name="generation_info">Here you can generate new cards that you will need for the game.</string>
+    <string name="collection_info">Here you can see your collection of cards and cards that still need to be generated.</string>
+    <string name="game_rules">
+        Game Rules: All users participate in the game, with the goal of reaching the top of the leaderboard on the main screen.
+        To do this, you must place three identical cards. This resets the game and the user reaches the top of the leaderboard.
+        Cards with a value of 30 higher or lower, as well as identical cards, can be placed. The chat resets once per day.</string>
 
     // searching text
-    <string name="on_target">Congratulations, you have reached your goal</string>
+    <string name="on_target">Congratulations, you have reached your goal.</string>
     <string name="on_menu">To main menu</string>
     <string name="search_again">Search again</string>
     <string name="location_update">Determine your location…</string>
@@ -29,11 +42,12 @@
     <string name="find_screen">SEARCHING</string>
     <string name="collection_screen">COLLECTION</string>
     <string name="money">$</string>
+    <string name="attention">Attention: purchase with real money!</string>
     // info about purchase
-    <string name="plus_money_info">plus_money_info</string>
-    <string name="upgrade_info">upgrade_info</string>
-    <string name="add_platinum_info">add_platinum_info</string>
-    <string name="add_epic_info">add_epic_info</string>
+    <string name="plus_money_info">In this section you can purchase game currency, which you can use to generate cards.</string>
+    <string name="upgrade_info">In this section you can improve the generation of game cards.</string>
+    <string name="add_platinum_info">In this section you can purchase platinum cards for the game</string>
+    <string name="add_epic_info">In this section you can purchase epic cards for the game</string>
 
     // buy cards
     <string name="buy">Buy</string>

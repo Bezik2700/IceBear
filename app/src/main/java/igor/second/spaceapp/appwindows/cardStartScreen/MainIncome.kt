@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -21,7 +20,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -116,7 +114,6 @@ fun MainIncome(
                 .fillMaxWidth()
                 .fillMaxHeight(0.5f)
         ) {
-            Text(userGenerationLevel.value.toString(), color = Color.White)
             UserRating()
             StartGameProcess(
                 dialogShowValue = dialogShowValue,
@@ -234,16 +231,16 @@ fun MainIncome(
         MainInformation(
             informationEnabled = informationEnabled,
             dialogText = when (informationValue){
-                1 -> R.string.bronze1
-                2 -> R.string.bronze2
-                3 -> R.string.bronze3
-                else -> R.string.bronze4
+                1 -> R.string.purchase_info
+                2 -> R.string.generation_info
+                3 -> R.string.searching_info
+                else -> R.string.collection_info
             },
             dialogImage = when (informationValue){
-                1 -> R.drawable.bronze_1
-                2 -> R.drawable.bronze_2
-                3 -> R.drawable.bronze_3
-                else -> R.drawable.bronze_4
+                1 -> R.drawable.income_card_shop
+                2 -> R.drawable.income_card_generation
+                3 -> R.drawable.income_card_searching
+                else -> R.drawable.income_card_collection
             },
             navController = navController
         )

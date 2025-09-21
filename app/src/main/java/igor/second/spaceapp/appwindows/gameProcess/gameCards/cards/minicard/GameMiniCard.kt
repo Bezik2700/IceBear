@@ -10,14 +10,10 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -53,7 +49,6 @@ fun GameMiniCard(
     val isEnabled = cardScore != 0
     val colorMatrix = remember { ColorMatrix().apply { setToSaturation(0f) } }
 
-    // Анимация для клика
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
     val scale by animateFloatAsState(
@@ -62,12 +57,117 @@ fun GameMiniCard(
         label = "cardScale"
     )
 
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center,
-        modifier = Modifier.padding(horizontal = 4.dp, vertical = 4.dp)
-    ) {
-        // Бейдж с количеством очков
+    Box(modifier = Modifier){
+
+        Card(
+            colors = CardDefaults.cardColors(
+                containerColor = if (isEnabled) {
+                    MaterialTheme.colorScheme.surface
+                } else {
+                    MaterialTheme.colorScheme.surface.copy(alpha = 0.5f)
+                }
+            ),
+            shape = RoundedCornerShape(12.dp),
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = if (isEnabled) 6.dp else 2.dp,
+                pressedElevation = if (isEnabled) 2.dp else 1.dp
+            ),
+            modifier = Modifier
+                .size(width = 56.dp, height = 96.dp)
+                .graphicsLayer { scaleX = scale; scaleY = scale }
+                .clickable(
+                    enabled = isEnabled,
+                    onClick = onClick,
+                    interactionSource = interactionSource
+                )
+                .border(
+                    width = 2.dp,
+                    color = if (isEnabled) {
+                        MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
+                    } else {
+                        MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)
+                    },
+                    shape = RoundedCornerShape(12.dp)
+                )
+        ) {
+            Box(modifier = Modifier.fillMaxSize()) {
+                Image(
+                    painter = painterResource(image),
+                    contentDescription = "Card image",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .alpha(if (isEnabled) 1f else 0.4f),
+                    colorFilter = if (isEnabled) null else ColorFilter.colorMatrix(colorMatrix)
+                )
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(
+                            brush = Brush.verticalGradient(
+                                colors = listOf(
+                                    Color.Transparent,
+                                    Color.Black.copy(alpha = 0.3f)
+                                ),
+                                startY = 0f,
+                                endY = 100f
+                            )
+                        )
+                )
+                Text(
+                    text = cardValue.toString(),
+                    color = Color.White,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(6.dp)
+                        .background(
+                            color = Color.Black.copy(alpha = 0.6f),
+                            shape = CircleShape
+                        )
+                        .padding(horizontal = 6.dp, vertical = 2.dp)
+                )
+                if (isEnabled) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(
+                                brush = Brush.radialGradient(
+                                    colors = listOf(
+                                        Color.White.copy(alpha = 0.1f),
+                                        Color.Transparent
+                                    ),
+                                    center = Offset(0.7f, 0.3f),
+                                    radius = 200f
+                                )
+                            )
+                    )
+                } else {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(Color.Black.copy(alpha = 0.2f))
+                    ) {
+                        Canvas(modifier = Modifier.fillMaxSize()) {
+                            drawLine(
+                                color = Color.Red.copy(alpha = 0.6f),
+                                start = Offset(0f, 0f),
+                                end = Offset(size.width, size.height),
+                                strokeWidth = 2.dp.toPx()
+                            )
+                            drawLine(
+                                color = Color.Red.copy(alpha = 0.6f),
+                                start = Offset(size.width, 0f),
+                                end = Offset(0f, size.height),
+                                strokeWidth = 2.dp.toPx()
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
         Card(
             colors = CardDefaults.cardColors(
                 containerColor = if (isEnabled) {
@@ -92,126 +192,6 @@ fun GameMiniCard(
                     .size(24.dp)
                     .wrapContentSize(Alignment.Center)
             )
-        }
-
-        Spacer(modifier = Modifier.width(8.dp))
-
-        // Основная карточка
-        Card(
-            colors = CardDefaults.cardColors(
-                containerColor = if (isEnabled) {
-                    MaterialTheme.colorScheme.surface
-                } else {
-                    MaterialTheme.colorScheme.surface.copy(alpha = 0.5f)
-                }
-            ),
-            shape = RoundedCornerShape(12.dp),
-            elevation = CardDefaults.cardElevation(
-                defaultElevation = if (isEnabled) 6.dp else 2.dp,
-                pressedElevation = if (isEnabled) 2.dp else 1.dp
-            ),
-            modifier = Modifier
-                .size(width = 70.dp, height = 100.dp)
-                .graphicsLayer { scaleX = scale; scaleY = scale }
-                .clickable(
-                    enabled = isEnabled,
-                    onClick = onClick,
-                    interactionSource = interactionSource
-                )
-                .border(
-                    width = 2.dp,
-                    color = if (isEnabled) {
-                        MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
-                    } else {
-                        MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)
-                    },
-                    shape = RoundedCornerShape(12.dp)
-                )
-        ) {
-            Box(modifier = Modifier.fillMaxSize()) {
-                // Фон карточки
-                Image(
-                    painter = painterResource(image),
-                    contentDescription = "Card image",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .alpha(if (isEnabled) 1f else 0.4f),
-                    colorFilter = if (isEnabled) null else ColorFilter.colorMatrix(colorMatrix)
-                )
-
-                // Градиентная overlay для лучшей читаемости текста
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(
-                            brush = Brush.verticalGradient(
-                                colors = listOf(
-                                    Color.Transparent,
-                                    Color.Black.copy(alpha = 0.3f)
-                                ),
-                                startY = 0f,
-                                endY = 100f
-                            )
-                        )
-                )
-
-                // Значение карты в углу
-                Text(
-                    text = cardValue.toString(),
-                    color = Color.White,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.ExtraBold,
-                    modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                        .padding(6.dp)
-                        .background(
-                            color = Color.Black.copy(alpha = 0.6f),
-                            shape = CircleShape
-                        )
-                        .padding(horizontal = 6.dp, vertical = 2.dp)
-                )
-
-                // Эффект блеска для доступных карт
-                if (isEnabled) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(
-                                brush = Brush.radialGradient(
-                                    colors = listOf(
-                                        Color.White.copy(alpha = 0.1f),
-                                        Color.Transparent
-                                    ),
-                                    center = Offset(0.7f, 0.3f),
-                                    radius = 200f
-                                )
-                            )
-                    )
-                } else {
-                    // Перечеркивание для недоступных карт
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(Color.Black.copy(alpha = 0.2f))
-                    ) {
-                        Canvas(modifier = Modifier.fillMaxSize()) {
-                            drawLine(
-                                color = Color.Red.copy(alpha = 0.6f),
-                                start = Offset(0f, 0f),
-                                end = Offset(size.width, size.height),
-                                strokeWidth = 2.dp.toPx()
-                            )
-                            drawLine(
-                                color = Color.Red.copy(alpha = 0.6f),
-                                start = Offset(size.width, 0f),
-                                end = Offset(0f, size.height),
-                                strokeWidth = 2.dp.toPx()
-                            )
-                        }
-                    }
-                }
-            }
         }
     }
 }

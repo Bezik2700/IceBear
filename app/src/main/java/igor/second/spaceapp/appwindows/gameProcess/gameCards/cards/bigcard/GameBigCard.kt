@@ -22,7 +22,6 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -36,11 +35,8 @@ fun GameBigCard(
     text: String
 ) {
     Box(
-        modifier = Modifier
-            .padding(bottom = 24.dp)
-            .height(280.dp)
+        modifier = Modifier.height(280.dp)
     ) {
-        // Background cards with shadow and smooth rotation
         Card(
             modifier = Modifier
                 .rotate(45f)
@@ -53,8 +49,7 @@ fun GameBigCard(
                 painter = painterResource(R.drawable.flip_side_card),
                 contentDescription = "background card",
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize(),
-                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f))
+                modifier = Modifier.fillMaxSize()
             )
         }
 
@@ -71,7 +66,6 @@ fun GameBigCard(
                 contentDescription = "background card",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize(),
-                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.8f))
             )
         }
 
@@ -88,11 +82,9 @@ fun GameBigCard(
                 contentDescription = "background card",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize(),
-                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.surfaceVariant)
             )
         }
 
-        // Main card with elevation and border
         Card(
             modifier = Modifier
                 .size(width = 150.dp, height = 270.dp)
@@ -102,15 +94,12 @@ fun GameBigCard(
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
-                // Card image with gradient overlay
                 Image(
                     painter = painterResource(image),
                     contentDescription = "main card",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize()
                 )
-
-                // Gradient overlay for better text visibility
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
@@ -125,8 +114,6 @@ fun GameBigCard(
                             )
                         )
                 )
-
-                // Top value indicator
                 Box(
                     modifier = Modifier
                         .align(Alignment.TopStart)
@@ -145,8 +132,6 @@ fun GameBigCard(
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
-
-                // Bottom value indicator
                 Box(
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
@@ -165,8 +150,6 @@ fun GameBigCard(
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
-
-                // Glow effect
                 Box(
                     modifier = Modifier
                         .fillMaxSize()

@@ -43,12 +43,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import igor.second.spaceapp.R
 
 @Composable
 fun CollectionSmallCard(
@@ -157,7 +155,7 @@ fun CollectionSmallCard(
             Text(
                 text = stringResource(cardName),
                 color = Color(0xFFFF7256),
-                fontSize = 15.sp,
+                fontSize = 10.sp,
                 fontWeight = FontWeight.Medium,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -210,14 +208,4 @@ fun CollectionSmallCard(
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun CollectionSmallCardPreview(){
-    CollectionSmallCard(
-        cardScore = 0,
-        cardImage = R.drawable.bronze_1,
-        cardName = R.string.bronze1
-    )
 }

@@ -1,0 +1,138 @@
+<resources>
+    <string name="app_name">КОСМИКС</string>
+
+    // main screen text
+    <string name="exit">Выход</string>
+    <string name="exit_enabled">Вы действительно хотите выйти?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="game">ИГРА</string>
+    <string name="user">пользователь</string>
+    <string name="starting">Кто-нибудь уже начал игру? Можно начать, нажав на любую бронзовую карту.</string>
+    <string name="enter_name">Ваше имя?</string>
+    <string name="auto_generation">ГЕНЕРИРОВАТЬ АВТО</string>
+    <string name="generation">ГЕНЕРИРОВАТЬ</string>
+    <string name="name_not_change">(после сохранения имя изменить нельзя)</string>
+    <string name="max_symbols">• максимум 10 символов</string>
+    <string name="exit_press">нажмите еще раз, чтобы выйти</string>
+    <string name="top_users">ТОП ПОЛЬЗОВАТЕЛЕЙ</string>
+    <string name="not_money">Недостатчно средств</string>
+    <string name="add_to_collection">Добавить в коллекцию</string>
+    <string name="understood">Понятно</string>
+    
+    // income info
+    <string name="purchase_info">Здесь вы можете приобрести карты за игровую валюту, а также купить карты и игровую валюту за реальные деньги, а также улучшить генерацию карт.</string>
+    <string name="searching_info">Здесь вы сможете погрузиться в увлекательный поиск карт, находящихся рядом с вами (не менее бриллиантовых).</string>
+    <string name="generation_info">Здесь вы можете сгенерировать новые карты, которые понадобятся вам для игры.</string>
+    <string name="collection_info">Здесь вы можете увидеть свою коллекцию карточек и карточек, которые еще предстоит сгенерировать.</string>
+    <string name="game_rules">
+        Правила игры: Все пользователи участвуют в игре, цель которой — занять первое место в таблице лидеров на главном экране.
+        Для этого необходимо разместить три одинаковые карты. Это обнуляет игру, и пользователь достигает первого места в таблице лидеров.
+        Можно размещать карты номиналом на 30 очков выше или ниже, а также одинаковые карты. Чат обновляется раз в сутки.</string>
+
+    // searching text
+    <string name="on_target">Поздравляем, вы достигли своей цели.</string>
+    <string name="on_menu">В главное меню</string>
+    <string name="search_again">Искать снова</string>
+    <string name="location_update">Определяем ваше местоположение…</string>
+
+    // shopping names
+    <string name="generation_screen">ГЕНЕРАЦИЯ</string>
+    <string name="shopping_screen">ПОКУПКИ</string>
+    <string name="find_screen">ПОИСК</string>
+    <string name="collection_screen">КОЛЛЕКЦИЯ</string>
+    <string name="money">$</string>
+    <string name="attention">Внимание: покупки за реальные деньги!</string>
+    // info about purchase
+    <string name="plus_money_info">В этом разделе вы можете приобрести игровую валюту, которую можно использовать для генерации карт.</string>
+    <string name="upgrade_info">В этом разделе вы можете улучшить генерацию игровых карт.</string>
+    <string name="add_platinum_info">В этом разделе вы можете приобрести платиновые карты для игры.</string>
+    <string name="add_epic_info">В этом разделе вы можете приобрести эпические карты для игры.</string>
+
+    // buy cards
+    <string name="buy">Купить</string>
+    <string name="plus_money_1">1000</string>
+    <string name="plus_money_2">4900</string>
+    <string name="plus_money_3">9900</string>
+    <string name="plus_money_4">99900</string>
+    <string name="upgrade_1">1</string>
+    <string name="upgrade_2">3</string>
+    <string name="upgrade_3">7</string>
+    <string name="upgrade_4">19</string>
+    <string name="gold_1">ЗОЛОТО 1</string>
+    <string name="gold_2">ЗОЛОТО 2</string>
+    <string name="diamond_1">БРИЛЛИАНТ 1</string>
+    <string name="diamond_2">БРИЛЛИАНТ 2</string>
+    <string name="platinum_1">ПЛАТИНА 1</string>
+    <string name="platinum_2">ПЛАТИНА 2</string>
+    <string name="platinum_3">ПЛАТИНА 3</string>
+    <string name="platinum_4">ПЛАТИНА 4</string>
+    <string name="epic_1">ЕПИЧЕСКАЯ 1</string>
+    <string name="epic_2">ЕПИЧЕСКАЯ 2</string>
+    <string name="epic_3">ЕПИЧЕСКАЯ 3</string>
+    <string name="epic_4">ЕПИЧЕСКАЯ 4</string>
+
+    // block names
+    <string name="bronze">БРОНЗОВАЯ коллекция</string>
+    <string name="silver">СЕРЕБРЯННАЯ коллекция</string>
+    <string name="gold">ЗОЛОТАЯ коллекция</string>
+    <string name="diamond">БРИЛЛИАНТОВАЯ коллекция</string>
+    <string name="platinum">ПЛАТИНОВАЯ коллекция</string>
+    <string name="epic">ЭПИЧЕСКАЯ коллекция</string>
+
+    // card names
+    <string name="bronze1">БРОНЗА 1</string>
+    <string name="bronze2">БРОНЗА 2</string>
+    <string name="bronze3">БРОНЗА 3</string>
+    <string name="bronze4">БРОНЗА 4</string>
+    <string name="bronze5">БРОНЗА 5</string>
+    <string name="bronze6">БРОНЗА 6</string>
+    <string name="bronze7">БРОНЗА 7</string>
+    <string name="bronze8">БРОНЗА 8</string>
+
+    <string name="silver1">СЕРЕБРО 1</string>
+    <string name="silver2">СЕРЕБРО 2</string>
+    <string name="silver3">СЕРЕБРО 3</string>
+    <string name="silver4">СЕРЕБРО 4</string>
+    <string name="silver5">СЕРЕБРО 5</string>
+    <string name="silver6">СЕРЕБРО 6</string>
+    <string name="silver7">СЕРЕБРО 7</string>
+    <string name="silver8">СЕРЕБРО 8</string>
+
+    <string name="gold1">ЗОЛОТО 1</string>
+    <string name="gold2">ЗОЛОТО 2</string>
+    <string name="gold3">ЗОЛОТО 3</string>
+    <string name="gold4">ЗОЛОТО 4</string>
+    <string name="gold5">ЗОЛОТО 5</string>
+    <string name="gold6">ЗОЛОТО 6</string>
+    <string name="gold7">ЗОЛОТО 7</string>
+    <string name="gold8">ЗОЛОТО 8</string>
+
+    <string name="diamond1">БРИЛЛИАНТ 1</string>
+    <string name="diamond2">БРИЛЛИАНТ 2</string>
+    <string name="diamond3">БРИЛЛИАНТ 3</string>
+    <string name="diamond4">БРИЛЛИАНТ 4</string>
+    <string name="diamond5">БРИЛЛИАНТ 5</string>
+    <string name="diamond6">БРИЛЛИАНТ 6</string>
+    <string name="diamond7">БРИЛЛИАНТ 7</string>
+    <string name="diamond8">БРИЛЛИАНТ 8</string>
+
+    <string name="platinum1">ПЛАТИНА 1</string>
+    <string name="platinum2">ПЛАТИНА 2</string>
+    <string name="platinum3">ПЛАТИНА 3</string>
+    <string name="platinum4">ПЛАТИНА 4</string>
+    <string name="platinum5">ПЛАТИНА 5</string>
+    <string name="platinum6">ПЛАТИНА 6</string>
+    <string name="platinum7">ПЛАТИНА 7</string>
+    <string name="platinum8">ПЛАТИНА 8</string>
+
+    <string name="epic1">ЕПИЧЕСКАЯ 1</string>
+    <string name="epic2">ЕПИЧЕСКАЯ 2</string>
+    <string name="epic3">ЕПИЧЕСКАЯ 3</string>
+    <string name="epic4">ЕПИЧЕСКАЯ 4</string>
+    <string name="epic5">ЕПИЧЕСКАЯ 5</string>
+    <string name="epic6">ЕПИЧЕСКАЯ 6</string>
+    <string name="epic7">ЕПИЧЕСКАЯ 7</string>
+    <string name="epic8">ЕПИЧЕСКАЯ 8</string>
+
+</resources>

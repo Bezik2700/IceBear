@@ -14,12 +14,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -38,10 +37,9 @@ fun CustomSlider(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp, vertical = 16.dp)
+            .padding(top = 16.dp, start = 16.dp, end = 16.dp)
     ) {
-        // Анимированный заголовок
-        var previousLevel by remember { mutableStateOf(currentLevel) }
+        var previousLevel by remember { mutableIntStateOf(currentLevel) }
         val animatedText by animateIntAsState(
             targetValue = currentLevel,
             animationSpec = tween(durationMillis = 300),
@@ -72,8 +70,6 @@ fun CustomSlider(
             ),
             modifier = Modifier.fillMaxWidth()
         )
-
-        // Редкость карт под слайдером
         val rarityLabels = listOf("Бронза", "Серебро", "Золото", "Платина", "Алмаз", "Эпик")
         Text(
             text = rarityLabels.getOrNull(currentLevel - 1) ?: "",
@@ -82,13 +78,4 @@ fun CustomSlider(
             modifier = Modifier.padding(top = 4.dp)
         )
     }
-}
-
-
-@Preview
-@Composable
-fun CardPreview(){
-    CustomSlider(
-        sliderPosition = remember { mutableStateOf(1f) }
-    )
 }
