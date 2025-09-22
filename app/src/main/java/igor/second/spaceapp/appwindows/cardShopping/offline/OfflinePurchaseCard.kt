@@ -3,9 +3,9 @@ package igor.second.spaceapp.appwindows.cardShopping.offline
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -21,10 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -49,61 +46,53 @@ fun OfflinePurchaseCard(
             .clickable(onClick = { onClick.invoke() }),
         shape = RoundedCornerShape(16.dp)
     ) {
-        Box(modifier = Modifier) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = Color(0xFFEA2264))
+                .padding(12.dp),
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Image(
-                painterResource(R.drawable.offline_purchase_fon),
-                contentDescription = "fon",
-                contentScale = ContentScale.FillBounds,
-                modifier = Modifier.fillMaxSize(),
-                colorFilter = ColorFilter.tint(Color.Black.copy(alpha = 0.3f), BlendMode.Darken)
-            )
-
-            Column(
+                painterResource(image),
+                contentDescription = "card image",
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(12.dp),
-                verticalArrangement = Arrangement.SpaceBetween,
-                horizontalAlignment = Alignment.CenterHorizontally
+                    .padding(bottom = 8.dp)
+                    .fillMaxHeight(0.6f)
+                    .shadow(4.dp, shape = CircleShape)
+            )
+            Text(
+                stringResource(text),
+                color = Color.Black,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center
+            )
+            Card (
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp)
             ) {
-                Image(
-                    painterResource(image),
-                    contentDescription = "card image",
+                Row (
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
                     modifier = Modifier
-                        .padding(bottom = 8.dp)
-                        .fillMaxHeight(0.6f)
-                        .shadow(4.dp, shape = CircleShape)
-                )
-                Text(
-                    stringResource(text),
-                    color = Color.White,
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center
-                )
-                Card (
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(12.dp)
+                        .background(color = Color(0xFF9678B6))
+                        .fillMaxSize()
+                        .padding(vertical = 8.dp)
                 ) {
-                    Row (
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(vertical = 8.dp)
-                    ) {
-                        Text(
-                            stringResource(R.string.money),
-                            color = Color.Black,
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Medium
-                        )
-                        Text(
-                            price.toString(),
-                            fontSize = 18.sp,
-                            color = Color.Black,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
+                    Text(
+                        stringResource(R.string.money),
+                        color = Color.Black,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                    Text(
+                        price.toString(),
+                        fontSize = 18.sp,
+                        color = Color.Black,
+                        fontWeight = FontWeight.Bold
+                    )
                 }
             }
         }

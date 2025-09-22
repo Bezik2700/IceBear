@@ -162,7 +162,7 @@ fun MainCollection(
                 cardScore7 = goldValue7.value,
                 cardScore8 = goldValue8.value,
                 collectionName = R.string.gold,
-                nameColor = Color(0xFFE0B500)
+                nameColor = Color(0xFFE0BD3D)
             )
             CollectionChapter(
                 modifier = modifier,
@@ -191,7 +191,7 @@ fun MainCollection(
                 cardScore7 = diamondValue7.value,
                 cardScore8 = diamondValue8.value,
                 collectionName = R.string.diamond,
-                nameColor = Color(0xFF005BFF)
+                nameColor = Color(0xFF256AE1)
             )
             CollectionChapter(
                 modifier = modifier,
@@ -220,7 +220,7 @@ fun MainCollection(
                 cardScore7 = platinumValue7.value,
                 cardScore8 = platinumValue8.value,
                 collectionName = R.string.platinum,
-                nameColor = Color(0xFFFF0000)
+                nameColor = Color(0xFFC52424)
             )
             CollectionChapter(
                 modifier = modifier,
@@ -249,7 +249,7 @@ fun MainCollection(
                 cardScore7 = epicValue7.value,
                 cardScore8 = epicValue8.value,
                 collectionName = R.string.epic,
-                nameColor = Color(0xFF22A92D)
+                nameColor = Color(0xFF2CAD38)
             )
         }
     }

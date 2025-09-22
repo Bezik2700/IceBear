@@ -112,22 +112,26 @@ fun CollectionChapter(
             CollectionSmallCard(
                 cardImage = cardImage1,
                 cardName = cardName1,
-                cardScore = cardScore1
+                cardScore = cardScore1,
+                carNameColor = nameColor
             )
             CollectionSmallCard(
                 cardImage = cardImage2,
                 cardName = cardName2,
-                cardScore = cardScore2
+                cardScore = cardScore2,
+                carNameColor = nameColor
             )
             CollectionSmallCard(
                 cardImage = cardImage3,
                 cardName = cardName3,
-                cardScore = cardScore3
+                cardScore = cardScore3,
+                carNameColor = nameColor
             )
             CollectionSmallCard(
                 cardImage = cardImage4,
                 cardName = cardName4,
-                cardScore = cardScore4
+                cardScore = cardScore4,
+                carNameColor = nameColor
             )
         }
         Row (
@@ -140,22 +144,26 @@ fun CollectionChapter(
             CollectionSmallCard(
                 cardImage = cardImage5,
                 cardName = cardName5,
-                cardScore = cardScore5
+                cardScore = cardScore5,
+                carNameColor = nameColor
             )
             CollectionSmallCard(
                 cardImage = cardImage6,
                 cardName = cardName6,
-                cardScore = cardScore6
+                cardScore = cardScore6,
+                carNameColor = nameColor
             )
             CollectionSmallCard(
                 cardImage = cardImage7,
                 cardName = cardName7,
-                cardScore = cardScore7
+                cardScore = cardScore7,
+                carNameColor = nameColor
             )
             CollectionSmallCard(
                 cardImage = cardImage8,
                 cardName = cardName8,
-                cardScore = cardScore8
+                cardScore = cardScore8,
+                carNameColor = nameColor
             )
         }
     }

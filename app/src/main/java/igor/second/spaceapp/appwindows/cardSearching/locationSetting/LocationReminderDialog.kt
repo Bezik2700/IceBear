@@ -6,7 +6,6 @@ import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -29,8 +28,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -38,12 +37,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import igor.second.spaceapp.R
 
 @Composable
 fun LocationReminderDialog(
@@ -73,65 +74,43 @@ fun LocationReminderDialog(
                 modifier = Modifier.padding(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Анимированная иконка
                 AnimatedLocationIcon()
-
                 Spacer(modifier = Modifier.height(24.dp))
-
-                // Заголовок
                 Text(
-                    text = "Геолокация отключена",
-                    style = MaterialTheme.typography.headlineSmall.copy(
-                        fontWeight = FontWeight.Bold
-                    ),
-                    color = MaterialTheme.colorScheme.primary,
+                    text = stringResource(R.string.location_off),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color(0xFF9678B6),
+                    fontSize = 24.sp,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
                 )
-
                 Spacer(modifier = Modifier.height(16.dp))
-
-                // Текст
                 Text(
-                    text = "Для полноценной работы приложения необходимо включить геолокацию. Это позволит использовать все функции поиска и навигации.",
+                    text = stringResource(R.string.location_turn_on),
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center,
                     lineHeight = 24.sp,
                     modifier = Modifier.fillMaxWidth()
                 )
-
                 Spacer(modifier = Modifier.height(32.dp))
-
-                // Кнопки
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    // Кнопка "Позже"
-                    OutlinedButton(
+                    TextButton(
                         onClick = onDismiss,
-                        modifier = Modifier
-                            .weight(1f)
-                            .height(52.dp),
-                        shape = RoundedCornerShape(16.dp),
-                        colors = ButtonDefaults.outlinedButtonColors(
-                            contentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                        ),
-                        border = BorderStroke(
-                            width = 1.dp,
-                            color = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f)
-                        )
+                        modifier = Modifier.weight(0.3f).height(48.dp),
+                        shape = RoundedCornerShape(16.dp)
                     ) {
                         Text(
-                            text = "Позже",
+                            text = stringResource(R.string.no),
+                            color = Color(0xFF9678B6),
                             style = MaterialTheme.typography.bodyLarge.copy(
                                 fontWeight = FontWeight.Medium
                             )
                         )
                     }
-
-                    // Кнопка "Включить"
                     Button(
                         onClick = onEnableLocation,
                         modifier = Modifier
@@ -139,7 +118,7 @@ fun LocationReminderDialog(
                             .height(52.dp),
                         shape = RoundedCornerShape(16.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.primary,
+                            containerColor = Color(0xFF9678B6),
                             contentColor = MaterialTheme.colorScheme.onPrimary
                         ),
                         elevation = ButtonDefaults.buttonElevation(
@@ -154,7 +133,7 @@ fun LocationReminderDialog(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = "Включить",
+                            text = stringResource(R.string.on),
                             style = MaterialTheme.typography.bodyLarge.copy(
                                 fontWeight = FontWeight.SemiBold
                             )
@@ -167,7 +146,7 @@ fun LocationReminderDialog(
 }
 
 @Composable
-private fun AnimatedLocationIcon() {
+fun AnimatedLocationIcon() {
     val infiniteTransition = rememberInfiniteTransition()
 
     val pulse by infiniteTransition.animateFloat(
@@ -188,23 +167,18 @@ private fun AnimatedLocationIcon() {
             },
         contentAlignment = Alignment.Center
     ) {
-        // Фон иконки
         Canvas(modifier = Modifier.fillMaxSize()) {
             drawCircle(
                 color = Color.Green.copy(alpha = 0.1f),
                 radius = size.minDimension / 2
             )
         }
-
-        // Иконка локации
         Icon(
             imageVector = Icons.Filled.LocationOn,
             contentDescription = "Геолокация",
             modifier = Modifier.size(40.dp),
-            tint = MaterialTheme.colorScheme.primary
+            tint = Color(0xFF9678B6)
         )
-
-        // Анимированная точка
         val dotSize by infiniteTransition.animateFloat(
             initialValue = 0f,
             targetValue = 8f,
@@ -213,7 +187,6 @@ private fun AnimatedLocationIcon() {
                 repeatMode = RepeatMode.Reverse
             )
         )
-
         Canvas(
             modifier = Modifier
                 .size(16.dp)

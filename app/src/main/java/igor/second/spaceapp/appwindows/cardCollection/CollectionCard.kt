@@ -52,6 +52,7 @@ import androidx.compose.ui.window.DialogProperties
 fun CollectionSmallCard(
     modifier: Modifier = Modifier,
     cardScore: Int,
+    carNameColor: Color,
     @DrawableRes cardImage: Int,
     @StringRes cardName: Int
 ) {
@@ -124,7 +125,7 @@ fun CollectionSmallCard(
                     }
                     Text(
                         text = stringResource(cardName),
-                        color = Color.White,
+                        color = carNameColor,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(top = 16.dp),
@@ -154,7 +155,7 @@ fun CollectionSmallCard(
         ) {
             Text(
                 text = stringResource(cardName),
-                color = Color(0xFFFF7256),
+                color = carNameColor,
                 fontSize = 10.sp,
                 fontWeight = FontWeight.Medium,
                 maxLines = 1,

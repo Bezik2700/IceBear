@@ -96,7 +96,6 @@ fun InCollectionButton(
         onClick = {
             isLoading = true
             scope.launch {
-                // Первая операция - добавление карты
                 addCardValue(
                     bronzeValue1 = bronzeValue1,
                     bronzeValue2 = bronzeValue2,
@@ -220,7 +219,7 @@ fun InCollectionButton(
             .height(56.dp),
         shape = RoundedCornerShape(16.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFFFF7F50),
+            containerColor = Color(0xFF8844E3),
             contentColor = Color.White
         ),
         elevation = ButtonDefaults.buttonElevation(

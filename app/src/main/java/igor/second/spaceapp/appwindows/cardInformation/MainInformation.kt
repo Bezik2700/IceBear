@@ -51,7 +51,7 @@ fun MainInformation(
     Dialog(onDismissRequest = { informationEnabled.value = false }) {
         Card(
             modifier = modifier
-                .fillMaxWidth(0.9f)
+                .fillMaxWidth()
                 .wrapContentHeight()
                 .padding(16.dp),
             shape = MaterialTheme.shapes.extraLarge,

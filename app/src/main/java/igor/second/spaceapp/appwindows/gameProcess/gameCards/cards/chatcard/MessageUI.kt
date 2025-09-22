@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -23,15 +24,15 @@ import igor.second.spaceapp.appwindows.gameProcess.settings.Message
 fun MessageUI(message: Message, isMyMessage: Boolean) {
 
     val bubbleColor = if (isMyMessage) {
-        MaterialTheme.colorScheme.primary
+        Color(0xFFEA2264)
     } else {
-        MaterialTheme.colorScheme.surfaceVariant
+        Color(0xFF7522EA)
     }
 
     val textColor = if (isMyMessage) {
-        MaterialTheme.colorScheme.onPrimary
+        Color.DarkGray
     } else {
-        MaterialTheme.colorScheme.onSurfaceVariant
+        Color.LightGray
     }
 
     Row(

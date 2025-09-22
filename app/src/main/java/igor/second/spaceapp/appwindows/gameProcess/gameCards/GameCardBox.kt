@@ -90,7 +90,7 @@ fun GameCardBox(
             verticalAlignment = Alignment.Bottom,
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp, bottom = 8.dp)
+                .padding(start = 32.dp, end = 32.dp, bottom = 8.dp)
         ) {
             GameCardBoxPart(
                 sliderPosition = sliderPosition,
@@ -357,7 +357,7 @@ fun GameCardBox(
             verticalAlignment = Alignment.Bottom,
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp)
+                .padding(start = 32.dp, end = 32.dp)
         ) {
             GameCardBoxPart(
                 sliderPosition = sliderPosition,

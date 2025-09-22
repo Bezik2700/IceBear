@@ -45,10 +45,10 @@ import igor.second.spaceapp.R
 
 @Composable
 fun OnSearchUser(modifier: Modifier = Modifier) {
+
     var animationPlayed by remember { mutableStateOf(false) }
     val infiniteTransition = rememberInfiniteTransition()
 
-    // Анимация пульсации
     val pulse by infiniteTransition.animateFloat(
         initialValue = 0.8f,
         targetValue = 1.2f,
@@ -58,7 +58,6 @@ fun OnSearchUser(modifier: Modifier = Modifier) {
         )
     )
 
-    // Анимация вращения
     val rotation by infiniteTransition.animateFloat(
         initialValue = 0f,
         targetValue = 360f,
@@ -90,7 +89,6 @@ fun OnSearchUser(modifier: Modifier = Modifier) {
             verticalArrangement = Arrangement.spacedBy(32.dp),
             modifier = Modifier.padding(24.dp)
         ) {
-            // Анимированный индикатор загрузки
             Box(
                 modifier = Modifier
                     .size(120.dp)
@@ -101,23 +99,18 @@ fun OnSearchUser(modifier: Modifier = Modifier) {
                     },
                 contentAlignment = Alignment.Center
             ) {
-                // Внешний круг
                 Canvas(modifier = Modifier.fillMaxSize()) {
                     drawCircle(
                         color = Color.Red.copy(alpha = 0.1f),
                         radius = size.minDimension / 2
                     )
                 }
-
-                // Индикатор загрузки
                 CircularProgressIndicator(
                     modifier = Modifier.size(80.dp),
                     color = MaterialTheme.colorScheme.primary,
                     strokeWidth = 4.dp,
                     trackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
                 )
-
-                // Центральная иконка
                 Icon(
                     imageVector = Icons.Filled.LocationOn,
                     contentDescription = null,
@@ -125,8 +118,6 @@ fun OnSearchUser(modifier: Modifier = Modifier) {
                     tint = MaterialTheme.colorScheme.primary
                 )
             }
-
-            // Текст с анимацией
             AnimatedVisibility(
                 visible = animationPlayed,
                 enter = fadeIn(animationSpec = tween(1000)) + slideInVertically(initialOffsetY = { it / 2 })
@@ -143,10 +134,8 @@ fun OnSearchUser(modifier: Modifier = Modifier) {
                         ),
                         textAlign = TextAlign.Center
                     )
-
-                    // Дополнительный текст
                     Text(
-                        text = "Ищем лучшие места рядом с вами...",
+                        text = stringResource(R.string.search_card),
                         style = MaterialTheme.typography.bodyMedium.copy(
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         ),
@@ -154,8 +143,6 @@ fun OnSearchUser(modifier: Modifier = Modifier) {
                     )
                 }
             }
-
-            // Анимированные точки
             Row(
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
                 verticalAlignment = Alignment.CenterVertically
@@ -186,69 +173,17 @@ fun OnSearchUser(modifier: Modifier = Modifier) {
                 }
             }
         }
-
-        // Фоновые анимированные элементы
         Canvas(modifier = Modifier.fillMaxSize()) {
-            // Анимированные круги на фоне
             drawCircle(
-                color = Color.Red.copy(alpha = 0.05f),
+                color = Color(0xFF9678B6).copy(alpha = 0.15f),
                 radius = size.maxDimension * 0.3f * pulse,
                 center = Offset(size.width * 0.2f, size.height * 0.2f)
             )
 
             drawCircle(
-                color = Color.Red.copy(alpha = 0.05f),
+                color = Color(0xFF9678B6).copy(alpha = 0.15f),
                 radius = size.maxDimension * 0.2f * (2 - pulse),
                 center = Offset(size.width * 0.8f, size.height * 0.8f)
-            )
-        }
-    }
-}
-
-// Альтернативная минималистичная версия
-@Composable
-fun OnSearchUserMinimal(modifier: Modifier = Modifier) {
-    val infiniteTransition = rememberInfiniteTransition()
-
-    val rotation by infiniteTransition.animateFloat(
-        initialValue = 0f,
-        targetValue = 360f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(1500, easing = LinearEasing),
-            repeatMode = RepeatMode.Restart
-        )
-    )
-
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(24.dp)
-        ) {
-            // Компактный индикатор
-            Box(
-                modifier = Modifier
-                    .size(64.dp)
-                    .graphicsLayer {
-                        rotationZ = rotation
-                    }
-            ) {
-                CircularProgressIndicator(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.primary,
-                    strokeWidth = 3.dp
-                )
-            }
-
-            Text(
-                text = stringResource(R.string.location_update),
-                style = MaterialTheme.typography.bodyLarge.copy(
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
             )
         }
     }

@@ -184,11 +184,11 @@ fun MainConnection(
         IsNotOnlineDialog(context = context)
     } else {
         Column (
-            verticalArrangement = Arrangement.Top,
+            verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = modifier
                 .fillMaxSize()
-                .padding(bottom = 120.dp, top = 64.dp)
+                .padding(bottom = 64.dp, top = 64.dp)
         ) {
 
             ChatCards(
@@ -209,7 +209,7 @@ fun MainConnection(
                     Icon(
                         Icons.Rounded.Info,
                         contentDescription = "info about game",
-                        tint = Color.White,
+                        tint = Color(0xFF9678B6),
                         modifier = Modifier.size(64.dp)
                     )
                 }

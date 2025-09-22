@@ -32,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -78,6 +79,7 @@ fun OnlinePurchaseCard(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
+                    .background(color = Color(0xFFEA2264))
                     .padding(16.dp),
                 verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -96,7 +98,7 @@ fun OnlinePurchaseCard(
                 )
                 Text(
                     text = stringResource(text),
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = Color.Black,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.SemiBold,
                     textAlign = TextAlign.Center,
@@ -136,8 +138,8 @@ fun OnlinePurchaseCard(
                             .height(40.dp),
                         shape = RoundedCornerShape(12.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.primary,
-                            contentColor = MaterialTheme.colorScheme.onPrimary
+                            containerColor = Color(0xFF9678B6),
+                            contentColor = Color.Black
                         )
                     ) {
                         Text(

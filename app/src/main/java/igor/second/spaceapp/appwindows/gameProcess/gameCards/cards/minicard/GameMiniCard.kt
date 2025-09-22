@@ -171,7 +171,7 @@ fun GameMiniCard(
         Card(
             colors = CardDefaults.cardColors(
                 containerColor = if (isEnabled) {
-                    MaterialTheme.colorScheme.primary
+                    Color(0xFFEA2264)
                 } else {
                     MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f)
                 }
@@ -182,7 +182,7 @@ fun GameMiniCard(
             Text(
                 text = cardScore.toString(),
                 color = if (isEnabled) {
-                    MaterialTheme.colorScheme.onPrimary
+                    Color.Black
                 } else {
                     MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                 },

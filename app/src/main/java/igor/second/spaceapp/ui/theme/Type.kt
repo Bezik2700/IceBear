@@ -8,9 +8,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import igor.second.spaceapp.R
 
-// Сначала объявите FontFamily
 val Kavoon = FontFamily(
-    Font(R.font.kavoon, FontWeight.Normal) // Укажите правильный вес
+    Font(R.font.kavoon, FontWeight.Normal)
 )
 
 val Mansalva = FontFamily(

@@ -98,8 +98,6 @@ fun MiniGeneration(
 ){
 
     val timerEnabled by viewModel.timerEnabled.collectAsState()
-    val buttonElevation = 8.dp
-    val buttonShape = RoundedCornerShape(16.dp)
 
     LaunchedEffect(key1 = null) {
         if (timerEnabled) { viewModel.timerEnabledChange() }
@@ -285,7 +283,7 @@ fun MiniGeneration(
                             Toast.makeText(context, string, Toast.LENGTH_SHORT).show()
                         }
                     },
-                    gradientColors = listOf(Color(0xFF11998E), Color(0xFF38EF7D)),
+                    gradientColors = listOf(Color(0xFF9C19B6), Color(0xFFFF00F3)),
                     elevation = 12.dp,
                     shape = RoundedCornerShape(20.dp),
                     content = {

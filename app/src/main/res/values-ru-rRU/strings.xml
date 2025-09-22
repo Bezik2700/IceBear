@@ -15,10 +15,16 @@
     <string name="name_not_change">(после сохранения имя изменить нельзя)</string>
     <string name="max_symbols">• максимум 10 символов</string>
     <string name="exit_press">нажмите еще раз, чтобы выйти</string>
-    <string name="top_users">ТОП ПОЛЬЗОВАТЕЛЕЙ</string>
+    <string name="top_users">ТОП</string>
     <string name="not_money">Недостатчно средств</string>
     <string name="add_to_collection">Добавить в коллекцию</string>
     <string name="understood">Понятно</string>
+    <string name="load_messages">Загрузка сообщений…</string>
+    <string name="refresh">Повторить</string>
+    <string name="not_network">Отсутствует интернет-соединение</string>
+    <string name="click_on">Нажмите, чтобы включить.</string>
+    <string name="error_messages">Ошибка загрузки сообщений!!!</string>
+
     
     // income info
     <string name="purchase_info">Здесь вы можете приобрести карты за игровую валюту, а также купить карты и игровую валюту за реальные деньги, а также улучшить генерацию карт.</string>
@@ -35,6 +41,14 @@
     <string name="on_menu">В главное меню</string>
     <string name="search_again">Искать снова</string>
     <string name="location_update">Определяем ваше местоположение…</string>
+    <string name="location_turn_on">"Для полноценной работы приложения необходимо включить геолокацию. Это позволит использовать все функции поиска и навигации."</string>
+    <string name="on">Включить</string>
+    <string name="location_off">Геолокация отключена</string>
+    <string name="location_permission">Доступ к геолокации</string>
+    <string name="location_access">Предоставить доступ</string>
+    <string name="privacy_policy">Нажмите, чтобы узнать, как мы используем ваши данные.</string>
+    <string name="search_card">Ищем лучшие карточки рядом с вами…</string>
+    <string name="location_description">Для работы приложения необходим доступ к вашей геолокации. Это позволит находить ближайшие к вам карточки.</string>
 
     // shopping names
     <string name="generation_screen">ГЕНЕРАЦИЯ</string>

@@ -19,6 +19,12 @@
     <string name="top_users">TOP USERS</string>
     <string name="add_to_collection">Add to Collection</string>
     <string name="understood">Understood</string>
+    <string name="load_messages">Load_messages…</string>
+    <string name="refresh">Refresh</string>
+    <string name="not_network">There is no internet connection</string>
+    <string name="click_on">Click to turn it on.</string>
+    <string name="error_messages">Error loading messages!!!</string>
+    <string name="on">Turn on</string>
     
     // income info
     <string name="purchase_info">Here you can purchase cards for in-game currency, as well as buy cards and in-game currency for real money, and improve card generation.</string>
@@ -35,6 +41,13 @@
     <string name="on_menu">To main menu</string>
     <string name="search_again">Search again</string>
     <string name="location_update">Determine your location…</string>
+    <string name="location_turn_on">"For the app to function fully, you must enable geolocation. This will allow you to use all search and navigation features."</string>
+    <string name="location_off">Geolocation is disabled</string>
+    <string name="location_permission">Access to geolocation</string>
+    <string name="location_access">Grant access</string>
+    <string name="privacy_policy">Click here to learn how we use your data.</string>
+    <string name="search_card">We"re looking for the best cards near you…</string>
+    <string name="location_description">The app requires access to your location to work. This will allow you to find cards closest to you.</string>
 
     // shopping names
     <string name="generation_screen">GENERATION</string>

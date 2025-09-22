@@ -42,8 +42,8 @@ fun CustomInformationIcon(onClick: () -> Unit){
         Icon(
             Icons.Rounded.Info,
             contentDescription = "info",
-            modifier = Modifier.size(64.dp),
-            tint = Color.White
+            tint = Color(0xFF9678B6),
+            modifier = Modifier.size(64.dp)
         )
     }
 }

@@ -1,7 +1,8 @@
 package igor.second.spaceapp.appwindows.cardSearching.locationSetting
 
 import android.content.Context
-import androidx.compose.animation.core.FastOutSlowInEasing
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -14,7 +15,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,11 +22,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
-import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -38,9 +37,8 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -49,12 +47,12 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import igor.second.spaceapp.R
 
 @Composable
 fun LocationPermission(
@@ -62,40 +60,39 @@ fun LocationPermission(
     context: Context,
     modifier: Modifier = Modifier
 ) {
-    var a by remember { mutableStateOf(0) }
+    var a by remember { mutableIntStateOf(0) }
 
-    Box(
+    Card(
         modifier = modifier
-            .fillMaxSize()
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        MaterialTheme.colorScheme.primaryContainer,
-                        MaterialTheme.colorScheme.background
-                    )
-                )
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .padding(bottom = 64.dp, top = 64.dp)
+            .shadow(
+                elevation = 16.dp,
+                shape = RoundedCornerShape(28.dp),
+                spotColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
             ),
-        contentAlignment = Alignment.Center
+        shape = RoundedCornerShape(28.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {
-        // Анимированные фоновые элементы
-        AnimatedBackground()
-
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(24.dp)
-                .shadow(
-                    elevation = 16.dp,
-                    shape = RoundedCornerShape(28.dp),
-                    spotColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
+        Box(
+            modifier = modifier
+                .fillMaxSize()
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(
+                            MaterialTheme.colorScheme.primaryContainer,
+                            MaterialTheme.colorScheme.background
+                        )
+                    )
                 ),
-            shape = RoundedCornerShape(28.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surface,
-                contentColor = MaterialTheme.colorScheme.onSurface
-            ),
-            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+            contentAlignment = Alignment.Center
         ) {
+            AnimatedBackground()
             Column(
                 modifier = Modifier
                     .padding(32.dp)
@@ -103,50 +100,22 @@ fun LocationPermission(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(24.dp)
             ) {
-                // Анимированная иконка
                 AnimatedLocationIcon()
-
-                // Заголовок
                 Text(
-                    text = "Доступ к геолокации",
+                    text = stringResource(R.string.location_permission),
                     style = MaterialTheme.typography.headlineLarge.copy(
                         fontWeight = FontWeight.Bold
                     ),
-                    color = MaterialTheme.colorScheme.primary,
+                    color = Color(0xFF9678B6),
                     textAlign = TextAlign.Center
                 )
-
-                // Описание
                 Text(
-                    text = "Для работы приложения необходим доступ к вашей геолокации. Это позволит находить ближайшие места и строить маршруты.",
+                    text = stringResource(R.string.location_description),
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center,
                     lineHeight = 24.sp
                 )
-
-                // Список преимуществ
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    FeatureItem(
-                        icon = Icons.Default.LocationOn,
-                        text = "Поиск ближайших мест"
-                    )
-                    FeatureItem(
-                        icon = Icons.Default.Place,
-                        text = "Построение маршрутов"
-                    )
-                    FeatureItem(
-                        icon = Icons.Default.Place,
-                        text = "Точное позиционирование"
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                // Кнопка запроса разрешения
                 Button(
                     onClick = {
                         locationViewModel.openAppSettings(context = context)
@@ -156,7 +125,7 @@ fun LocationPermission(
                         .height(56.dp),
                     shape = RoundedCornerShape(16.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
+                        containerColor = Color(0xFF9678B6),
                         contentColor = MaterialTheme.colorScheme.onPrimary
                     ),
                     elevation = ButtonDefaults.buttonElevation(
@@ -171,7 +140,7 @@ fun LocationPermission(
                     )
                     Spacer(modifier = Modifier.width(12.dp))
                     Text(
-                        text = "Предоставить доступ",
+                        text = stringResource(R.string.location_access),
                         style = MaterialTheme.typography.bodyLarge.copy(
                             fontWeight = FontWeight.SemiBold
                         )
@@ -179,7 +148,7 @@ fun LocationPermission(
                 }
 
                 OutlinedButton(
-                    onClick = { a ++ },
+                    onClick = { a++ },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),
@@ -189,33 +158,39 @@ fun LocationPermission(
                     ),
                     border = BorderStroke(
                         width = 2.dp,
-                        color = MaterialTheme.colorScheme.primary
+                        color = Color(0xFF9678B6)
                     )
                 ) {
                     Icon(
                         imageVector = Icons.Default.Refresh,
                         contentDescription = null,
+                        tint = Color(0xFF9678B6),
                         modifier = Modifier.size(24.dp)
                     )
                     Spacer(modifier = Modifier.width(12.dp))
                     Text(
-                        text = "Перезапустить",
+                        text = stringResource(R.string.refresh),
+                        color = Color(0xFF9678B6),
                         style = MaterialTheme.typography.bodyLarge.copy(
                             fontWeight = FontWeight.SemiBold
                         )
                     )
                 }
 
-
-                // Ссылка на политику конфиденциальности
                 TextButton(
-                    onClick = { /* Открыть политику конфиденциальности */ },
+                    onClick = {
+                        val intent = Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse("https://www.termsfeed.com/live/825561c0-987a-4dd6-8ac6-d9304a5433b5")
+                        )
+                        context.startActivity(intent)
+                    },
                     modifier = Modifier.padding(top = 8.dp)
                 ) {
                     Text(
-                        text = "Как мы используем ваши данные",
+                        text = stringResource(R.string.privacy_policy),
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f)
+                        color = Color(0xFF9678B6)
                     )
                 }
             }
@@ -224,87 +199,7 @@ fun LocationPermission(
 }
 
 @Composable
-private fun AnimatedLocationIcon() {
-    var animationPlayed by remember { mutableStateOf(false) }
-    val infiniteTransition = rememberInfiniteTransition()
-
-    val pulse by infiniteTransition.animateFloat(
-        initialValue = 1f,
-        targetValue = 1.1f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(1000, easing = FastOutSlowInEasing),
-            repeatMode = RepeatMode.Reverse
-        )
-    )
-
-    val rotation by infiniteTransition.animateFloat(
-        initialValue = 0f,
-        targetValue = 360f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(2000, easing = LinearEasing),
-            repeatMode = RepeatMode.Restart
-        )
-    )
-
-    LaunchedEffect(Unit) {
-        animationPlayed = true
-    }
-
-    Box(
-        modifier = Modifier
-            .size(120.dp)
-            .graphicsLayer {
-                scaleX = pulse
-                scaleY = pulse
-            },
-        contentAlignment = Alignment.Center
-    ) {
-        // Внешний круг
-        Canvas(modifier = Modifier.fillMaxSize()) {
-            drawCircle(
-                color = Color.Red,
-                radius = size.minDimension / 2
-            )
-        }
-
-        // Иконка локации
-        Icon(
-            imageVector = Icons.Filled.LocationOn,
-            contentDescription = "Геолокация",
-            modifier = Modifier
-                .size(64.dp)
-                .graphicsLayer {
-                    rotationZ = if (animationPlayed) rotation else 0f
-                },
-            tint = MaterialTheme.colorScheme.primary
-        )
-    }
-}
-
-@Composable
-private fun FeatureItem(icon: ImageVector, text: String) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = null,
-            modifier = Modifier
-                .size(20.dp)
-                .padding(end = 12.dp),
-            tint = MaterialTheme.colorScheme.primary
-        )
-        Text(
-            text = text,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface
-        )
-    }
-}
-
-@Composable
-private fun AnimatedBackground() {
+fun AnimatedBackground() {
     val infiniteTransition = rememberInfiniteTransition()
 
     val floatAnimation1 by infiniteTransition.animateFloat(
@@ -326,7 +221,6 @@ private fun AnimatedBackground() {
     )
 
     Canvas(modifier = Modifier.fillMaxSize()) {
-        // Фоновые круги с анимацией
         drawCircle(
             color = Color.Green.copy(alpha = 0.05f),
             radius = size.maxDimension * 0.3f * floatAnimation1,
