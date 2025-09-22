@@ -98,7 +98,7 @@ fun ChatCards(
                             verticalArrangement = Arrangement.Center,
                             modifier = Modifier
                                 .fillMaxSize()
-                                .background(color = Color(0xFF9678B6))
+                                .background(color = Color(0xFF9678B6).copy(alpha = 0.6f))
                         ) {
                             CircularProgressIndicator(
                                 modifier = Modifier.size(32.dp),
@@ -120,7 +120,7 @@ fun ChatCards(
                             verticalArrangement = Arrangement.Center,
                             modifier = Modifier
                                 .fillMaxSize()
-                                .background(color = Color(0xFF9678B6))
+                                .background(color = Color(0xFF9678B6).copy(alpha = 0.6f))
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Close,
@@ -157,7 +157,7 @@ fun ChatCards(
                             verticalArrangement = Arrangement.Center,
                             modifier = Modifier
                                 .fillMaxSize()
-                                .background(color = Color(0xFF9678B6))
+                                .background(color = Color(0xFF9678B6).copy(alpha = 0.6f))
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Close,
@@ -179,7 +179,7 @@ fun ChatCards(
                         LazyColumn(
                             modifier = Modifier
                                 .fillMaxSize()
-                                .background(color = Color(0xFF9678B6)),
+                                .background(color = Color(0xFF9678B6).copy(alpha = 0.6f)),
                             reverseLayout = true,
                             verticalArrangement = Arrangement.Center
                         ) {

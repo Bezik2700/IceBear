@@ -101,21 +101,21 @@ fun OnSearchUser(modifier: Modifier = Modifier) {
             ) {
                 Canvas(modifier = Modifier.fillMaxSize()) {
                     drawCircle(
-                        color = Color.Red.copy(alpha = 0.1f),
+                        color = Color(0xFF9678B6).copy(alpha = 0.1f),
                         radius = size.minDimension / 2
                     )
                 }
                 CircularProgressIndicator(
                     modifier = Modifier.size(80.dp),
-                    color = MaterialTheme.colorScheme.primary,
+                    color = Color(0xFF9678B6),
                     strokeWidth = 4.dp,
-                    trackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
+                    trackColor = Color(0xFF9678B6).copy(alpha = 0.2f)
                 )
                 Icon(
                     imageVector = Icons.Filled.LocationOn,
                     contentDescription = null,
                     modifier = Modifier.size(40.dp),
-                    tint = MaterialTheme.colorScheme.primary
+                    tint = Color(0xFF9678B6)
                 )
             }
             AnimatedVisibility(
@@ -130,7 +130,7 @@ fun OnSearchUser(modifier: Modifier = Modifier) {
                         text = stringResource(R.string.location_update),
                         style = MaterialTheme.typography.headlineSmall.copy(
                             fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary
+                            color = Color(0xFF9678B6)
                         ),
                         textAlign = TextAlign.Center
                     )
@@ -166,7 +166,7 @@ fun OnSearchUser(modifier: Modifier = Modifier) {
                             }
                     ) {
                         drawCircle(
-                            color = Color.Red,
+                            color = Color(0xFF9678B6),
                             radius = size.minDimension / 2
                         )
                     }

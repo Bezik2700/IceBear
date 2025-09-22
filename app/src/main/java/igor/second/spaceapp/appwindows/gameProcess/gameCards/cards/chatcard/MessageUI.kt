@@ -24,9 +24,9 @@ import igor.second.spaceapp.appwindows.gameProcess.settings.Message
 fun MessageUI(message: Message, isMyMessage: Boolean) {
 
     val bubbleColor = if (isMyMessage) {
-        Color(0xFFEA2264)
+        Color(0xFFE168D8)
     } else {
-        Color(0xFF7522EA)
+        Color(0xFF6B31C0)
     }
 
     val textColor = if (isMyMessage) {

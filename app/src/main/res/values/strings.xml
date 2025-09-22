@@ -47,6 +47,7 @@
     <string name="location_access">Grant access</string>
     <string name="privacy_policy">Click here to learn how we use your data.</string>
     <string name="search_card">We"re looking for the best cards near you…</string>
+    <string name="distance">Distance to target</string>
     <string name="location_description">The app requires access to your location to work. This will allow you to find cards closest to you.</string>
 
     // shopping names

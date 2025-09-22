@@ -29,6 +29,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -92,7 +93,7 @@ fun MainInformation(
                             .height(48.dp),
                         shape = RoundedCornerShape(12.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.primary,
+                            containerColor = Color(0xFFE168D8),
                             contentColor = MaterialTheme.colorScheme.onPrimary
                         ),
                         elevation = ButtonDefaults.buttonElevation(

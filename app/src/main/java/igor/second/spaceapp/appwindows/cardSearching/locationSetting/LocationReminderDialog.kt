@@ -114,7 +114,7 @@ fun LocationReminderDialog(
                     Button(
                         onClick = onEnableLocation,
                         modifier = Modifier
-                            .weight(1f)
+                            .weight(0.8f)
                             .height(52.dp),
                         shape = RoundedCornerShape(16.dp),
                         colors = ButtonDefaults.buttonColors(

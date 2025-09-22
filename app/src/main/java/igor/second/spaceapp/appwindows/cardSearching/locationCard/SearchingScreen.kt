@@ -18,12 +18,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -49,6 +45,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import igor.second.spaceapp.R
@@ -87,221 +84,173 @@ fun SearchingScreen(
         }
     }
 
-    // Анимированное значение расстояния
     val animatedDistance by animateFloatAsState(
         targetValue = distanceToTarget.toFloat(),
         animationSpec = tween(durationMillis = 500),
         label = "distanceAnimation"
     )
 
-    // Цвет текста в зависимости от расстояния
     val distanceColor by animateColorAsState(
         targetValue = when {
-            distanceToTarget < 50 -> Color(0xFF4CAF50) // Зеленый для близкого расстояния
-            distanceToTarget < 200 -> Color(0xFFFF9800) // Оранжевый для среднего
-            else -> Color(0xFFF44336) // Красный для дальнего
+            distanceToTarget < 50 -> Color(0xFF4CAF50)
+            distanceToTarget < 200 -> Color(0xFFFF9800)
+            else -> Color(0xFFF44336)
         },
         animationSpec = tween(durationMillis = 300),
         label = "colorAnimation"
     )
 
-    Box(
-        modifier = modifier
+    Card(
+        modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.onPrimary)
+            .padding(top = 24.dp, bottom = 48.dp)
+            .shadow(
+                elevation = 16.dp,
+                shape = RoundedCornerShape(24.dp),
+                spotColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
+            ),
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
+        )
     ) {
-        // Фон с градиентом
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    brush = Brush.verticalGradient(
-                        colors = listOf(
-                            MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
-                            MaterialTheme.colorScheme.background
+        Box(modifier = Modifier.fillMaxSize()) {
+            Image(
+                painter = painterResource(image),
+                contentDescription = "Карта поиска",
+                modifier = Modifier
+                    .fillMaxSize(),
+                contentScale = ContentScale.Crop
+            )
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                Color.Transparent,
+                                MaterialTheme.colorScheme.surface.copy(alpha = 1f)
+                            ),
+                            startY = 1000f,
+                            endY = 0f
                         )
                     )
-                )
-        )
-
-        Card(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(24.dp)
-                .shadow(
-                    elevation = 16.dp,
-                    shape = RoundedCornerShape(24.dp),
-                    spotColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
-                ),
-            shape = RoundedCornerShape(24.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
             )
-        ) {
-            Box(modifier = Modifier.fillMaxSize()) {
-                // Фоновое изображение с overlay
-                Image(
-                    painter = painterResource(image),
-                    contentDescription = "Карта поиска",
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    contentScale = ContentScale.Crop
-                )
 
-                // Overlay градиент
+            AnimationIcon(
+                distanceStart = distanceStart,
+                distanceToTarget = distanceToTarget
+            )
+
+            Column(
+                verticalArrangement = Arrangement.Bottom,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(24.dp)
+            ) {
                 Box(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .background(
-                            brush = Brush.verticalGradient(
-                                colors = listOf(
-                                    Color.Transparent,
-                                    MaterialTheme.colorScheme.surface.copy(alpha = 0.7f)
-                                ),
-                                startY = 0f,
-                                endY = 500f
-                            )
-                        )
-                )
-
-                AnimationIcon(
-                    distanceStart = distanceStart,
-                    distanceToTarget = distanceToTarget,
-                    locationViewModel = locationViewModel
-                )
-
-                Column(
-                    verticalArrangement = Arrangement.Bottom,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(24.dp)
+                        .size(120.dp)
+                        .padding(bottom = 24.dp),
+                    contentAlignment = Alignment.Center
                 ) {
-                    // Компас с указателем
-                    Box(
-                        modifier = Modifier
-                            .size(120.dp)
-                            .padding(bottom = 24.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        // Внешний круг компаса
-                        Canvas(modifier = Modifier.fillMaxSize()) {
-                            drawCircle(
-                                color = Color.Red,
-                                radius = size.minDimension / 2,
-                                style = Stroke(width = 4f)
-                            )
-                        }
-
-                        // Внутренний круг с градиентом
-                        Canvas(modifier = Modifier.size(100.dp)) {
-                            drawCircle(
-                                brush = Brush.radialGradient(
-                                    colors = listOf(
-                                        Color.Red,
-                                        Color.Transparent
-                                    ),
-                                    center = Offset(size.width / 2, size.height / 2),
-                                    radius = size.minDimension / 2
-                                ),
-                                radius = size.minDimension / 2
-                            )
-                        }
-
-                        // Стрелка направления
-                        arrowBitmap?.let {
-                            Image(
-                                bitmap = it.asImageBitmap(),
-                                contentDescription = "Направление к цели",
-                                modifier = Modifier
-                                    .size(80.dp)
-                                    .rotate(arrowRotation)
-                                    .graphicsLayer {
-                                        rotationZ = arrowRotation
-                                    },
-                                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
-                            )
-                        }
-                    }
-
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(120.dp),
-                        shape = RoundedCornerShape(20.dp),
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surfaceContainerHighest
-                        ),
-                        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(16.dp),
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Text(
-                                text = "Расстояние до цели",
-                                style = MaterialTheme.typography.labelMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-
-                            Spacer(modifier = Modifier.height(4.dp))
-
-                            Text(
-                                text = "${"%.1f".format(animatedDistance)} м",
-                                style = MaterialTheme.typography.displaySmall.copy(
-                                    fontWeight = FontWeight.Bold
-                                ),
-                                color = distanceColor,
-                                modifier = Modifier
-                            )
-                        }
-                    }
-
-                    // Индикатор прогресса (опционально)
-                    if (distanceStart.doubleValue > 0) {
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        LinearProgressIndicator(
-                            progress = {
-                                val progress = 1f - (distanceToTarget / distanceStart.doubleValue).toFloat()
-                                progress.coerceIn(0f, 1f)
-                            },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(8.dp)
-                                .clip(RoundedCornerShape(4.dp)),
-                            color = MaterialTheme.colorScheme.primary,
-                            trackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
+                    Canvas(modifier = Modifier.fillMaxSize()) {
+                        drawCircle(
+                            color = Color(0xFFA865A1),
+                            radius = size.minDimension / 2,
+                            style = Stroke(width = 4f)
                         )
-
-                        Text(
-                            text = "Пройдено: ${"%.0f".format((1 - distanceToTarget / distanceStart.doubleValue) * 100)}%",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.padding(top = 8.dp)
+                    }
+                    Canvas(modifier = Modifier.size(80.dp)) {
+                        drawCircle(
+                            brush = Brush.radialGradient(
+                                colors = listOf(
+                                    Color(0xFFA865A1),
+                                    Color.Transparent
+                                ),
+                                center = Offset(size.width / 2, size.height / 2),
+                                radius = size.minDimension / 2
+                            ),
+                            radius = size.minDimension / 2
+                        )
+                    }
+                    arrowBitmap?.let {
+                        Image(
+                            bitmap = it.asImageBitmap(),
+                            contentDescription = "Направление к цели",
+                            modifier = Modifier
+                                .size(64.dp)
+                                .rotate(arrowRotation)
+                                .graphicsLayer {
+                                    rotationZ = arrowRotation
+                                },
+                            colorFilter = ColorFilter.tint(Color(0xFFA865A1))
                         )
                     }
                 }
-            }
-        }
 
-        // Кнопка смены фона (опционально)
-        FloatingActionButton(
-            onClick = { imageValue = ((imageValue % 5) + 1) },
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .padding(16.dp)
-                .size(48.dp),
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            contentColor = MaterialTheme.colorScheme.onPrimaryContainer
-        ) {
-            Icon(
-                imageVector = Icons.Default.Refresh,
-                contentDescription = "Сменить фон"
-            )
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(120.dp),
+                    shape = RoundedCornerShape(20.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceContainerHighest
+                    ),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(color = Color(0xFFA865A1))
+                            .padding(16.dp),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = stringResource(R.string.distance),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+
+                        Spacer(modifier = Modifier.height(4.dp))
+
+                        Text(
+                            text = "${"%.1f".format(animatedDistance)} м",
+                            style = MaterialTheme.typography.displaySmall.copy(
+                                fontWeight = FontWeight.Bold
+                            ),
+                            color = distanceColor,
+                            modifier = Modifier
+                        )
+                    }
+                }
+
+                if (distanceStart.doubleValue > 0) {
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    LinearProgressIndicator(
+                        progress = {
+                            val progress = 1f - (distanceToTarget / distanceStart.doubleValue).toFloat()
+                            progress.coerceIn(0f, 1f)
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(8.dp)
+                            .clip(RoundedCornerShape(4.dp)),
+                        color = Color(0xFFA865A1),
+                        trackColor = Color(0xFFE1ADDB)
+                    )
+
+                    Text(
+                        text = "Пройдено: ${"%.0f".format((1 - distanceToTarget / distanceStart.doubleValue) * 100)}%",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                }
+            }
         }
     }
 }

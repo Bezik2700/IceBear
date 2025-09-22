@@ -110,6 +110,7 @@ fun PurchaseInfoDialog(
                     Text(
                         text = stringResource(R.string.understood),
                         fontSize = 24.sp,
+                        color = Color(0xFF9678B6),
                         style = MaterialTheme.typography.labelLarge
                     )
                 }

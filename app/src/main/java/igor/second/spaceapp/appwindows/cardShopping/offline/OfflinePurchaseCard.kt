@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -49,7 +50,15 @@ fun OfflinePurchaseCard(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = Color(0xFFEA2264))
+                .background(brush = Brush
+                        .verticalGradient(
+                            colors = listOf(
+                                Color(0xFFE56CBE),
+                                Color(0xFF6C78E5),
+                                Color(0xFF000000)
+                            )
+                        )
+                )
                 .padding(12.dp),
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -64,7 +73,7 @@ fun OfflinePurchaseCard(
             )
             Text(
                 stringResource(text),
-                color = Color.Black,
+                color = Color.White,
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
@@ -83,14 +92,14 @@ fun OfflinePurchaseCard(
                 ) {
                     Text(
                         stringResource(R.string.money),
-                        color = Color.Black,
+                        color = Color.White,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Medium
                     )
                     Text(
                         price.toString(),
                         fontSize = 18.sp,
-                        color = Color.Black,
+                        color = Color.White,
                         fontWeight = FontWeight.Bold
                     )
                 }

@@ -28,7 +28,6 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             SpaceAppTheme {
-
                 // data values
                 var userGenerationLevel = remember { mutableIntStateOf(1) }
                 var userMoneyValue = remember { mutableIntStateOf(0) }

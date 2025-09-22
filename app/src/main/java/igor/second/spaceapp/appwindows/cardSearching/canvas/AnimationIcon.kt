@@ -24,14 +24,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.dp
 import igor.second.spaceapp.appwindows.cardSearching.locationSetting.calculateBottomPadding
-import igor.second.spaceapp.appwindows.cardSearching.locationSetting.LocationViewModel
 
 @Composable
 fun AnimationIcon(
     modifier: Modifier = Modifier,
     distanceToTarget: Double,
-    distanceStart: MutableState<Double>,
-    locationViewModel: LocationViewModel
+    distanceStart: MutableState<Double>
 ){
 
     var animationState by remember { mutableFloatStateOf(0f) }
@@ -55,30 +53,29 @@ fun AnimationIcon(
         Icon(
             Icons.Rounded.Favorite,
             contentDescription = "target",
-            tint = Color.Red,
+            tint = Color(0xFFA865A1),
             modifier = modifier
                 .align(alignment = Alignment.BottomCenter)
                 .padding(bottom = calculateBottomPadding(
                     distanceStart = distanceStart.value,
                     distanceToTarget = distanceToTarget
-                )
+                    )
                 )
         )
         for (i in 0..2) {
 
             val scale = 1f + animationState + i * 0.5f
-            val alpha = 1f - (animationState + i * 0.2f).coerceIn(0f, 1f)
 
             Canvas(modifier = Modifier
                 .align(alignment = Alignment.BottomCenter)
                 .padding(bottom = calculateBottomPadding(
                     distanceStart = distanceStart.value,
                     distanceToTarget = distanceToTarget
-                )
+                    )
                 )
             ) {
                 drawCircle(
-                    color = Color.Red.copy(alpha = alpha * 1f),
+                    color = Color(0xFFA865A1),
                     radius = 30.dp.toPx() * scale,
                     style = Stroke(width = 2.dp.toPx())
                 )

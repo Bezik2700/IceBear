@@ -79,7 +79,15 @@ fun OnlinePurchaseCard(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(color = Color(0xFFEA2264))
+                    .background(brush = Brush
+                        .verticalGradient(
+                            colors = listOf(
+                                Color(0xFFE56CBE),
+                                Color(0xFF6C78E5),
+                                Color(0xFF000000)
+                            )
+                        )
+                    )
                     .padding(16.dp),
                 verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -98,7 +106,7 @@ fun OnlinePurchaseCard(
                 )
                 Text(
                     text = stringResource(text),
-                    color = Color.Black,
+                    color = Color.White,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.SemiBold,
                     textAlign = TextAlign.Center,
@@ -146,6 +154,7 @@ fun OnlinePurchaseCard(
                             text = product.oneTimePurchaseOfferDetails?.formattedPrice ?: "Buy",
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Bold,
+                            color = Color.White,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )

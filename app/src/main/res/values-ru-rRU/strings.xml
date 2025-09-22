@@ -15,7 +15,7 @@
     <string name="name_not_change">(после сохранения имя изменить нельзя)</string>
     <string name="max_symbols">• максимум 10 символов</string>
     <string name="exit_press">нажмите еще раз, чтобы выйти</string>
-    <string name="top_users">ТОП</string>
+    <string name="top_users">РЕЙТИНГ</string>
     <string name="not_money">Недостатчно средств</string>
     <string name="add_to_collection">Добавить в коллекцию</string>
     <string name="understood">Понятно</string>
@@ -48,6 +48,7 @@
     <string name="location_access">Предоставить доступ</string>
     <string name="privacy_policy">Нажмите, чтобы узнать, как мы используем ваши данные.</string>
     <string name="search_card">Ищем лучшие карточки рядом с вами…</string>
+    <string name="distance">Расстояние до цели</string>
     <string name="location_description">Для работы приложения необходим доступ к вашей геолокации. Это позволит находить ближайшие к вам карточки.</string>
 
     // shopping names
