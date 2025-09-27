@@ -50,7 +50,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import igor.second.spaceapp.R
 import igor.second.spaceapp.appwindows.cardSearching.canvas.AnimationIcon
-import igor.second.spaceapp.appwindows.cardSearching.locationSetting.LocationViewModel
 
 @Composable
 fun SearchingScreen(
@@ -58,8 +57,7 @@ fun SearchingScreen(
     distanceToTarget: Double,
     arrowBitmap: Bitmap?,
     bearingToTarget: Float,
-    compassDirection: Float,
-    locationViewModel: LocationViewModel
+    compassDirection: Float
 ) {
     val relativeBearing = (bearingToTarget - compassDirection + 360) % 360
     val arrowRotation by animateFloatAsState(

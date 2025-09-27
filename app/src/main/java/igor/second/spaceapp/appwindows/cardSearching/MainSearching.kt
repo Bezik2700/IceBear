@@ -299,8 +299,7 @@ fun MainSearching(
                     distanceToTarget = distanceToTarget,
                     arrowBitmap = arrowBitmap,
                     bearingToTarget = bearingToTarget,
-                    compassDirection = compassDirection,
-                    locationViewModel = locationViewModel
+                    compassDirection = compassDirection
                 )
             }
         }
