@@ -26,5 +26,4 @@ interface ApiService {
 
     @POST("user_rating")
     fun addUserToRating(@Body userRating: UserRating): Call<UserRating>
-
 }

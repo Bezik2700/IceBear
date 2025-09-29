@@ -24,9 +24,8 @@ class AppWorkManager(
 
             Log.d("AppWorkManager", "Last update: $lastUpdate, Current time: $currentTime")
 
-            // Правильное определение миллисекунд в часе
             val oneHourInMillis = 24 * 60 * 60 * 1000L
-            // Правильный расчет пройденных часов
+
             val hoursPassed = (currentTime - lastUpdate) / oneHourInMillis
             Log.d("AppWorkManager", "Hours passed: $hoursPassed")
 
@@ -47,7 +46,7 @@ class AppWorkManager(
             return PeriodicWorkRequestBuilder<AppWorkManager>(
                 15, TimeUnit.MINUTES
             )
-                .setInitialDelay(1, TimeUnit.HOURS)
+                .setInitialDelay(1, TimeUnit.DAYS)
                 .build()
         }
     }

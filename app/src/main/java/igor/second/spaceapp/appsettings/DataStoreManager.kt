@@ -39,7 +39,7 @@ class DataStoreManager(private val context: Context) {
     suspend fun incrementCounter() {
         context.dataStore.edit { preferences ->
             val userMoneyValue = preferences[USER_MONEY_VALUE] ?: 0
-            preferences[USER_MONEY_VALUE] = userMoneyValue + 5
+            preferences[USER_MONEY_VALUE] = userMoneyValue + 10
         }
     }
 
