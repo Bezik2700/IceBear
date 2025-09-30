@@ -30,7 +30,7 @@ class AppWorkManager(
             Log.d("AppWorkManager", "Intervals passed: $intervalsPassed")
 
             if (intervalsPassed >= 1) {
-                val totalToAdd = intervalsPassed * 100
+                val totalToAdd = intervalsPassed * 50
                 dataStoreManager.incrementCounter(totalToAdd.toInt())
                 dataStoreManager.updateLastUpdate(currentTime)
 
