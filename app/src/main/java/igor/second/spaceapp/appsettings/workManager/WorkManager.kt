@@ -24,14 +24,17 @@ class AppWorkManager(
 
             Log.d("AppWorkManager", "Last update: $lastUpdate, Current time: $currentTime")
 
-            val oneHourInMillis = 24 * 60 * 60 * 1000L
+            val tenMinutesInMillis = 60 * 60 * 1000L
 
-            val hoursPassed = (currentTime - lastUpdate) / oneHourInMillis
-            Log.d("AppWorkManager", "Hours passed: $hoursPassed")
+            val intervalsPassed = (currentTime - lastUpdate) / tenMinutesInMillis
+            Log.d("AppWorkManager", "Intervals passed: $intervalsPassed")
 
-            if (hoursPassed >= 1) {
-                dataStoreManager.incrementCounter()
+            if (intervalsPassed >= 1) {
+                val totalToAdd = intervalsPassed * 100
+                dataStoreManager.incrementCounter(totalToAdd.toInt())
                 dataStoreManager.updateLastUpdate(currentTime)
+
+                Log.d("AppWorkManager", "Added $totalToAdd for $intervalsPassed intervals")
             }
 
             Result.success()
@@ -44,10 +47,8 @@ class AppWorkManager(
     companion object {
         fun createWorkRequest(): PeriodicWorkRequest {
             return PeriodicWorkRequestBuilder<AppWorkManager>(
-                15, TimeUnit.MINUTES
-            )
-                .setInitialDelay(1, TimeUnit.DAYS)
-                .build()
+                1, TimeUnit.HOURS
+            ).build()
         }
     }
 }

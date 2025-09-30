@@ -5,6 +5,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -44,7 +45,8 @@ fun GameMiniCard(
     @DrawableRes image: Int,
     onClick: () -> Unit,
     cardScore: Int,
-    cardValue: Int
+    cardValue: Int,
+    modifier: Modifier = Modifier
 ) {
     val isEnabled = cardScore != 0
     val colorMatrix = remember { ColorMatrix().apply { setToSaturation(0f) } }
@@ -57,7 +59,7 @@ fun GameMiniCard(
         label = "cardScale"
     )
 
-    Box(modifier = Modifier){
+    Box(modifier = modifier){
 
         Card(
             colors = CardDefaults.cardColors(
@@ -72,13 +74,14 @@ fun GameMiniCard(
                 defaultElevation = if (isEnabled) 6.dp else 2.dp,
                 pressedElevation = if (isEnabled) 2.dp else 1.dp
             ),
-            modifier = Modifier
+            modifier = modifier
                 .size(width = 56.dp, height = 96.dp)
                 .graphicsLayer { scaleX = scale; scaleY = scale }
                 .clickable(
+                    interactionSource = interactionSource,
+                    indication = LocalIndication.current,
                     enabled = isEnabled,
-                    onClick = onClick,
-                    interactionSource = interactionSource
+                    onClick = {onClick()},
                 )
                 .border(
                     width = 2.dp,
@@ -90,18 +93,18 @@ fun GameMiniCard(
                     shape = RoundedCornerShape(12.dp)
                 )
         ) {
-            Box(modifier = Modifier.fillMaxSize()) {
+            Box(modifier = modifier.fillMaxSize()) {
                 Image(
                     painter = painterResource(image),
                     contentDescription = "Card image",
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier
+                    modifier = modifier
                         .fillMaxSize()
                         .alpha(if (isEnabled) 1f else 0.4f),
                     colorFilter = if (isEnabled) null else ColorFilter.colorMatrix(colorMatrix)
                 )
                 Box(
-                    modifier = Modifier
+                    modifier = modifier
                         .fillMaxSize()
                         .background(
                             brush = Brush.verticalGradient(
@@ -119,7 +122,7 @@ fun GameMiniCard(
                     color = Color.White,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.ExtraBold,
-                    modifier = Modifier
+                    modifier = modifier
                         .align(Alignment.BottomEnd)
                         .padding(6.dp)
                         .background(
@@ -130,7 +133,7 @@ fun GameMiniCard(
                 )
                 if (isEnabled) {
                     Box(
-                        modifier = Modifier
+                        modifier = modifier
                             .fillMaxSize()
                             .background(
                                 brush = Brush.radialGradient(
@@ -145,11 +148,11 @@ fun GameMiniCard(
                     )
                 } else {
                     Box(
-                        modifier = Modifier
+                        modifier = modifier
                             .fillMaxSize()
                             .background(Color.Black.copy(alpha = 0.2f))
                     ) {
-                        Canvas(modifier = Modifier.fillMaxSize()) {
+                        Canvas(modifier = modifier.fillMaxSize()) {
                             drawLine(
                                 color = Color.Red.copy(alpha = 0.6f),
                                 start = Offset(0f, 0f),
@@ -188,7 +191,7 @@ fun GameMiniCard(
                 },
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier
+                modifier = modifier
                     .size(24.dp)
                     .wrapContentSize(Alignment.Center)
             )

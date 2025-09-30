@@ -31,15 +31,10 @@ class DataStoreManager(private val context: Context) {
         val USER_EPIC_VALUE4 = intPreferencesKey("epicValue4")
     }
 
-    val lastUpdate: Flow<Long> = context.dataStore.data
-        .map { preferences ->
-            preferences[LAST_UPDATE_KEY] ?: 0L
-        }
-
-    suspend fun incrementCounter() {
+    suspend fun incrementCounter(amount: Int = 10) {
         context.dataStore.edit { preferences ->
             val userMoneyValue = preferences[USER_MONEY_VALUE] ?: 0
-            preferences[USER_MONEY_VALUE] = userMoneyValue + 10
+            preferences[USER_MONEY_VALUE] = userMoneyValue + amount
         }
     }
 
@@ -48,6 +43,11 @@ class DataStoreManager(private val context: Context) {
             preferences[LAST_UPDATE_KEY] = timestamp
         }
     }
+
+    val lastUpdate: Flow<Long> = context.dataStore.data
+        .map { preferences ->
+            preferences[LAST_UPDATE_KEY] ?: System.currentTimeMillis()
+        }
 
     suspend fun initializeLastUpdate() {
         context.dataStore.edit { preferences ->
@@ -183,7 +183,7 @@ class DataStoreManager(private val context: Context) {
 
             pref[stringPreferencesKey("userName")] ?: "",
             pref[intPreferencesKey("userGenerationLevel")] ?: 1,
-            pref[intPreferencesKey("userMoneyValue")] ?: 50,
+            pref[intPreferencesKey("userMoneyValue")] ?: 1000,
 
             pref[intPreferencesKey("bronzeValue1")] ?: 0,
             pref[intPreferencesKey("bronzeValue2")] ?: 0,
